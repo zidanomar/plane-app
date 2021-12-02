@@ -67,7 +67,8 @@ exports.getFlightById = async (req, res) => {
   const { flightId } = req.params;
   try {
     const flight = await Flight.findAll({
-      where: { id: flightId },
+      where: { uuid: flightId },
+      include: 'planeDetail',
     });
 
     if (flight.length < 1) throw { status: 404, message: 'item not found' };
@@ -85,7 +86,7 @@ exports.getFlightById = async (req, res) => {
 exports.updateFlight = async (req, res) => {
   const { flightId } = req.params;
   const {
-    planeId: plane_id,
+    planeId,
     depatureDate: depature_date,
     arrivalDate: arrival_date,
   } = req.body;
@@ -105,15 +106,17 @@ exports.updateFlight = async (req, res) => {
   const duration = Math.round(setHour);
 
   try {
+    const plane = await Plane.findOne({ where: { uuid: planeId } });
+    console.log(plane.id);
     const updateFlight = await Flight.update(
       {
-        plane_id,
+        plane_id: plane.id,
         arrival_date: setArrivalDate,
         depature_date: setDepatureDate,
         duration,
       },
       {
-        where: { id: flightId },
+        where: { uuid: flightId },
         returning: true,
         plain: true,
       }
@@ -121,7 +124,8 @@ exports.updateFlight = async (req, res) => {
 
     res.status(200).json(updateFlight[1]);
   } catch (error) {
-    res.status(500).json({ message: error.parent.routine });
+    console.log(error);
+    res.status(500).json({ error });
   }
 };
 // delete flight
