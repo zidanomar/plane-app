@@ -1,0 +1,5 @@
+export const GET_ERRORS = 'GET_ERRORS';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+
+export const FETCHED_PLANE = 'FETCHED_PLANE';
+export const FETCHING_PLANE = 'FETCHING_PLANE';

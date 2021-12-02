@@ -1,0 +1,23 @@
+node_modules
+/sequelize
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### REACT DEFAULT GITIGNORE ###
+/frontend/.pnp
+/frontend.pnp.js
+
+/frontend/coverage
+
+/frontend/build
+
+### END OF REACT DEFAULT GITIGNORE
