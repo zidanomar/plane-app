@@ -10,7 +10,7 @@ function Router() {
   return (
     <BrowserRouter>
       <Header />
-      <div className='container pt-5'>
+      <div className='p-5'>
         <Routes>
           <Route exact path='/' element={<Plane />} />
           <Route exact path='/:planeId' element={<PlaneDetail />} />
