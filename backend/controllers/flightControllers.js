@@ -5,27 +5,35 @@ const { Flight, Plane } = require('../database/models');
 // PATH: /flight
 // DESCRIPTION: create new flight
 exports.addFlight = async (req, res) => {
-  const { planeId } = req.body;
+  const { planeId, depatureDate, arrivalDate } = req.body;
 
   const second = 1000;
   const minute = 60;
   const hour = 60;
 
-  // set dummy flight time
-  const depatureDate = new Date('2021-12-05T04:50:00');
-  const arrivalDate = new Date('2021-12-05T22:43:00');
+  // get flight duration in hour
+  const depature = new Date(depatureDate);
+  const arrival = new Date(arrivalDate);
   const getHour =
-    (arrivalDate.getTime() - depatureDate.getTime()) / second / minute / hour;
+    (arrival.getTime() - depature.getTime()) / second / minute / hour;
   const duration = Math.round(getHour);
-  console.log(typeof duration);
 
   try {
     const plane = await Plane.findOne({ where: { uuid: planeId } });
+    // set that only delivered plan could flight
+    if (!plane.isDelivered)
+      throw { status: 404, message: 'plane is not ready!' };
+
+    const flight = await Flight.findOne({
+      where: { plane_id: plane.id },
+    });
+    // set if plane is already in a flight
+    if (flight) throw { status: 404, message: 'plane are busy!' };
 
     const newFlight = await Flight.create({
       plane_id: plane.id,
       depature_date: depatureDate,
-      arrival_date: arrivalDate,
+      arrival_date: depatureDate,
       duration,
     });
 
@@ -59,7 +67,8 @@ exports.getFlightById = async (req, res) => {
   const { flightId } = req.params;
   try {
     const flight = await Flight.findAll({
-      where: { id: flightId },
+      where: { uuid: flightId },
+      include: 'planeDetail',
     });
 
     if (flight.length < 1) throw { status: 404, message: 'item not found' };
@@ -77,7 +86,7 @@ exports.getFlightById = async (req, res) => {
 exports.updateFlight = async (req, res) => {
   const { flightId } = req.params;
   const {
-    planeId: plane_id,
+    planeId,
     depatureDate: depature_date,
     arrivalDate: arrival_date,
   } = req.body;
@@ -86,7 +95,7 @@ exports.updateFlight = async (req, res) => {
   const minute = 60;
   const hour = 60;
 
-  // set dummy flight time
+  // set flight time in hour
   const setDepatureDate = new Date(depature_date);
   const setArrivalDate = new Date(arrival_date);
   const setHour =
@@ -97,15 +106,17 @@ exports.updateFlight = async (req, res) => {
   const duration = Math.round(setHour);
 
   try {
+    const plane = await Plane.findOne({ where: { uuid: planeId } });
+    console.log(plane.id);
     const updateFlight = await Flight.update(
       {
-        plane_id,
+        plane_id: plane.id,
         arrival_date: setArrivalDate,
         depature_date: setDepatureDate,
         duration,
       },
       {
-        where: { id: flightId },
+        where: { uuid: flightId },
         returning: true,
         plain: true,
       }
@@ -113,7 +124,8 @@ exports.updateFlight = async (req, res) => {
 
     res.status(200).json(updateFlight[1]);
   } catch (error) {
-    res.status(500).json({ message: error.parent.routine });
+    console.log(error);
+    res.status(500).json({ error });
   }
 };
 // delete flight
@@ -124,14 +136,9 @@ exports.updateFlight = async (req, res) => {
 exports.deleteFlight = async (req, res) => {
   const { flightId } = req.params;
   try {
-    const deleteFlight = await Flight.findAll({ where: { id: flightId } });
+    await Flight.destroy({ where: { uuid: flightId } });
 
-    if (deleteFlight.length < 1)
-      throw { status: 404, message: 'item not found' };
-
-    await Flight.destroy({ where: { id: flightId } });
-
-    res.status(200).json(deleteFlight);
+    res.status(200).json(`flight with uuid ${flightId} has beed deleted!`);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
