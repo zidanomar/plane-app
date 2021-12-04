@@ -9,22 +9,34 @@ import { Toast } from 'primereact/toast';
 import React, { useRef, useState } from 'react';
 
 import { planes } from './planes';
+import { customers } from './customers';
+import { Toolbar } from 'primereact/toolbar';
+import { RadioButton } from 'primereact/radiobutton';
+import { Dropdown } from 'primereact/dropdown';
 
 function TableList() {
   let emptyPlane = {
     uuid: null,
     name: '',
-    aircraftNumber: 0,
-    tailNumber: 0,
+    aircraft_number: 0,
+    tail_number: 0,
     isDelivered: false,
     owner: null,
   };
+
+  const owners = customers.map((x) =>
+    Object.entries(x)
+      .filter(([key, value]) => key !== 'planes')
+      .reduce((x, [key, value]) => ({ ...x, [key]: value }), {})
+  );
 
   const dt = useRef(null);
   const toast = useRef(null);
 
   const [plane, setPlane] = useState(emptyPlane);
   const [submitted, setSubmitted] = useState(false);
+  const [selectedOwner, setSelectedOwner] = useState(null);
+  const [addPlaneDialog, setAddPlaneDialog] = useState(false);
   const [editPlaneDialog, setEditPlaneDialog] = useState(false);
   const [deletePlaneDialog, setDeletePlaneDialog] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
@@ -46,13 +58,65 @@ function TableList() {
     setPlane(_plane);
   };
 
+  const onCategoryChange = (e) => {
+    let _plane = { ...plane };
+    _plane['isDelivered'] = e.value;
+    setPlane(_plane);
+  };
+
+  const onOwnerChange = (e) => {
+    const { value } = e.target;
+
+    // const owner = Object.entries(value)
+    //   .filter(([key, value]) => key !== 'planes')
+    //   .reduce((owner, [key, value]) => ({ ...owner, [key]: value }), {});
+
+    setSelectedOwner(value);
+  };
+
+  const openNew = () => {
+    setPlane(emptyPlane);
+    setSubmitted(false);
+    setAddPlaneDialog(true);
+  };
+
+  const hideAddPlaneDialog = () => {
+    setPlane(emptyPlane);
+    setSelectedOwner(null);
+    setSubmitted(false);
+    setAddPlaneDialog(false);
+  };
+
   const hideEditPlaneDialog = () => {
+    setPlane(emptyPlane);
+    setSubmitted(false);
     setEditPlaneDialog(false);
   };
 
   const editPlane = (plane) => {
     setPlane(plane);
     setEditPlaneDialog(true);
+  };
+
+  const updatePlane = () => {
+    setSubmitted(true);
+    if (
+      plane.name.trim() &&
+      plane.tail_number > 9999 &&
+      plane.aircraft_number > 9999
+    ) {
+      // CHANGE CONSOLE.LOG TO PATCH ACTION
+
+      console.log(plane);
+      setPlane(emptyPlane);
+      toast.current.show({
+        severity: 'success',
+        summary: 'Successful',
+        detail: `${plane.name} has been updated!`,
+        life: 3000,
+      });
+      hideEditPlaneDialog();
+    }
   };
 
   const hideDeletePlaneDialog = () => {
@@ -67,7 +131,7 @@ function TableList() {
   const deletePlane = () => {
     // CHANGE CONSOLE.LOG TO DELETE ACTION
     console.log(plane);
-    setDeletePlaneDialog(false);
+    hideDeletePlaneDialog();
     setPlane(emptyPlane);
     toast.current.show({
       severity: 'success',
@@ -98,6 +162,26 @@ function TableList() {
     return <span>{rowData.isDelivered ? 'Delivered' : 'Processing'}</span>;
   };
 
+  const leftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Button
+          label='New'
+          icon='pi pi-plus'
+          className='p-button-success p-mr-2'
+          onClick={openNew}
+        />
+        <Button
+          label='Delete'
+          icon='pi pi-trash'
+          className='p-button-danger'
+          // onClick={confirmDeleteSelected}
+          disabled={!selectedProducts || !selectedProducts.length}
+        />
+      </React.Fragment>
+    );
+  };
+
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -115,19 +199,36 @@ function TableList() {
     );
   };
 
-  const editPlaneDialogFooter = (
+  const productDialogFooter = (
     <React.Fragment>
       <Button
         label='Cancel'
         icon='pi pi-times'
         className='p-button-text'
-        // onClick={hideDialog}
+        onClick={hideAddPlaneDialog}
       />
       <Button
         label='Save'
         icon='pi pi-check'
         className='p-button-text'
         // onClick={saveProduct}
+      />
+    </React.Fragment>
+  );
+
+  const editPlaneDialogFooter = (
+    <React.Fragment>
+      <Button
+        label='Cancel'
+        icon='pi pi-times'
+        className='p-button-text'
+        onClick={hideEditPlaneDialog}
+      />
+      <Button
+        label='Save'
+        icon='pi pi-check'
+        className='p-button-text'
+        onClick={updatePlane}
       />
     </React.Fragment>
   );
@@ -152,7 +253,14 @@ function TableList() {
   return (
     <div>
       <Toast ref={toast} />
+
       <div className='card'>
+        <Toolbar
+          className='p-mb-4'
+          left={leftToolbarTemplate}
+          // right={rightToolbarTemplate}
+        ></Toolbar>
+
         <DataTable
           ref={dt}
           value={planes}
@@ -187,13 +295,13 @@ function TableList() {
       </div>
 
       <Dialog
-        visible={editPlaneDialog}
+        visible={addPlaneDialog}
         style={{ width: '450px' }}
         header='Product Details'
         modal
         className='p-fluid'
-        footer={editPlaneDialogFooter}
-        onHide={hideEditPlaneDialog}
+        footer={productDialogFooter}
+        onHide={hideAddPlaneDialog}
       >
         <div className='p-field'>
           <label htmlFor='name'>Name</label>
@@ -209,26 +317,148 @@ function TableList() {
             <small className='p-error'>Name is required.</small>
           )}
         </div>
+
         <div className='p-formgrid p-grid'>
           <div className='p-field p-col'>
-            <label htmlFor='price'>Price</label>
+            <label htmlFor='aircraft_number'>Aircraft Number</label>
             <InputNumber
-              id='price'
-              value={plane.aircraftNumber}
-              onValueChange={(e) => onInputNumberChange(e, 'price')}
-              mode='currency'
-              currency='USD'
-              locale='en-US'
+              id='aircraftNumber'
+              className={classNames({
+                'p-invalid': submitted && plane.aircraft_number < 9999,
+              })}
+              value={plane.aircraft_number}
+              useGrouping={false}
+              required
+              onValueChange={(e) => onInputNumberChange(e, 'aircraft_number')}
             />
+            {submitted && plane.aircraft_number < 9999 && (
+              <small className='p-error'>
+                Aircraft Number should be at least 5 digit.
+              </small>
+            )}
           </div>
           <div className='p-field p-col'>
-            <label htmlFor='quantity'>Quantity</label>
+            <label htmlFor='tail_number'>Tail Number</label>
             <InputNumber
-              id='quantity'
-              value={plane.tailNumber}
-              onValueChange={(e) => onInputNumberChange(e, 'quantity')}
+              id='tailNumber'
+              className={classNames({
+                'p-invalid': submitted && plane.tail_number < 9999,
+              })}
+              value={plane.tail_number}
+              useGrouping={false}
+              required
+              onValueChange={(e) => onInputNumberChange(e, 'tail_number')}
               integeronly
             />
+            {submitted && plane.tail_number < 9999 && (
+              <small className='p-error'>
+                Tail Number should be at least 5 digit.
+              </small>
+            )}
+          </div>
+        </div>
+
+        <div className='p-field'>
+          <label className='p-mb-3'>Delivery Status</label>
+          <div className='p-formgrid p-grid'>
+            <div className='p-field-radiobutton p-col-6'>
+              <RadioButton
+                inputId='status1'
+                name='status'
+                value={true}
+                onChange={onCategoryChange}
+                checked={plane.isDelivered}
+              />
+              <label htmlFor='status1'>Delivered</label>
+            </div>
+            <div className='p-field-radiobutton p-col-6'>
+              <RadioButton
+                inputId='status2'
+                name='status'
+                value={false}
+                onChange={onCategoryChange}
+                checked={!plane.isDelivered}
+              />
+              <label htmlFor='status2'>On Process</label>
+            </div>
+          </div>
+        </div>
+
+        <div className='p-field'></div>
+
+        <div className='p-field'>
+          <label htmlFor='owner'>Owner</label>
+          <Dropdown
+            id='owner'
+            value={selectedOwner}
+            options={owners}
+            onChange={onOwnerChange}
+            optionLabel='name'
+            placeholder='Select Owner'
+          />
+        </div>
+      </Dialog>
+
+      <Dialog
+        visible={editPlaneDialog}
+        style={{ width: '450px' }}
+        header='Product Details'
+        modal
+        className='p-fluid'
+        footer={editPlaneDialogFooter}
+        onHide={hideEditPlaneDialog}
+      >
+        <div className='p-field'>
+          <label htmlFor='name'>Name</label>
+          <InputText
+            id='name'
+            className={classNames({ 'p-invalid': submitted && !plane.name })}
+            value={plane.name}
+            onChange={(e) => onInputChange(e, 'name')}
+            required
+            autoFocus
+          />
+          {submitted && !plane.name && (
+            <small className='p-error'>Name is required.</small>
+          )}
+        </div>
+        <div className='p-formgrid p-grid'>
+          <div className='p-field p-col'>
+            <label htmlFor='aircraft_number'>Aircraft Number</label>
+            <InputNumber
+              id='aircraftNumber'
+              className={classNames({
+                'p-invalid': submitted && plane.aircraft_number < 9999,
+              })}
+              value={plane.aircraft_number}
+              useGrouping={false}
+              required
+              onValueChange={(e) => onInputNumberChange(e, 'aircraft_number')}
+            />
+            {submitted && plane.aircraft_number < 9999 && (
+              <small className='p-error'>
+                Aircraft Number should be at least 5 digit.
+              </small>
+            )}
+          </div>
+          <div className='p-field p-col'>
+            <label htmlFor='tail_number'>Tail Number</label>
+            <InputNumber
+              id='tailNumber'
+              className={classNames({
+                'p-invalid': submitted && plane.tail_number < 9999,
+              })}
+              value={plane.tail_number}
+              useGrouping={false}
+              required
+              onValueChange={(e) => onInputNumberChange(e, 'tail_number')}
+              integeronly
+            />
+            {submitted && plane.tail_number < 9999 && (
+              <small className='p-error'>
+                Tail Number should be at least 5 digit.
+              </small>
+            )}
           </div>
         </div>
       </Dialog>
