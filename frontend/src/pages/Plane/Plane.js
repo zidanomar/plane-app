@@ -1,47 +1,147 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from 'primereact/datatable';
-import { Dropdown } from 'primereact/dropdown';
 import { Column } from 'primereact/column';
-import { FilterMatchMode } from 'primereact/api';
-import { InputText } from 'primereact/inputtext';
-import { TriStateCheckbox } from 'primereact/tristatecheckbox';
+import { Toast } from 'primereact/toast';
+import { Toolbar } from 'primereact/toolbar';
 
 import { getAllPlane } from '../../flux/actions/planeAction';
+import {
+  ActionBodyTemplate,
+  DataTableHeader,
+  LeftToolbarTemplate,
+} from '../../components/DataTableTemplate';
+import PlaneDialog from './PlaneDialog';
+import DeleteDialog from '../../components/Dialog/DeleteDialog';
 
 function Plane() {
+  let emptyPlane = {
+    uuid: null,
+    name: '',
+    aircraft_number: 0,
+    tail_number: 0,
+    isDelivered: false,
+    owner: '',
+  };
+
+  const dt = useRef(null);
+  const toast = useRef(null);
+
   const dispatch = useDispatch();
   const plane = useSelector((state) => state.plane);
 
-  const [firstTable, setFirstTable] = useState(0);
-  const [rowTable, setRowTable] = useState(10);
-  const [filters2, setFilters2] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    aircraftNumber: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    tailNumber: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    owner: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    status: { value: null, matchMode: FilterMatchMode.EQUALS },
-  });
-  const [globalFilterValue2, setGlobalFilterValue2] = useState('');
+  const [selectedPlanes, setSelectedPlanes] = useState(null);
+  const [globalFilter, setGlobalFilter] = useState(null);
+  const [newPlane, setNewPlane] = useState(emptyPlane);
+  // eslint-disable-next-line no-unused-vars
+  const [submitted, setSubmitted] = useState(false);
+  const [selectedOwner, setSelectedOwner] = useState(null);
+  const [addPlaneDialog, setAddPlaneDialog] = useState(false);
+  const [editPlaneDialog, setEditPlaneDialog] = useState(false);
+  const [deletePlaneDialog, setDeletePlaneDialog] = useState(false);
 
   useEffect(() => {
     dispatch(getAllPlane());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onGlobalFilterChange2 = (e) => {
-    const value = e.target.value;
-    let _filters2 = { ...filters2 };
-    _filters2['global'].value = value;
+  const onInputChange = (e, name) => {
+    const val = (e.target && e.target.value) || '';
+    let _plane = { ...newPlane };
+    _plane[`${name}`] = val;
 
-    setFilters2(_filters2);
-    setGlobalFilterValue2(value);
+    setNewPlane(_plane);
   };
 
-  const onCustomPage2 = (event) => {
-    setFirstTable(event.first);
-    setRowTable(event.rows);
+  const onInputNumberChange = (e, name) => {
+    const val = e.value || 0;
+    let _plane = { ...newPlane };
+    _plane[`${name}`] = val;
+
+    setNewPlane(_plane);
+  };
+
+  const onCategoryChange = (e) => {
+    let _plane = { ...newPlane };
+    _plane['isDelivered'] = e.value;
+    setNewPlane(_plane);
+  };
+
+  const onOwnerChange = (e) => {
+    const { value } = e;
+
+    let _plane = { ...newPlane };
+    _plane['owner'] = value.uuid;
+    setNewPlane(_plane);
+    setSelectedOwner(value);
+  };
+
+  const openAddPlaneDialog = () => {
+    setNewPlane(emptyPlane);
+    setSubmitted(false);
+    setAddPlaneDialog(true);
+  };
+
+  const closeAddPlaneDialog = () => {
+    setNewPlane(emptyPlane);
+    setSubmitted(false);
+    setAddPlaneDialog(false);
+  };
+
+  const onAddNewPlane = () => {
+    toast.current.show({
+      severity: 'success',
+      summary: 'Successful',
+      detail: `${newPlane.name} has been added!`,
+      life: 3000,
+    });
+    setAddPlaneDialog(false);
+    setNewPlane(emptyPlane);
+  };
+
+  const editPlane = (rowData) => {
+    console.log(rowData);
+    setNewPlane(rowData);
+    setSelectedOwner(rowData.owner);
+    setEditPlaneDialog(true);
+  };
+
+  const closeEditPlaneDialog = () => {
+    setEditPlaneDialog(false);
+    setSubmitted(false);
+    setSelectedPlanes(null);
+    setSelectedOwner(null);
+  };
+
+  const onEditPlane = () => {
+    toast.current.show({
+      severity: 'success',
+      summary: 'Successful',
+      detail: `${newPlane.name} has been updated!`,
+      life: 3000,
+    });
+    setEditPlaneDialog(false);
+    setSubmitted(false);
+  };
+
+  const deletePlane = (rowData) => {
+    setNewPlane(rowData);
+    setDeletePlaneDialog(true);
+  };
+
+  const closeDeletePlane = () => {
+    setDeletePlaneDialog(false);
+    setNewPlane(emptyPlane);
+  };
+
+  const onDeletePlane = () => {
+    toast.current.show({
+      severity: 'warn',
+      summary: 'Warn Message',
+      detail: `${newPlane.name} has been deleted!`,
+      life: 3000,
+    });
+    setDeletePlaneDialog(false);
   };
 
   const ownerTemplate = (rowData) => {
@@ -52,149 +152,96 @@ function Plane() {
     return rowData.isDelivered ? 'Delivered' : 'Processing';
   };
 
-  const paginationTemplate = {
-    layout: 'RowsPerPageDropdown CurrentPageReport PrevPageLink NextPageLink',
-    RowsPerPageDropdown: (options) => {
-      const dropdownOptions = [
-        { label: 10, value: 10 },
-        { label: 20, value: 20 },
-        { label: 50, value: 50 },
-      ];
-
-      return (
-        <React.Fragment>
-          <span
-            className='p-mx-1'
-            style={{ color: 'var(--text-color)', userSelect: 'none' }}
-          >
-            Items per page:{' '}
-          </span>
-          <Dropdown
-            value={options.value}
-            options={dropdownOptions}
-            onChange={options.onChange}
-            appendTo={document.body}
-          />
-        </React.Fragment>
-      );
-    },
-    CurrentPageReport: (options) => {
-      return (
-        <span
-          style={{
-            color: 'var(--text-color)',
-            userSelect: 'none',
-            width: '120px',
-            textAlign: 'center',
-          }}
-        >
-          {options.first} - {options.last} of {options.totalRecords}
-        </span>
-      );
-    },
-  };
-
-  const renderHeader2 = () => {
+  const planeActionBody = (rowData) => {
     return (
-      <div className='p-d-flex p-jc-end'>
-        <span className='p-input-icon-left'>
-          <i className='pi pi-search' />
-          <InputText
-            value={globalFilterValue2}
-            onChange={onGlobalFilterChange2}
-            placeholder='Keyword Search'
-          />
-        </span>
-      </div>
-    );
-  };
-
-  const header2 = renderHeader2();
-
-  const verifiedRowFilterTemplate = (options) => {
-    return (
-      <TriStateCheckbox
-        value={options.value}
-        onChange={(e) => options.filterApplyCallback(e.value)}
+      <ActionBodyTemplate
+        rowData={rowData}
+        onEdit={editPlane}
+        onDelete={deletePlane}
       />
     );
   };
 
   return (
     <div>
+      <Toast ref={toast} />
       <div className='card'>
+        <Toolbar
+          className='p-mb-4'
+          left={
+            <LeftToolbarTemplate
+              onCreate={openAddPlaneDialog}
+              onDelete={() => {}}
+              disabled={true}
+            />
+          }
+          // right={rightToolbarTemplate}
+        ></Toolbar>
         <DataTable
+          ref={dt}
           value={plane.planes}
+          selection={selectedPlanes}
+          onSelectionChange={(e) => setSelectedPlanes(e.value)}
+          dataKey='id'
           paginator
-          paginatorTemplate={paginationTemplate}
-          first={firstTable}
-          rows={rowTable}
-          onPage={onCustomPage2}
-          filters={filters2}
-          filterDisplay='row'
-          loading={plane.isLoading}
+          rows={10}
+          rowsPerPageOptions={[5, 10, 25]}
+          paginatorTemplate='FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown'
+          currentPageReportTemplate='Showing {first} to {last} of {totalRecords} products'
+          globalFilter={globalFilter}
+          header={
+            <DataTableHeader setGlobalFilter={setGlobalFilter} title='Planes' />
+          }
           responsiveLayout='scroll'
-          globalFilterFields={[
-            'name',
-            'aircraft_number',
-            'tail_number',
-            'owner',
-            'status',
-          ]}
-          header={header2}
-          emptyMessage='No plane found'
-          paginatorClassName='p-jc-end'
         >
-          <Column
-            field='name'
-            header='Name'
-            sortable
-            filter
-            filterPlaceholder='Search by name'
-            filterField='name'
-            style={{ minWidth: '8rem' }}
-          />
-          <Column
-            field='aircraft_number'
-            header='Aircraft Number'
-            sortable
-            filter
-            filterPlaceholder='Search by Aircraft Number'
-            filterField='aircraftNumber'
-            style={{ minWidth: '8rem' }}
-          />
-          <Column
-            field='tail_number'
-            header='Tail Number'
-            sortable
-            filter
-            filterPlaceholder='Search by Tail Number'
-            filterField='tailNumber'
-            style={{ minWidth: '8rem' }}
-          />
-          <Column
-            field='owner'
-            header='Owner'
-            body={ownerTemplate}
-            sortable
-            filter
-            filterPlaceholder='Search by owner'
-            filterField='owner'
-            style={{ minWidth: '8rem' }}
-          />
+          <Column field='name' header='Name' sortable />
+          <Column field='aircraft_number' header='Aircraft Number' sortable />
+          <Column field='tail_number' header='Tail Number' sortable />
+          <Column field='owner' header='Owner' body={ownerTemplate} sortable />
           <Column
             field='isDelivered'
             header='Delivery Status'
             body={deliverStatusTemplate}
             dataType='boolean'
             sortable
-            filter
-            filterField='status'
-            filterElement={verifiedRowFilterTemplate}
-            style={{ minWidth: '6rem' }}
           />
+          <Column
+            header='Actions'
+            body={planeActionBody}
+            exportable={false}
+            style={{ minWidth: '8rem' }}
+          ></Column>
         </DataTable>
       </div>
+      <PlaneDialog
+        visible={addPlaneDialog}
+        onClose={closeAddPlaneDialog}
+        onConfirm={onAddNewPlane}
+        onInputChange={onInputChange}
+        onInputNumberChange={onInputNumberChange}
+        onCategoryChange={onCategoryChange}
+        onOwnerChange={onOwnerChange}
+        plane={newPlane}
+        submitted={false}
+      />
+      <PlaneDialog
+        visible={editPlaneDialog}
+        plane={newPlane}
+        submitted={false}
+        selectedOwner={selectedOwner}
+        onClose={closeEditPlaneDialog}
+        onConfirm={onEditPlane}
+        onInputChange={onInputChange}
+        onInputNumberChange={onInputNumberChange}
+        onCategoryChange={onCategoryChange}
+        onOwnerChange={onOwnerChange}
+      />
+      <DeleteDialog
+        visible={deletePlaneDialog}
+        plane={newPlane}
+        onClose={closeDeletePlane}
+        onConfirm={onDeletePlane}
+      />
     </div>
   );
 }
