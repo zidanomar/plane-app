@@ -68,27 +68,45 @@ exports.addPlane = async (req, res) => {
 // DETAILS: update specific plane details
 exports.updatePlane = async (req, res) => {
   const { planeId } = req.params;
-  const {
-    name,
-    aircraftNumber: aircraft_number,
-    tailNumber: tail_number,
-    customerId: customer_id,
-    isDelivered,
-  } = req.body;
-
+  const { name, aircraft_number, tail_number, customer_id, isDelivered } =
+    req.body;
+  let items;
   try {
+    if (customer_id) {
+      const customer = await Customer.findOne({ where: { uuid: customer_id } });
+
+      if (!customer) throw { status: 404, message: 'User Not Found' };
+
+      items = {
+        name,
+        aircraft_number,
+        tail_number,
+        customer_id: customer.id,
+        isDelivered,
+      };
+    } else {
+      items = {
+        name,
+        aircraft_number,
+        tail_number,
+        isDelivered,
+      };
+    }
     const updatedPlane = await Plane.update(
-      { name, aircraft_number, tail_number, customer_id, isDelivered },
       {
-        where: { id: planeId },
+        ...items,
+      },
+      {
+        where: { uuid: planeId },
         returning: true,
         plain: true,
       }
     );
 
-    res.status(200).json(updatedPlane[1]);
+    res.status(200).send(updatedPlane[1]);
   } catch (error) {
-    res.status(500).send({ error });
+    console.log(error);
+    res.status(500).send(error);
   }
 };
 

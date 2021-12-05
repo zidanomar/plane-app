@@ -9,7 +9,7 @@ export const getAllPlane = () => async (dispatch) => {
     const fetchAllPlane = await api.getAllPlanes();
     return dispatch({ type: FETCHED_PLANE, payload: fetchAllPlane.data });
   } catch (error) {
-    dispatch(returnErrors(error.response.data.msg, error.response.status));
+    dispatch(returnErrors(error.response.data.message, error.response.status));
     dispatch({ type: FETCHED_PLANE, payload: [] });
   }
 };

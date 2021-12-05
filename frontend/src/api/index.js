@@ -18,3 +18,6 @@ export const getPlaneById = (planeId) => API.get(`/user/${planeId}`);
 export const updatePlane = (planeId, planeData) =>
   API.patch(`/plane/${planeId}`, planeData);
 export const deletePlane = (planeId) => API.delete(`/plane/${planeId}`);
+
+// CUSTOMER ROUTES
+export const getAllCustomers = () => API.get('/customer');

@@ -1,7 +1,8 @@
 import React from 'react';
+import Playground from './Playground/Playground';
 
 function Customer() {
-  return <div>customer</div>;
+  return <Playground />;
 }
 
 export default Customer;

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
-import { Plane, PlaneEdit, PlaneDetail } from './pages/Plane';
+import { Plane } from './pages/Plane';
 import { Customer } from './pages/Customer';
 import { Flight } from './pages/Flight';
 
@@ -13,8 +13,6 @@ function Router() {
       <div className='p-5'>
         <Routes>
           <Route exact path='/' element={<Plane />} />
-          <Route exact path='/:planeId' element={<PlaneDetail />} />
-          <Route exact path='/:planeId/edit' element={<PlaneEdit />} />
           <Route exact path='/customer' element={<Customer />} />
           <Route exact path='/flight' element={<Flight />} />
         </Routes>
