@@ -21,3 +21,6 @@ export const deletePlane = (planeId) => API.delete(`/plane/${planeId}`);
 
 // CUSTOMER ROUTES
 export const getAllCustomers = () => API.get('/customer');
+
+// FLIGHT ROUTES
+export const getAllFlights = () => API.get('/flight');

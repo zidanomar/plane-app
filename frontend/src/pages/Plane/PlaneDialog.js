@@ -41,7 +41,7 @@ function PlaneDialog({
     <Dialog
       visible={visible}
       style={{ width: '450px' }}
-      header='Product Details'
+      header='Plane Details'
       modal
       className='p-fluid'
       footer={<DialogFooter onClose={onClose} onConfirm={onConfirm} />}
