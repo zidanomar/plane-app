@@ -184,6 +184,7 @@ function Plane() {
           onSelectionChange={(e) => setSelectedPlanes(e.value)}
           dataKey='id'
           paginator
+          loading={plane.isLoading}
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
           paginatorTemplate='FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown'

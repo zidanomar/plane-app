@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   ActionBodyTemplate,
+  DataTableHeader,
   LeftToolbarTemplate,
 } from '../../components/DataTableTemplate';
 import DeleteDialog from '../../components/Dialog/DeleteDialog';
@@ -28,6 +29,8 @@ function Flight() {
 
   const [newFlight, setNewFlight] = useState(null);
   const [selectedPlane, setSelectedPlane] = useState(null);
+  const [selectedFlights, setSelectedFlights] = useState(null);
+  const [globalFilter, setGlobalFilter] = useState(null);
   const [selectedDepatureDate, setSelectedDepatureDate] = useState(null);
   const [selectedArrivalDate, setSelectedArrivalDate] = useState(null);
   const [addFlightDialog, setAddFlightDialog] = useState(false);
@@ -165,7 +168,27 @@ function Flight() {
           }
           // right={rightToolbarTemplate}
         ></Toolbar>
-        <DataTable ref={dt} value={flight.flights}>
+        <DataTable
+          ref={dt}
+          value={flight.flights}
+          loading={flight.isLoading}
+          selection={selectedFlights}
+          onSelectionChange={(e) => setSelectedFlights(e.value)}
+          dataKey='id'
+          paginator
+          rows={10}
+          rowsPerPageOptions={[5, 10, 25]}
+          paginatorTemplate='FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown'
+          currentPageReportTemplate='Showing {first} to {last} of {totalRecords} products'
+          globalFilter={globalFilter}
+          header={
+            <DataTableHeader
+              setGlobalFilter={setGlobalFilter}
+              title='Flights'
+            />
+          }
+          responsiveLayout='scroll'
+        >
           <Column field='uuid' header='Flight Id' />
           <Column field='duration' header='Flight Duration' />
           <Column field='planeDetail.name' header='Plane' />
