@@ -67,7 +67,6 @@ function Flight() {
     let _flight = { ...newFlight };
     _flight[`${name}`] = val.uuid;
 
-    console.log(e.target.value);
     setSelectedPlane(val);
   };
 
@@ -104,7 +103,6 @@ function Flight() {
   };
 
   const onUpdateFlight = () => {
-    console.log('updateed!');
     toast.current.show({
       severity: 'success',
       summary: 'Successful',

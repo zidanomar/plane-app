@@ -24,7 +24,7 @@ function FlightDialog({
 }) {
   const dispatch = useDispatch();
   const planes = useSelector((state) => state.plane.planes);
-  console.log(planes);
+
   useEffect(() => {
     dispatch(getAllPlane());
     // eslint-disable-next-line react-hooks/exhaustive-deps

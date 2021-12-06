@@ -24,6 +24,7 @@ exports.addNewCustomer = async (req, res) => {
 
     res.status(200).json(newCustomer);
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error });
   }
 };
@@ -70,21 +71,10 @@ exports.updateCustomer = async (req, res) => {
   const { name } = req.body;
 
   try {
-    // Check if customer with insensitive name case is already exist
-    const existingCustomer = await Customer.findAll({
-      where: {
-        name: {
-          [Op.iLike]: name,
-        },
-      },
-    });
-
-    if (existingCustomer.length > 0) throw 'The customer already registered';
-
     const updatedCustomer = await Customer.update(
       { name },
       {
-        where: { id: customerId },
+        where: { uuid: customerId },
         returning: true,
         plain: true,
       }
@@ -103,13 +93,9 @@ exports.deleteCustomer = async (req, res) => {
   const { customerId } = req.params;
 
   try {
-    const customer = await Customer.findAll({ where: { id: customerId } });
+    await Customer.destroy({ where: { uuid: customerId } });
 
-    if (customer.length < 1) throw 'No customer found with that specified id';
-
-    await Customer.destroy({ where: { id: customerId } });
-
-    res.status(200).json(customer);
+    res.status(200).json(customerId);
   } catch (error) {
     res.status(500).send({ error });
   }

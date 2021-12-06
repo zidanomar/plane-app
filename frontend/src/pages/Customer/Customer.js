@@ -9,8 +9,14 @@ import {
   DataTableHeader,
   LeftToolbarTemplate,
 } from '../../components/DataTableTemplate';
+import DeleteDialog from '../../components/Dialog/DeleteDialog';
 
-import { getAllCustomers } from '../../flux/actions/userAction';
+import {
+  addNewCustomer as postNewCustomer,
+  deleteCustomer,
+  getAllCustomers,
+  updateCustomer,
+} from '../../flux/actions/customerAction';
 import CustomerDialog from './CustomerDialog';
 
 function Customer() {
@@ -43,8 +49,7 @@ function Customer() {
     const val = (e.target && e.target.value) || '';
     let _customer = { ...newCustomer };
     _customer[`${name}`] = val;
-
-    setSelectedCustomers(_customer);
+    setNewCustomer(_customer);
   };
   // END INPUT HANDLERS
 
@@ -59,6 +64,13 @@ function Customer() {
   };
 
   const onAddNewCustomer = () => {
+    dispatch(postNewCustomer(newCustomer));
+    toast.current.show({
+      severity: 'success',
+      summary: 'Successful',
+      detail: `Customer x has been added`,
+      life: 3000,
+    });
     setAddNewCustomerDialog(false);
     setNewCustomer(emptyCustomer);
   };
@@ -82,7 +94,7 @@ function Customer() {
       detail: `Customer x has been updated`,
       life: 3000,
     });
-    console.log(newCustomer);
+    dispatch(updateCustomer(newCustomer.uuid, newCustomer));
     setUpdateCustomerDialog(false);
     setNewCustomer(emptyCustomer);
   };
@@ -90,7 +102,8 @@ function Customer() {
   // END UPDATE CUSTOMER FUNCTIONS
 
   // DELETE CUSTOMER FUNCTIONS
-  const openDeleteCustomer = () => {
+  const openDeleteCustomer = (rowData) => {
+    setNewCustomer(rowData);
     setDeleteCustomerDialog(true);
   };
 
@@ -100,6 +113,13 @@ function Customer() {
   };
 
   const onDeleteCustomer = () => {
+    dispatch(deleteCustomer(newCustomer.uuid));
+    toast.current.show({
+      severity: 'warn',
+      summary: 'Warning Message',
+      detail: `Customer x has been deleted`,
+      life: 3000,
+    });
     setDeleteCustomerDialog(false);
     setNewCustomer(emptyCustomer);
   };
@@ -116,19 +136,19 @@ function Customer() {
   };
 
   const totalPlaneTemplate = (rowData) => {
-    return rowData.planes.length;
+    return rowData.planes?.length;
   };
 
   const deliveredPlaneTemplate = (rowData) => {
-    const filtered = rowData.planes.filter((x) => x.isDelivered);
+    const filtered = rowData.planes?.filter((x) => x.isDelivered);
 
-    return filtered.length;
+    return filtered?.length;
   };
 
   const onProgressPlaneTemplate = (rowData) => {
-    const filtered = rowData.planes.filter((x) => !x.isDelivered);
+    const filtered = rowData.planes?.filter((x) => !x.isDelivered);
 
-    return filtered.length;
+    return filtered?.length;
   };
 
   return (
@@ -141,7 +161,7 @@ function Customer() {
             <LeftToolbarTemplate
               onCreate={openAddNewCustomer}
               onDelete={() => {}}
-              disabled={true}
+              disabled={!selectedCustomers || !setSelectedCustomers.length}
             />
           }
           // right={rightToolbarTemplate}
@@ -167,6 +187,11 @@ function Customer() {
           }
           responsiveLayout='scroll'
         >
+          {/* <Column
+            selectionMode='multiple'
+            headerStyle={{ width: '3rem' }}
+            exportable={false}
+          ></Column> */}
           <Column field='name' header='Name' sortable />
           <Column
             field='planes'
@@ -196,7 +221,7 @@ function Customer() {
       </div>
       <CustomerDialog
         visible={addNewCustomerDialog}
-        submitted={true}
+        submitted={false}
         onClose={closeAddNewCustomer}
         onConfirm={onAddNewCustomer}
         onInputChange={onInputChange}
@@ -208,6 +233,12 @@ function Customer() {
         onClose={closeUpdateCustomer}
         onConfirm={onUpdateCustomer}
         onInputChange={onInputChange}
+      />
+      <DeleteDialog
+        visible={deleteCustomerDialog}
+        item={newCustomer}
+        onClose={closeDeleteCustomer}
+        onConfirm={onDeleteCustomer}
       />
     </div>
   );

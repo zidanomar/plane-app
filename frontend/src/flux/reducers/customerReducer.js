@@ -1,6 +1,9 @@
 import {
+  ADD_CUSTOMER,
+  DELETE_CUSTOMER,
   FETCHED_CUSTOMERS,
   FETCHING_CUSTOMERS,
+  UPDATE_CUSTOMER,
 } from '../../constant/actionType';
 
 const initialState = {
@@ -20,6 +23,34 @@ const customerReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         customers: action.payload,
+      };
+    case ADD_CUSTOMER:
+      // const newUser = { ...action.payload, planes: [] };
+      return {
+        ...state,
+        isLoading: false,
+        customers: [...state.customers, action.paylaod],
+      };
+    case UPDATE_CUSTOMER:
+      const index = state.customers.findIndex(
+        (x) => x.uuid === action.payload.uuid
+      );
+      state.customers[index] = action.payload;
+
+      return {
+        ...state,
+        isLoading: false,
+        customers: [...state.customers],
+      };
+    case DELETE_CUSTOMER:
+      const currentCustomer = state.customers.filter(
+        (x) => x.uuid !== action.payload
+      );
+      console.log(currentCustomer);
+      return {
+        ...state,
+        isLoading: false,
+        customers: currentCustomer,
       };
     default:
       return state;

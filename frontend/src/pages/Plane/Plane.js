@@ -100,7 +100,6 @@ function Plane() {
   };
 
   const editPlane = (rowData) => {
-    console.log(rowData);
     setNewPlane(rowData);
     setSelectedOwner(rowData.owner);
     setEditPlaneDialog(true);

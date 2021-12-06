@@ -9,7 +9,7 @@ import { classNames } from 'primereact/utils';
 
 import { DialogFooter } from '../../components/DataTableTemplate';
 
-import { getAllCustomers } from '../../flux/actions/userAction';
+import { getAllCustomers } from '../../flux/actions/customerAction';
 
 function PlaneDialog({
   visible,

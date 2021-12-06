@@ -3,7 +3,6 @@ import React from 'react';
 import DialogFooter from './DialogFooter';
 
 function DeleteDialog({ visible, onClose, onConfirm, item }) {
-  console.log(item);
   return (
     <Dialog
       visible={visible}

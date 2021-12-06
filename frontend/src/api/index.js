@@ -21,6 +21,17 @@ export const deletePlane = (planeId) => API.delete(`/plane/${planeId}`);
 
 // CUSTOMER ROUTES
 export const getAllCustomers = () => API.get('/customer');
+export const addNewCustomer = (newCustomerData) =>
+  API.post('/customer', newCustomerData);
+export const updateCustomer = (customerId, newCustomer) =>
+  API.patch(`/customer/${customerId}`, newCustomer);
+export const deleteCustomer = (customerId) =>
+  API.delete(`/customer/${customerId}`);
 
 // FLIGHT ROUTES
 export const getAllFlights = () => API.get('/flight');
+export const addNewFlight = (newFlightData) =>
+  API.post('/flight', newFlightData);
+export const updateFlight = (flightId, flightData) =>
+  API.patch(`/flight/${flightId}`, flightData);
+export const deleteFlight = (flightId) => API.delete(`/flight/${flightId}`);

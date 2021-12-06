@@ -5,6 +5,7 @@ import Header from './components/Header';
 import { Plane } from './pages/Plane';
 import { Customer } from './pages/Customer';
 import { Flight } from './pages/Flight';
+import Playground from './pages/Customer/Playground/Playground';
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
           <Route exact path='/' element={<Plane />} />
           <Route exact path='/customer' element={<Customer />} />
           <Route exact path='/flight' element={<Flight />} />
+          <Route exact path='/playground' element={<Playground />} />
         </Routes>
       </div>
     </BrowserRouter>
