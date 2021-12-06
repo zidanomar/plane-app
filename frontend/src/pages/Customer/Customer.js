@@ -136,19 +136,20 @@ function Customer() {
   };
 
   const totalPlaneTemplate = (rowData) => {
-    return rowData.planes?.length;
+    const length = rowData.planes.length;
+    return length;
   };
 
   const deliveredPlaneTemplate = (rowData) => {
-    const filtered = rowData.planes?.filter((x) => x.isDelivered);
+    const length = rowData.planes.filter((x) => x.isDelivered).length;
 
-    return filtered?.length;
+    return length;
   };
 
   const onProgressPlaneTemplate = (rowData) => {
-    const filtered = rowData.planes?.filter((x) => !x.isDelivered);
+    const length = rowData.planes.filter((x) => !x.isDelivered).length;
 
-    return filtered?.length;
+    return length;
   };
 
   return (

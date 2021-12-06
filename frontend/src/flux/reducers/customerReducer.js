@@ -25,28 +25,28 @@ const customerReducer = (state = initialState, action) => {
         customers: action.payload,
       };
     case ADD_CUSTOMER:
-      // const newUser = { ...action.payload, planes: [] };
+      console.log(action.payload);
       return {
         ...state,
         isLoading: false,
-        customers: [...state.customers, action.paylaod],
+        customers: [...state.customers, action.payload],
       };
     case UPDATE_CUSTOMER:
       const index = state.customers.findIndex(
         (x) => x.uuid === action.payload.uuid
       );
-      state.customers[index] = action.payload;
-
+      let updatedItems = [...state.customers];
+      updatedItems[index] = action.payload;
       return {
         ...state,
         isLoading: false,
-        customers: [...state.customers],
+        customers: updatedItems,
       };
     case DELETE_CUSTOMER:
       const currentCustomer = state.customers.filter(
         (x) => x.uuid !== action.payload
       );
-      console.log(currentCustomer);
+
       return {
         ...state,
         isLoading: false,
