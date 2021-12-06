@@ -26,9 +26,12 @@ export const addNewCustomer = (newCustomerData) => async (dispatch) => {
 
     const newCustomer = await api.addNewCustomer(newCustomerData);
 
-    return dispatch({ type: ADD_CUSTOMER, payload: newCustomer.data });
+    return dispatch({
+      type: ADD_CUSTOMER,
+      payload: newCustomer.data,
+    });
   } catch (error) {
-    dispatch(returnErrors(error.response.data.message, error.response.status));
+    dispatch(returnErrors('error', 500));
     dispatch({ type: ADD_CUSTOMER, payload: {} });
   }
 };

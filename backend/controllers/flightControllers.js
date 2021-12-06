@@ -5,39 +5,44 @@ const { Flight, Plane } = require('../database/models');
 // PATH: /flight
 // DESCRIPTION: create new flight
 exports.addFlight = async (req, res) => {
-  const { planeId, depatureDate, arrivalDate } = req.body;
+  const { planeId, depature_date, arrival_date } = req.body;
 
   const second = 1000;
   const minute = 60;
   const hour = 60;
 
   // get flight duration in hour
-  const depature = new Date(depatureDate);
-  const arrival = new Date(arrivalDate);
+  const depature = new Date(depature_date);
+  const arrival = new Date(arrival_date);
   const getHour =
     (arrival.getTime() - depature.getTime()) / second / minute / hour;
   const duration = Math.round(getHour);
 
   try {
     const plane = await Plane.findOne({ where: { uuid: planeId } });
-    // set that only delivered plan could flight
-    if (!plane.isDelivered)
-      throw { status: 404, message: 'plane is not ready!' };
+    // // set that only delivered plan could flight
+    // if (!plane.isDelivered)
+    //   throw { status: 404, message: 'plane is not ready!' };
 
-    const flight = await Flight.findOne({
-      where: { plane_id: plane.id },
-    });
-    // set if plane is already in a flight
-    if (flight) throw { status: 404, message: 'plane are busy!' };
+    // const flight = await Flight.findOne({
+    //   where: { plane_id: plane.id },
+    // });
+    // // set if plane is already in a flight
+    // if (flight) throw { status: 404, message: 'plane are busy!' };
 
     const newFlight = await Flight.create({
       plane_id: plane.id,
-      depature_date: depatureDate,
-      arrival_date: depatureDate,
+      depature_date: depature.toISOString(),
+      arrival_date: arrival.toISOString(),
       duration,
     });
 
-    res.status(200).json(newFlight);
+    const flightResponse = await Flight.findOne({
+      where: { uuid: newFlight.uuid },
+      include: 'planeDetail',
+    });
+
+    res.status(200).json(flightResponse);
   } catch (error) {
     console.log(error);
     res.status(500).send({ error });
@@ -96,23 +101,20 @@ exports.updateFlight = async (req, res) => {
   const hour = 60;
 
   // set flight time in hour
-  const setDepatureDate = new Date(depature_date);
-  const setArrivalDate = new Date(arrival_date);
+  const depature = new Date(depature_date);
+  const arrival = new Date(arrival_date);
   const setHour =
-    (setArrivalDate.getTime() - setDepatureDate.getTime()) /
-    second /
-    minute /
-    hour;
+    (arrival.getTime() - depature.getTime()) / second / minute / hour;
   const duration = Math.round(setHour);
 
   try {
     const plane = await Plane.findOne({ where: { uuid: planeId } });
-    console.log(plane.id);
+
     const updateFlight = await Flight.update(
       {
         plane_id: plane.id,
-        arrival_date: setArrivalDate,
-        depature_date: setDepatureDate,
+        arrival_date: arrival.toISOString(),
+        depature_date: depature.toISOString(),
         duration,
       },
       {
@@ -122,7 +124,13 @@ exports.updateFlight = async (req, res) => {
       }
     );
 
-    res.status(200).json(updateFlight[1]);
+    const flightResponse = await Flight.findOne({
+      where: { uuid: updateFlight[1].uuid },
+      include: 'planeDetail',
+    });
+    console.log(flightResponse);
+
+    res.status(200).json(flightResponse);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
@@ -138,7 +146,7 @@ exports.deleteFlight = async (req, res) => {
   try {
     await Flight.destroy({ where: { uuid: flightId } });
 
-    res.status(200).json(`flight with uuid ${flightId} has beed deleted!`);
+    res.status(200).json(flightId);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });

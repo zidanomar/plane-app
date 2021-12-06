@@ -5,7 +5,12 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 
-import { getAllPlane } from '../../flux/actions/planeAction';
+import {
+  addNewPlane,
+  getAllPlane,
+  deletePlaneAction,
+  updatePlane,
+} from '../../flux/actions/planeAction';
 import {
   ActionBodyTemplate,
   DataTableHeader,
@@ -18,10 +23,10 @@ function Plane() {
   let emptyPlane = {
     uuid: null,
     name: '',
-    aircraft_number: 0,
-    tail_number: 0,
+    aircraftNumber: 0,
+    tailNumber: 0,
     isDelivered: false,
-    owner: '',
+    customerId: '',
   };
 
   const dt = useRef(null);
@@ -71,7 +76,7 @@ function Plane() {
     const { value } = e;
 
     let _plane = { ...newPlane };
-    _plane['owner'] = value.uuid;
+    _plane['customerId'] = value.uuid;
     setNewPlane(_plane);
     setSelectedOwner(value);
   };
@@ -85,18 +90,22 @@ function Plane() {
   const closeAddPlaneDialog = () => {
     setNewPlane(emptyPlane);
     setSubmitted(false);
+    setSelectedOwner(null);
     setAddPlaneDialog(false);
   };
 
   const onAddNewPlane = () => {
+    dispatch(addNewPlane(newPlane));
     toast.current.show({
       severity: 'success',
       summary: 'Successful',
       detail: `${newPlane.name} has been added!`,
       life: 3000,
     });
-    setAddPlaneDialog(false);
     setNewPlane(emptyPlane);
+    setSubmitted(false);
+    setSelectedOwner(null);
+    setAddPlaneDialog(false);
   };
 
   const editPlane = (rowData) => {
@@ -106,13 +115,15 @@ function Plane() {
   };
 
   const closeEditPlaneDialog = () => {
-    setEditPlaneDialog(false);
+    setNewPlane(emptyPlane);
     setSubmitted(false);
     setSelectedPlanes(null);
     setSelectedOwner(null);
+    setEditPlaneDialog(false);
   };
 
   const onEditPlane = () => {
+    dispatch(updatePlane(newPlane.uuid, newPlane));
     toast.current.show({
       severity: 'success',
       summary: 'Successful',
@@ -134,6 +145,7 @@ function Plane() {
   };
 
   const onDeletePlane = () => {
+    dispatch(deletePlaneAction(newPlane.uuid));
     toast.current.show({
       severity: 'warn',
       summary: 'Warn Message',
@@ -144,7 +156,8 @@ function Plane() {
   };
 
   const ownerTemplate = (rowData) => {
-    return rowData.owner.name;
+    if (rowData.owner) return rowData.owner.name;
+    return 'Prepare for launching';
   };
 
   const deliverStatusTemplate = (rowData) => {

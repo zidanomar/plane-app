@@ -11,23 +11,29 @@ import {
   LeftToolbarTemplate,
 } from '../../components/DataTableTemplate';
 import DeleteDialog from '../../components/Dialog/DeleteDialog';
-import { getAllFlight } from '../../flux/actions/flightAction';
+import {
+  addNewFlight,
+  deleteFlight,
+  getAllFlight,
+  updateFlight,
+} from '../../flux/actions/flightAction';
 import FlightDialog from './FlightDialog';
 
 function Flight() {
-  // let emptyFlight = {
-  //   depatureDate: null,
-  //   arrivaldate: null,
-  //   planeId: null,
-  // };
+  let emptyFlight = {
+    uuid: null,
+    depature_date: null,
+    arrival_date: null,
+    planeDetail: null,
+  };
 
   const dt = useRef(null);
   const toast = useRef(null);
 
-  const disapatch = useDispatch();
+  const dispatch = useDispatch();
   const flight = useSelector((state) => state.flight);
 
-  const [newFlight, setNewFlight] = useState(null);
+  const [newFlight, setNewFlight] = useState(emptyFlight);
   const [selectedPlane, setSelectedPlane] = useState(null);
   const [selectedFlights, setSelectedFlights] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
@@ -38,7 +44,7 @@ function Flight() {
   const [deleteFlightDialog, setDeleteFlightDialog] = useState(false);
 
   useEffect(() => {
-    disapatch(getAllFlight());
+    dispatch(getAllFlight());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,17 +63,19 @@ function Flight() {
     let _flight = { ...newFlight };
     _flight[`${name}`] = val.toISOString();
 
-    name === 'arrivaldate'
+    name === 'arrival_date'
       ? setSelectedArrivalDate(val)
       : setSelectedDepatureDate(val);
+
+    setNewFlight(_flight);
   };
 
-  const onSelectedFlightChange = (e, name) => {
+  const onSelectedPlaneChange = (e, name) => {
     const val = (e.target && e.target.value) || '';
     let _flight = { ...newFlight };
-    _flight[`${name}`] = val.uuid;
-
+    _flight[`${name}`] = val;
     setSelectedPlane(val);
+    setNewFlight(_flight);
   };
 
   // CREATE FUNCTIONS
@@ -78,9 +86,14 @@ function Flight() {
 
   const closeAddFlightDialog = () => {
     setAddFlightDialog(false);
+    setNewFlight(emptyFlight);
+    setSelectedArrivalDate(null);
+    setSelectedDepatureDate(null);
+    setSelectedPlane(null);
   };
 
   const onAddNewFlight = () => {
+    dispatch(addNewFlight(newFlight));
     toast.current.show({
       severity: 'success',
       summary: 'Successful',
@@ -88,51 +101,80 @@ function Flight() {
       life: 3000,
     });
     setAddFlightDialog(false);
+    setNewFlight(emptyFlight);
+    setSelectedArrivalDate(null);
+    setSelectedDepatureDate(null);
+    setSelectedPlane(null);
   };
 
   // END CREATE FUNCTIONS
 
   // UPDATE FUNCTIONS
   const openUpdateFlightDialog = (rowData) => {
-    setNewFlight(rowData);
+    console.log(rowData);
+    const arrival = new Date(rowData.arrival_date);
+    const depature = new Date(rowData.depature_date);
     setUpdateFlightDialog(true);
+    setNewFlight(rowData);
+    setSelectedArrivalDate(arrival);
+    setSelectedDepatureDate(depature);
+    setSelectedPlane(rowData.planeDetail);
   };
 
   const closeUpdateFlightDialog = () => {
     setUpdateFlightDialog(false);
+    setNewFlight(emptyFlight);
+    setSelectedArrivalDate(null);
+    setSelectedDepatureDate(null);
+    setSelectedPlane(null);
   };
 
   const onUpdateFlight = () => {
+    console.log(newFlight);
+    // dispatch(updateFlight(newFlight.uuid, newFlight));
     toast.current.show({
       severity: 'success',
       summary: 'Successful',
       detail: `Flight x has been updated`,
       life: 3000,
     });
-    setAddFlightDialog(false);
     setUpdateFlightDialog(false);
+    setNewFlight(emptyFlight);
+    setSelectedArrivalDate(null);
+    setSelectedDepatureDate(null);
+    setSelectedPlane(null);
   };
 
   // END UPDATE FUNCTIONS
 
   // DELETE FUNCTIONS
   const openDeleteFlightDialog = (rowData) => {
+    console.log(rowData);
     setNewFlight(rowData);
     setDeleteFlightDialog(true);
   };
 
   const closeDeleteFlightDialog = () => {
     setDeleteFlightDialog(false);
+    setNewFlight(emptyFlight);
+    setSelectedArrivalDate(null);
+    setSelectedDepatureDate(null);
+    setSelectedPlane(null);
   };
 
   const onDeleteFlight = () => {
+    dispatch(deleteFlight(newFlight.uuid));
     toast.current.show({
       severity: 'warn',
       summary: 'Warn Message',
       detail: `Flight x has been deleted`,
       life: 3000,
     });
-    setAddFlightDialog(false);
+    setDeleteFlightDialog(false);
+    setNewFlight(emptyFlight);
+    setSelectedArrivalDate(null);
+    setSelectedDepatureDate(null);
+    setSelectedPlane(null);
   };
 
   // END DELETE FUNCTIONS
@@ -215,7 +257,7 @@ function Flight() {
         selectedArrivalDate={selectedArrivalDate}
         onClose={closeAddFlightDialog}
         onConfirm={onAddNewFlight}
-        onSelectedFlightChange={onSelectedFlightChange}
+        onSelectedPlaneChange={onSelectedPlaneChange}
         onSelectedArrivalDate={onSelectDate}
         onSelectedDepatureDate={onSelectDate}
         submitted={false}
@@ -227,7 +269,7 @@ function Flight() {
         selectedArrivalDate={selectedArrivalDate}
         onClose={closeUpdateFlightDialog}
         onConfirm={onUpdateFlight}
-        onSelectedFlightChange={onSelectedFlightChange}
+        onSelectedPlaneChange={onSelectedPlaneChange}
         onSelectedArrivalDate={onSelectDate}
         onSelectedDepatureDate={onSelectDate}
         //onInputChange={onInputChange}

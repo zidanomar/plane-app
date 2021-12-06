@@ -12,7 +12,7 @@ import { getAllPlane } from '../../flux/actions/planeAction';
 
 function FlightDialog({
   visible,
-  flight,
+  item,
   selectedPlane,
   selectedArrivalDate,
   selectedDepatureDate,
@@ -20,7 +20,7 @@ function FlightDialog({
   onConfirm,
   onSelectedArrivalDate,
   onSelectedDepatureDate,
-  onSelectedFlightChange,
+  onSelectedPlaneChange,
 }) {
   const dispatch = useDispatch();
   const planes = useSelector((state) => state.plane.planes);
@@ -46,7 +46,7 @@ function FlightDialog({
           id='planes'
           value={selectedPlane}
           options={planes}
-          onChange={(e) => onSelectedFlightChange(e, 'planeId')}
+          onChange={(e) => onSelectedPlaneChange(e, 'planeDetail')}
           optionLabel='name'
           placeholder='Select Plane'
         />
@@ -57,7 +57,7 @@ function FlightDialog({
         <Calendar
           id='depatureDate'
           value={selectedDepatureDate}
-          onChange={(e) => onSelectedDepatureDate(e, 'arrivalDate')}
+          onChange={(e) => onSelectedDepatureDate(e, 'depature_date')}
           showTime
           showSeconds
         />
@@ -68,7 +68,7 @@ function FlightDialog({
         <Calendar
           id='arrivalDate'
           value={selectedArrivalDate}
-          onChange={(e) => onSelectedArrivalDate(e, 'depatureDate')}
+          onChange={(e) => onSelectedArrivalDate(e, 'arrival_date')}
           showTime
           showSeconds
         />

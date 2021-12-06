@@ -1,5 +1,3 @@
-const { Op } = require('sequelize');
-
 const { Customer } = require('../database/models');
 
 // METHOD: POST
@@ -20,9 +18,13 @@ exports.addNewCustomer = async (req, res) => {
 
     // if (existingCustomer.length > 0) throw 'The customer already registered';
 
-    const newCustomer = await Customer.create({ name });
+    const newCustomer = await Customer.create({ name }, { include: 'planes' });
+    const customer = await Customer.findOne({
+      where: { uuid: newCustomer.uuid },
+      include: 'planes',
+    });
 
-    res.status(200).json(newCustomer);
+    res.status(200).json(customer);
   } catch (error) {
     console.log(error);
     res.status(500).send({ error });
@@ -75,12 +77,17 @@ exports.updateCustomer = async (req, res) => {
       { name },
       {
         where: { uuid: customerId },
+        include: 'planes',
         returning: true,
         plain: true,
       }
     );
+    const customer = await Customer.findOne({
+      where: { uuid: updatedCustomer[1].uuid },
+      include: 'planes',
+    });
 
-    res.status(200).json(updatedCustomer[1]);
+    res.status(200).json(customer);
   } catch (error) {
     res.status(500).send({ error });
   }

@@ -50,13 +50,18 @@ exports.addPlane = async (req, res) => {
 
     const newPlane = await Plane.create({
       name,
-      aircraft_number,
-      tail_number,
+      aircraft_number: +aircraft_number,
+      tail_number: +tail_number,
       customer_id: customer.id,
       isDelivered,
     });
 
-    res.status(200).send(newPlane);
+    const planeResponse = await Plane.findOne({
+      where: { uuid: newPlane.uuid },
+      include: 'owner',
+    });
+
+    res.status(200).send(planeResponse);
   } catch (error) {
     console.log(error);
     res.status(500).send({ error });
@@ -68,27 +73,26 @@ exports.addPlane = async (req, res) => {
 // DETAILS: update specific plane details
 exports.updatePlane = async (req, res) => {
   const { planeId } = req.params;
-  const { name, aircraft_number, tail_number, customer_id, isDelivered } =
-    req.body;
+  const { name, aircraft_number, tail_number, owner, isDelivered } = req.body;
   let items;
   try {
-    if (customer_id) {
-      const customer = await Customer.findOne({ where: { uuid: customer_id } });
+    if (owner) {
+      const customer = await Customer.findOne({ where: { uuid: owner.uuid } });
 
       if (!customer) throw { status: 404, message: 'User Not Found' };
 
       items = {
         name,
-        aircraft_number,
-        tail_number,
+        aircraft_number: +aircraft_number,
+        tail_number: +tail_number,
         customer_id: customer.id,
         isDelivered,
       };
     } else {
       items = {
         name,
-        aircraft_number,
-        tail_number,
+        aircraft_number: +aircraft_number,
+        tail_number: +tail_number,
         isDelivered,
       };
     }
@@ -103,7 +107,12 @@ exports.updatePlane = async (req, res) => {
       }
     );
 
-    res.status(200).send(updatedPlane[1]);
+    const planeResponse = await Plane.findOne({
+      where: { uuid: updatedPlane[1].uuid },
+      include: 'owner',
+    });
+
+    res.status(200).send(planeResponse);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
@@ -117,14 +126,9 @@ exports.deletePlaneById = async (req, res) => {
   const { planeId } = req.params;
 
   try {
-    const plane = await Plane.findAll({ where: { id: planeId } });
+    await Plane.destroy({ where: { uuid: planeId } });
 
-    if (plane.length < 1) throw 'No plane found with that specified id';
-
-    await Plane.destroy({ where: { id: planeId } });
-
-    console.log(plane.length);
-    res.status(200).json(plane);
+    res.status(200).json(planeId);
   } catch (error) {
     res.status(500).send({ error });
   }
