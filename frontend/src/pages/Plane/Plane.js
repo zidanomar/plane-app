@@ -100,7 +100,6 @@ function Plane() {
   };
 
   const editPlane = (rowData) => {
-    console.log(rowData);
     setNewPlane(rowData);
     setSelectedOwner(rowData.owner);
     setEditPlaneDialog(true);
@@ -184,6 +183,7 @@ function Plane() {
           onSelectionChange={(e) => setSelectedPlanes(e.value)}
           dataKey='id'
           paginator
+          loading={plane.isLoading}
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
           paginatorTemplate='FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown'
@@ -215,14 +215,15 @@ function Plane() {
       </div>
       <PlaneDialog
         visible={addPlaneDialog}
+        plane={newPlane}
+        submitted={false}
+        selectedOwner={selectedOwner}
         onClose={closeAddPlaneDialog}
         onConfirm={onAddNewPlane}
         onInputChange={onInputChange}
         onInputNumberChange={onInputNumberChange}
         onCategoryChange={onCategoryChange}
         onOwnerChange={onOwnerChange}
-        plane={newPlane}
-        submitted={false}
       />
       <PlaneDialog
         visible={editPlaneDialog}
@@ -238,7 +239,7 @@ function Plane() {
       />
       <DeleteDialog
         visible={deletePlaneDialog}
-        plane={newPlane}
+        item={newPlane}
         onClose={closeDeletePlane}
         onConfirm={onDeletePlane}
       />

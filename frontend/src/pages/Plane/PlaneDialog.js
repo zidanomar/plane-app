@@ -9,7 +9,7 @@ import { classNames } from 'primereact/utils';
 
 import { DialogFooter } from '../../components/DataTableTemplate';
 
-import { getAllCustomers } from '../../flux/actions/userAction';
+import { getAllCustomers } from '../../flux/actions/customerAction';
 
 function PlaneDialog({
   visible,
@@ -41,7 +41,7 @@ function PlaneDialog({
     <Dialog
       visible={visible}
       style={{ width: '450px' }}
-      header='Product Details'
+      header='Plane Details'
       modal
       className='p-fluid'
       footer={<DialogFooter onClose={onClose} onConfirm={onConfirm} />}
