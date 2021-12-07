@@ -111,7 +111,6 @@ function Flight() {
 
   // UPDATE FUNCTIONS
   const openUpdateFlightDialog = (rowData) => {
-    console.log(rowData);
     const arrival = new Date(rowData.arrival_date);
     const depature = new Date(rowData.depature_date);
     setUpdateFlightDialog(true);
@@ -130,8 +129,7 @@ function Flight() {
   };
 
   const onUpdateFlight = () => {
-    console.log(newFlight);
-    // dispatch(updateFlight(newFlight.uuid, newFlight));
+    dispatch(updateFlight(newFlight.uuid, newFlight));
     toast.current.show({
       severity: 'success',
       summary: 'Successful',
@@ -149,7 +147,6 @@ function Flight() {
 
   // DELETE FUNCTIONS
   const openDeleteFlightDialog = (rowData) => {
-    console.log(rowData);
     setNewFlight(rowData);
     setDeleteFlightDialog(true);
   };
@@ -193,6 +190,10 @@ function Flight() {
     );
   };
 
+  const planeDetailTemplate = (rowData) => {
+    return rowData.planeDetail.name;
+  };
+
   return (
     <div>
       <Toast ref={toast} />
@@ -231,7 +232,11 @@ function Flight() {
         >
           <Column field='uuid' header='Flight Id' />
           <Column field='duration' header='Flight Duration' />
-          <Column field='planeDetail.name' header='Plane' />
+          <Column
+            field='planeDetail'
+            header='Plane'
+            body={planeDetailTemplate}
+          />
           <Column
             field='depature_date'
             header='Depature'

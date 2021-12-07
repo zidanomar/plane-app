@@ -25,6 +25,12 @@ function FlightDialog({
   const dispatch = useDispatch();
   const planes = useSelector((state) => state.plane.planes);
 
+  const planeList = planes.map((x) =>
+    Object.entries(x)
+      .filter(([key, value]) => key !== 'owner')
+      .reduce((x, [key, value]) => ({ ...x, [key]: value }), {})
+  );
+
   useEffect(() => {
     dispatch(getAllPlane());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,7 +51,7 @@ function FlightDialog({
         <Dropdown
           id='planes'
           value={selectedPlane}
-          options={planes}
+          options={planeList}
           onChange={(e) => onSelectedPlaneChange(e, 'planeDetail')}
           optionLabel='name'
           placeholder='Select Plane'
