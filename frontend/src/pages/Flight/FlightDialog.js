@@ -9,10 +9,12 @@ import { Calendar } from 'primereact/calendar';
 import { DialogFooter } from '../../components/DataTableTemplate';
 
 import { getAllPlane } from '../../flux/actions/planeAction';
+import { classNames } from 'primereact/utils';
 
 function FlightDialog({
   visible,
   item,
+  submitted,
   selectedPlane,
   selectedArrivalDate,
   selectedDepatureDate,
@@ -52,10 +54,14 @@ function FlightDialog({
           id='planes'
           value={selectedPlane}
           options={planeList}
+          className={classNames({ 'p-invalid': submitted && !selectedPlane })}
           onChange={(e) => onSelectedPlaneChange(e, 'planeId')}
           optionLabel='name'
           placeholder='Select Plane'
         />
+        {submitted && !selectedPlane && (
+          <small className='p-error'>This Field can't be empty</small>
+        )}
       </div>
 
       <div className='p-field'>
@@ -63,10 +69,16 @@ function FlightDialog({
         <Calendar
           id='depatureDate'
           value={selectedDepatureDate}
+          className={classNames({
+            'p-invalid': submitted && !selectedDepatureDate,
+          })}
           onChange={(e) => onSelectedDepatureDate(e, 'depature_date')}
           showTime
           showSeconds
         />
+        {submitted && !selectedDepatureDate && (
+          <small className='p-error'>This Field can't be empty</small>
+        )}
       </div>
 
       <div className='p-field'>
@@ -74,10 +86,16 @@ function FlightDialog({
         <Calendar
           id='arrivalDate'
           value={selectedArrivalDate}
+          className={classNames({
+            'p-invalid': submitted && !selectedArrivalDate,
+          })}
           onChange={(e) => onSelectedArrivalDate(e, 'arrival_date')}
           showTime
           showSeconds
         />
+        {submitted && !selectedArrivalDate && (
+          <small className='p-error'>This Field can't be empty</small>
+        )}
       </div>
     </Dialog>
   );

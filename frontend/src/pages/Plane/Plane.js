@@ -22,11 +22,11 @@ import DeleteDialog from '../../components/Dialog/DeleteDialog';
 function Plane() {
   let emptyPlane = {
     uuid: null,
-    name: '',
-    aircraft_number: 0,
-    tail_number: 0,
+    name: null,
+    aircraft_number: null,
+    tail_number: null,
     isDelivered: false,
-    customerId: '',
+    customerId: null,
   };
 
   const dt = useRef(null);
@@ -95,17 +95,26 @@ function Plane() {
   };
 
   const onAddNewPlane = () => {
-    dispatch(addNewPlane(newPlane));
-    toast.current.show({
-      severity: 'success',
-      summary: 'Successful',
-      detail: `${newPlane.name} has been added!`,
-      life: 3000,
-    });
-    setNewPlane(emptyPlane);
-    setSubmitted(false);
-    setSelectedOwner(null);
-    setAddPlaneDialog(false);
+    setSubmitted(true);
+
+    if (
+      newPlane.name &&
+      newPlane.aircraft_number > 9999 &&
+      newPlane.tail_number > 9999 &&
+      newPlane.customerId
+    ) {
+      dispatch(addNewPlane(newPlane));
+      toast.current.show({
+        severity: 'success',
+        summary: 'Successful',
+        detail: `${newPlane.name} has been added!`,
+        life: 3000,
+      });
+      setNewPlane(emptyPlane);
+      setSubmitted(false);
+      setSelectedOwner(null);
+      setAddPlaneDialog(false);
+    }
   };
 
   const editPlane = (rowData) => {
@@ -124,16 +133,24 @@ function Plane() {
   };
 
   const onEditPlane = () => {
-    dispatch(updatePlane(newPlane.uuid, newPlane));
-    console.log(newPlane);
-    toast.current.show({
-      severity: 'success',
-      summary: 'Successful',
-      detail: `${newPlane.name} has been updated!`,
-      life: 3000,
-    });
-    setEditPlaneDialog(false);
-    setSubmitted(false);
+    setSubmitted(true);
+    if (
+      newPlane.name &&
+      newPlane.aircraft_number > 9999 &&
+      newPlane.tail_number > 9999 &&
+      newPlane.customerId
+    ) {
+      dispatch(updatePlane(newPlane.uuid, newPlane));
+      console.log(newPlane);
+      toast.current.show({
+        severity: 'success',
+        summary: 'Successful',
+        detail: `${newPlane.name} has been updated!`,
+        life: 3000,
+      });
+      setEditPlaneDialog(false);
+      setSubmitted(false);
+    }
   };
 
   const deletePlane = (rowData) => {
@@ -231,7 +248,7 @@ function Plane() {
       <PlaneDialog
         visible={addPlaneDialog}
         plane={newPlane}
-        submitted={false}
+        submitted={submitted}
         selectedOwner={selectedOwner}
         onClose={closeAddPlaneDialog}
         onConfirm={onAddNewPlane}
@@ -243,7 +260,7 @@ function Plane() {
       <PlaneDialog
         visible={editPlaneDialog}
         plane={newPlane}
-        submitted={false}
+        submitted={submitted}
         selectedOwner={selectedOwner}
         onClose={closeEditPlaneDialog}
         onConfirm={onEditPlane}

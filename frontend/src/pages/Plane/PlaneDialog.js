@@ -36,7 +36,6 @@ function PlaneDialog({
     dispatch(getAllCustomers());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <Dialog
       visible={visible}
@@ -134,10 +133,14 @@ function PlaneDialog({
           id='owner'
           value={selectedOwner}
           options={owners}
+          className={classNames({ 'p-invalid': submitted && !selectedOwner })}
           onChange={(e) => onOwnerChange(e)}
           optionLabel='name'
           placeholder='Select Owner'
         />
+        {submitted && !selectedOwner && (
+          <small className='p-error'>This field is required</small>
+        )}
       </div>
     </Dialog>
   );

@@ -42,6 +42,7 @@ function Flight() {
   const [addFlightDialog, setAddFlightDialog] = useState(false);
   const [updateFlightDialog, setUpdateFlightDialog] = useState(false);
   const [deleteFlightDialog, setDeleteFlightDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     dispatch(getAllFlight());
@@ -71,10 +72,12 @@ function Flight() {
   // CREATE FUNCTIONS
 
   const openAddFlightDialog = () => {
+    setSubmitted(false);
     setAddFlightDialog(true);
   };
 
   const closeAddFlightDialog = () => {
+    setSubmitted(false);
     setAddFlightDialog(false);
     setNewFlight(emptyFlight);
     setSelectedArrivalDate(null);
@@ -83,24 +86,32 @@ function Flight() {
   };
 
   const onAddNewFlight = () => {
-    dispatch(addNewFlight(newFlight));
-    toast.current.show({
-      severity: 'success',
-      summary: 'Successful',
-      detail: `Flight from x to y hasbeen added`,
-      life: 3000,
-    });
-    setAddFlightDialog(false);
-    setNewFlight(emptyFlight);
-    setSelectedArrivalDate(null);
-    setSelectedDepatureDate(null);
-    setSelectedPlane(null);
+    setSubmitted(true);
+    if (
+      newFlight.depature_date &&
+      newFlight.arrival_date &&
+      newFlight.depature_date
+    ) {
+      dispatch(addNewFlight(newFlight));
+      toast.current.show({
+        severity: 'success',
+        summary: 'Successful',
+        detail: `Flight from x to y hasbeen added`,
+        life: 3000,
+      });
+      setAddFlightDialog(false);
+      setNewFlight(emptyFlight);
+      setSelectedArrivalDate(null);
+      setSelectedDepatureDate(null);
+      setSelectedPlane(null);
+    }
   };
 
   // END CREATE FUNCTIONS
 
   // UPDATE FUNCTIONS
   const openUpdateFlightDialog = (rowData) => {
+    setSubmitted(false);
     const arrival = new Date(rowData.arrival_date);
     const depature = new Date(rowData.depature_date);
     setUpdateFlightDialog(true);
@@ -111,6 +122,7 @@ function Flight() {
   };
 
   const closeUpdateFlightDialog = () => {
+    setSubmitted(false);
     setUpdateFlightDialog(false);
     setNewFlight(emptyFlight);
     setSelectedArrivalDate(null);
@@ -119,18 +131,25 @@ function Flight() {
   };
 
   const onUpdateFlight = () => {
-    dispatch(updateFlight(newFlight.uuid, newFlight));
-    toast.current.show({
-      severity: 'success',
-      summary: 'Successful',
-      detail: `Flight x has been updated`,
-      life: 3000,
-    });
-    setUpdateFlightDialog(false);
-    setNewFlight(emptyFlight);
-    setSelectedArrivalDate(null);
-    setSelectedDepatureDate(null);
-    setSelectedPlane(null);
+    setSubmitted(true);
+    if (
+      newFlight.depature_date &&
+      newFlight.arrival_date &&
+      newFlight.planeId
+    ) {
+      dispatch(updateFlight(newFlight.uuid, newFlight));
+      toast.current.show({
+        severity: 'success',
+        summary: 'Successful',
+        detail: `Flight x has been updated`,
+        life: 3000,
+      });
+      setUpdateFlightDialog(false);
+      setNewFlight(emptyFlight);
+      setSelectedArrivalDate(null);
+      setSelectedDepatureDate(null);
+      setSelectedPlane(null);
+    }
   };
 
   // END UPDATE FUNCTIONS
@@ -265,29 +284,24 @@ function Flight() {
         selectedPlane={selectedPlane}
         selectedDepatureDate={selectedDepatureDate}
         selectedArrivalDate={selectedArrivalDate}
+        submitted={submitted}
         onClose={closeAddFlightDialog}
         onConfirm={onAddNewFlight}
         onSelectedPlaneChange={onSelectedPlaneChange}
         onSelectedArrivalDate={onSelectDate}
         onSelectedDepatureDate={onSelectDate}
-        submitted={false}
       />
       <FlightDialog
         visible={updateFlightDialog}
         selectedPlane={selectedPlane}
         selectedDepatureDate={selectedDepatureDate}
         selectedArrivalDate={selectedArrivalDate}
+        submitted={submitted}
         onClose={closeUpdateFlightDialog}
         onConfirm={onUpdateFlight}
         onSelectedPlaneChange={onSelectedPlaneChange}
         onSelectedArrivalDate={onSelectDate}
         onSelectedDepatureDate={onSelectDate}
-        //onInputChange={onInputChange}
-        // onInputNumberChange={onInputNumberChange}
-        // onCategoryChange={onCategoryChange}
-        // onOwnerChange={onOwnerChange}
-        // plane={newPlane}
-        submitted={false}
       />
       <DeleteDialog
         visible={deleteFlightDialog}

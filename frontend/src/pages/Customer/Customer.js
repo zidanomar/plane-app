@@ -1,9 +1,10 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import {
   ActionBodyTemplate,
   DataTableHeader,
@@ -38,6 +39,7 @@ function Customer() {
   const [addNewCustomerDialog, setAddNewCustomerDialog] = useState(false);
   const [updateCustomerDialog, setUpdateCustomerDialog] = useState(false);
   const [deleteCustomerDialog, setDeleteCustomerDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     dispatch(getAllCustomers());
@@ -54,25 +56,36 @@ function Customer() {
   // END INPUT HANDLERS
 
   // CREATE CUSTOMER FUNCTION
+  // const openAddNewCustomer = useCallback(
+  //   () => navigate('/customer/add'),
+  //   [navigate]
+  // );
+
   const openAddNewCustomer = () => {
     setAddNewCustomerDialog(true);
+    setSubmitted(false);
   };
 
   const closeAddNewCustomer = () => {
     setAddNewCustomerDialog(false);
     setNewCustomer(emptyCustomer);
+    setSubmitted(false);
   };
 
   const onAddNewCustomer = () => {
-    dispatch(postNewCustomer(newCustomer));
-    toast.current.show({
-      severity: 'success',
-      summary: 'Successful',
-      detail: `Customer x has been added`,
-      life: 3000,
-    });
-    setAddNewCustomerDialog(false);
-    setNewCustomer(emptyCustomer);
+    setSubmitted(true);
+
+    if (newCustomer.name.trim()) {
+      dispatch(postNewCustomer(newCustomer));
+      toast.current.show({
+        severity: 'success',
+        summary: 'Successful',
+        detail: `Customer x has been added`,
+        life: 3000,
+      });
+      setAddNewCustomerDialog(false);
+      setNewCustomer(emptyCustomer);
+    }
   };
   // END CREATE CUSTOMER FUNCTION
 
@@ -80,23 +93,29 @@ function Customer() {
   const openUpdateCustomer = (rowData) => {
     setNewCustomer(rowData);
     setUpdateCustomerDialog(true);
+    setSubmitted(false);
   };
 
   const closeUpdateCustomer = () => {
     setUpdateCustomerDialog(false);
     setNewCustomer(emptyCustomer);
+    setSubmitted(false);
   };
 
   const onUpdateCustomer = () => {
-    toast.current.show({
-      severity: 'success',
-      summary: 'Successful',
-      detail: `Customer x has been updated`,
-      life: 3000,
-    });
-    dispatch(updateCustomer(newCustomer.uuid, newCustomer));
-    setUpdateCustomerDialog(false);
-    setNewCustomer(emptyCustomer);
+    // update submitted
+    setSubmitted(true);
+    if (newCustomer.name.trim()) {
+      toast.current.show({
+        severity: 'success',
+        summary: 'Successful',
+        detail: `Customer x has been updated`,
+        life: 3000,
+      });
+      dispatch(updateCustomer(newCustomer.uuid, newCustomer));
+      setUpdateCustomerDialog(false);
+      setNewCustomer(emptyCustomer);
+    }
   };
 
   // END UPDATE CUSTOMER FUNCTIONS
@@ -188,11 +207,6 @@ function Customer() {
           }
           responsiveLayout='scroll'
         >
-          {/* <Column
-            selectionMode='multiple'
-            headerStyle={{ width: '3rem' }}
-            exportable={false}
-          ></Column> */}
           <Column field='name' header='Name' sortable />
           <Column
             field='planes'
@@ -222,7 +236,7 @@ function Customer() {
       </div>
       <CustomerDialog
         visible={addNewCustomerDialog}
-        submitted={false}
+        submitted={submitted}
         onClose={closeAddNewCustomer}
         onConfirm={onAddNewCustomer}
         onInputChange={onInputChange}
@@ -230,7 +244,7 @@ function Customer() {
       <CustomerDialog
         visible={updateCustomerDialog}
         customer={newCustomer}
-        submitted={true}
+        submitted={submitted}
         onClose={closeUpdateCustomer}
         onConfirm={onUpdateCustomer}
         onInputChange={onInputChange}
