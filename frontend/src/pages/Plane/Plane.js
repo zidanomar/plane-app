@@ -23,8 +23,8 @@ function Plane() {
   let emptyPlane = {
     uuid: null,
     name: '',
-    aircraftNumber: 0,
-    tailNumber: 0,
+    aircraft_number: 0,
+    tail_number: 0,
     isDelivered: false,
     customerId: '',
   };
@@ -110,6 +110,7 @@ function Plane() {
 
   const editPlane = (rowData) => {
     setNewPlane(rowData);
+    console.log(rowData);
     setSelectedOwner(rowData.owner);
     setEditPlaneDialog(true);
   };
@@ -124,6 +125,7 @@ function Plane() {
 
   const onEditPlane = () => {
     dispatch(updatePlane(newPlane.uuid, newPlane));
+    console.log(newPlane);
     toast.current.show({
       severity: 'success',
       summary: 'Successful',

@@ -24,7 +24,7 @@ function Flight() {
     uuid: null,
     depature_date: null,
     arrival_date: null,
-    planeDetail: null,
+    planeId: null,
   };
 
   const dt = useRef(null);
@@ -48,16 +48,6 @@ function Flight() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // INPUT HANDLER FUNCTIONS
-  // const onInputChange = (e, name) => {
-  //   const val = (e.target && e.target.value) || '';
-  //   let _flight = { ...newFlight };
-  //   _flight[`${name}`] = val;
-
-  //   setNewFlight(_flight);
-  // };
-
-  // TODO : CREATE DATE PICKER
   const onSelectDate = (e, name) => {
     const val = (e.target && e.target.value) || '';
     let _flight = { ...newFlight };
@@ -73,7 +63,7 @@ function Flight() {
   const onSelectedPlaneChange = (e, name) => {
     const val = (e.target && e.target.value) || '';
     let _flight = { ...newFlight };
-    _flight[`${name}`] = val;
+    _flight[`${name}`] = val.uuid;
     setSelectedPlane(val);
     setNewFlight(_flight);
   };
@@ -114,7 +104,7 @@ function Flight() {
     const arrival = new Date(rowData.arrival_date);
     const depature = new Date(rowData.depature_date);
     setUpdateFlightDialog(true);
-    setNewFlight(rowData);
+    setNewFlight({ ...rowData, planeId: rowData.planeDetail.uuid });
     setSelectedArrivalDate(arrival);
     setSelectedDepatureDate(depature);
     setSelectedPlane(rowData.planeDetail);
@@ -204,7 +194,9 @@ function Flight() {
   };
 
   const planeDetailTemplate = (rowData) => {
-    return rowData.planeDetail.name;
+    if (rowData.planeDetail) {
+      return rowData?.planeDetail?.name;
+    } else return 'Plane not found';
   };
 
   return (

@@ -52,7 +52,7 @@ function FlightDialog({
           id='planes'
           value={selectedPlane}
           options={planeList}
-          onChange={(e) => onSelectedPlaneChange(e, 'planeDetail')}
+          onChange={(e) => onSelectedPlaneChange(e, 'planeId')}
           optionLabel='name'
           placeholder='Select Plane'
         />

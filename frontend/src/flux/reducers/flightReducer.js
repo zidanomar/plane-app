@@ -47,7 +47,6 @@ export const flightReducer = (state = initialState, action) => {
       const currentPlane = state.flights.filter(
         (x) => x.uuid !== action.payload
       );
-      console.log(currentPlane);
       return {
         ...state,
         isLoading: false,

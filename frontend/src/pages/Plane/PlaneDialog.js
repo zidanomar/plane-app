@@ -66,14 +66,14 @@ function PlaneDialog({
         <div className='p-field p-col'>
           <label htmlFor='aircraft_number'>Aircraft Number</label>
           <InputNumber
-            id='aircraftNumber'
+            id='aircraft_number'
             className={classNames({
               'p-invalid': submitted && plane?.aircraft_number < 9999,
             })}
             value={plane?.aircraft_number}
             useGrouping={false}
             required
-            onValueChange={(e) => onInputNumberChange(e, 'aircraftNumber')}
+            onValueChange={(e) => onInputNumberChange(e, 'aircraft_number')}
           />
           {submitted && plane?.aircraft_number < 9999 && (
             <small className='p-error'>
@@ -84,14 +84,14 @@ function PlaneDialog({
         <div className='p-field p-col'>
           <label htmlFor='tail_number'>Tail Number</label>
           <InputNumber
-            id='tailNumber'
+            id='tail_number'
             className={classNames({
               'p-invalid': submitted && plane?.tail_number < 9999,
             })}
             value={plane?.tail_number}
             useGrouping={false}
             required
-            onValueChange={(e) => onInputNumberChange(e, 'tailNumber')}
+            onValueChange={(e) => onInputNumberChange(e, 'tail_number')}
             integeronly
           />
           {submitted && plane?.tail_number < 9999 && (

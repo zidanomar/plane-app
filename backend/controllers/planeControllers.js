@@ -37,21 +37,16 @@ exports.getPlaneById = async (req, res) => {
 // PATH: /plane
 // DETAILS: add new plane to list
 exports.addPlane = async (req, res) => {
-  const {
-    customerId,
-    name,
-    aircraftNumber: aircraft_number,
-    tailNumber: tail_number,
-    isDelivered,
-  } = req.body;
+  const { customerId, name, aircraft_number, tail_number, isDelivered } =
+    req.body;
 
   try {
     const customer = await Customer.findOne({ where: { uuid: customerId } });
 
     const newPlane = await Plane.create({
       name,
-      aircraft_number: +aircraft_number,
-      tail_number: +tail_number,
+      aircraft_number,
+      tail_number,
       customer_id: customer.id,
       isDelivered,
     });

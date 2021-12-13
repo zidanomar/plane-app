@@ -90,7 +90,7 @@ exports.getFlightById = async (req, res) => {
 // DESCRIPTION: update specified flight details
 exports.updateFlight = async (req, res) => {
   const { flightId } = req.params;
-  const { planeDetail, depature_date, arrival_date } = req.body;
+  const { planeId, depature_date, arrival_date } = req.body;
 
   const second = 1000;
   const minute = 60;
@@ -104,8 +104,8 @@ exports.updateFlight = async (req, res) => {
   const duration = Math.round(setHour);
 
   try {
-    const plane = await Plane.findOne({ where: { uuid: planeDetail.uuid } });
-
+    const plane = await Plane.findOne({ where: { uuid: planeId } });
+    console.log('plane', plane);
     const updateFlight = await Flight.update(
       {
         plane_id: plane.id,
