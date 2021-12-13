@@ -21,12 +21,12 @@ import DeleteDialog from '../../components/Dialog/DeleteDialog';
 
 function Plane() {
   let emptyPlane = {
-    uuid: null,
-    name: null,
-    aircraft_number: null,
-    tail_number: null,
+    uuid: '',
+    name: '',
+    aircraft_number: '',
+    tail_number: '',
     isDelivered: false,
-    customerId: null,
+    customerId: '',
   };
 
   const dt = useRef(null);
@@ -118,6 +118,7 @@ function Plane() {
   };
 
   const editPlane = (rowData) => {
+    setNewPlane(rowData);
     setSelectedOwner(rowData.owner);
     setEditPlaneDialog(true);
   };
