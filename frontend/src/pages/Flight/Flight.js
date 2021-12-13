@@ -176,8 +176,21 @@ function Flight() {
 
   // END DELETE FUNCTIONS
 
-  const dateParserTemplate = (rowData) => {
-    return 'rowData.toString()';
+  const parseISOString = (s) => {
+    var b = s.split(/\D+/);
+    return new Date(
+      Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6])
+    ).toString();
+  };
+
+  const arrivalParserTemplate = (rowData) => {
+    const arrival = parseISOString(rowData.arrival_date);
+    return arrival;
+  };
+
+  const depatureParserTemplate = (rowData) => {
+    const depature = parseISOString(rowData.depature_date);
+    return depature;
   };
 
   const flightActionBody = (rowData) => {
@@ -240,12 +253,12 @@ function Flight() {
           <Column
             field='depature_date'
             header='Depature'
-            date={dateParserTemplate}
+            body={depatureParserTemplate}
           />
           <Column
             field='arrival_date'
             header='Arrival'
-            date={dateParserTemplate}
+            body={arrivalParserTemplate}
           />
           <Column
             header='Actions'

@@ -73,7 +73,7 @@ function PlaneDialog({
             value={plane?.aircraft_number}
             useGrouping={false}
             required
-            onValueChange={(e) => onInputNumberChange(e, 'aircraft_number')}
+            onValueChange={(e) => onInputNumberChange(e, 'aircraftNumber')}
           />
           {submitted && plane?.aircraft_number < 9999 && (
             <small className='p-error'>
@@ -91,7 +91,7 @@ function PlaneDialog({
             value={plane?.tail_number}
             useGrouping={false}
             required
-            onValueChange={(e) => onInputNumberChange(e, 'tail_number')}
+            onValueChange={(e) => onInputNumberChange(e, 'tailNumber')}
             integeronly
           />
           {submitted && plane?.tail_number < 9999 && (
