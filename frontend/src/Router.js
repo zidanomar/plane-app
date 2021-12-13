@@ -6,11 +6,13 @@ import { Plane } from './pages/Plane';
 import { Customer } from './pages/Customer';
 import { Flight } from './pages/Flight';
 import Playground from './pages/Customer/Playground/Playground';
+import ErrorDialog from './components/Dialog/ErrorDialog';
 
 function Router() {
   return (
     <BrowserRouter>
       <Header />
+      <ErrorDialog />
       <div className='p-5'>
         <Routes>
           <Route exact path='/' element={<Plane />} />

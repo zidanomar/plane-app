@@ -20,15 +20,6 @@ exports.addFlight = async (req, res) => {
 
   try {
     const plane = await Plane.findOne({ where: { uuid: planeId } });
-    // // set that only delivered plan could flight
-    // if (!plane.isDelivered)
-    //   throw { status: 404, message: 'plane is not ready!' };
-
-    // const flight = await Flight.findOne({
-    //   where: { plane_id: plane.id },
-    // });
-    // // set if plane is already in a flight
-    // if (flight) throw { status: 404, message: 'plane are busy!' };
 
     const newFlight = await Flight.create({
       plane_id: plane.id,
@@ -44,8 +35,11 @@ exports.addFlight = async (req, res) => {
 
     res.status(200).json(flightResponse);
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 // get all flight
@@ -59,8 +53,11 @@ exports.getAllFlights = async (req, res) => {
 
     res.status(200).json(flights);
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 // get specified flight
@@ -80,7 +77,11 @@ exports.getFlightById = async (req, res) => {
 
     res.status(200).json(flight);
   } catch (error) {
-    res.status(500).send({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 // update flight
@@ -105,7 +106,7 @@ exports.updateFlight = async (req, res) => {
 
   try {
     const plane = await Plane.findOne({ where: { uuid: planeId } });
-    console.log('plane', plane);
+
     const updateFlight = await Flight.update(
       {
         plane_id: plane.id,
@@ -124,12 +125,14 @@ exports.updateFlight = async (req, res) => {
       where: { uuid: updateFlight[1].uuid },
       include: 'planeDetail',
     });
-    console.log(flightResponse);
 
     res.status(200).json(flightResponse);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 // delete flight
@@ -144,7 +147,9 @@ exports.deleteFlight = async (req, res) => {
 
     res.status(200).json(flightId);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };

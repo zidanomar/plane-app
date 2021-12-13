@@ -118,8 +118,6 @@ function Plane() {
   };
 
   const editPlane = (rowData) => {
-    setNewPlane(rowData);
-    console.log(rowData);
     setSelectedOwner(rowData.owner);
     setEditPlaneDialog(true);
   };
@@ -141,7 +139,6 @@ function Plane() {
       newPlane.customerId
     ) {
       dispatch(updatePlane(newPlane.uuid, newPlane));
-      console.log(newPlane);
       toast.current.show({
         severity: 'success',
         summary: 'Successful',

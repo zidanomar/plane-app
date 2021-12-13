@@ -1,9 +1,8 @@
 import { GET_ERRORS, CLEAR_ERRORS } from '../../constant/actionType';
 
 const initialState = {
-  msg: null,
+  message: null,
   status: null,
-  id: null,
 };
 
 const errorReducer = (state = initialState, action) => {
@@ -11,22 +10,17 @@ const errorReducer = (state = initialState, action) => {
     case GET_ERRORS:
       return {
         ...state,
-        msg: action.payload.msg,
+        message: action.payload.message,
         status: action.payload.status,
-        id: action.payload.id,
       };
     case CLEAR_ERRORS:
       return {
-        msg: null,
+        ...state,
+        message: null,
         status: null,
-        id: null,
       };
     default:
-      return {
-        msg: null,
-        status: null,
-        id: null,
-      };
+      return state;
   }
 };
 

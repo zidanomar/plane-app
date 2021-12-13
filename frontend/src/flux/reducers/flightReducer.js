@@ -3,7 +3,7 @@ import {
   DELETE_FLIGHT,
   FETCHED_FLIGHTS,
   FETCHING_FLIGHTS,
-  GET_ERRORS,
+  FETCHING_FLIGHT_FAILED,
   UPDATE_FLIGHT,
 } from '../../constant/actionType';
 
@@ -52,11 +52,10 @@ export const flightReducer = (state = initialState, action) => {
         isLoading: false,
         flights: currentPlane,
       };
-    case GET_ERRORS:
+    case FETCHING_FLIGHT_FAILED:
       return {
         ...state,
         isLoading: false,
-        flights: state.flights,
       };
     default:
       return state;

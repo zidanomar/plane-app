@@ -7,17 +7,6 @@ exports.addNewCustomer = async (req, res) => {
   const { name } = req.body;
 
   try {
-    // Check if customer with insensitive name case is already exist
-    // const existingCustomer = await Customer.findAll({
-    //   where: {
-    //     name: {
-    //       [Op.iLike]: name,
-    //     },
-    //   },
-    // });
-
-    // if (existingCustomer.length > 0) throw 'The customer already registered';
-
     const newCustomer = await Customer.create({ name }, { include: 'planes' });
     const customer = await Customer.findOne({
       where: { uuid: newCustomer.uuid },
@@ -26,8 +15,11 @@ exports.addNewCustomer = async (req, res) => {
 
     res.status(200).json(customer);
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 
@@ -60,8 +52,11 @@ exports.getCustomerById = async (req, res) => {
 
     res.status(200).json(customer);
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 

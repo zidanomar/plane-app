@@ -105,9 +105,6 @@ function TableList() {
       plane.tail_number > 9999 &&
       plane.aircraft_number > 9999
     ) {
-      // CHANGE CONSOLE.LOG TO PATCH ACTION
-
-      console.log(plane);
       setPlane(emptyPlane);
       toast.current.show({
         severity: 'success',
@@ -129,8 +126,6 @@ function TableList() {
   };
 
   const deletePlane = () => {
-    // CHANGE CONSOLE.LOG TO DELETE ACTION
-    console.log(plane);
     hideDeletePlaneDialog();
     setPlane(emptyPlane);
     toast.current.show({

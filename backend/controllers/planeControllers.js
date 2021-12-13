@@ -11,8 +11,11 @@ exports.getPlaneList = async (req, res) => {
 
     res.status(200).json(planes);
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 
@@ -29,7 +32,10 @@ exports.getPlaneById = async (req, res) => {
 
     res.status(200).json(plane);
   } catch (error) {
-    res.status(500).send({ error });
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 
@@ -58,8 +64,11 @@ exports.addPlane = async (req, res) => {
 
     res.status(200).send(planeResponse);
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 
@@ -78,8 +87,8 @@ exports.updatePlane = async (req, res) => {
 
       items = {
         name,
-        aircraft_number: +aircraft_number,
-        tail_number: +tail_number,
+        aircraft_number,
+        tail_number,
         customer_id: customer.id,
         isDelivered,
       };
@@ -109,8 +118,11 @@ exports.updatePlane = async (req, res) => {
 
     res.status(200).send(planeResponse);
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };
 
@@ -121,10 +133,15 @@ exports.deletePlaneById = async (req, res) => {
   const { planeId } = req.params;
 
   try {
-    await Plane.destroy({ where: { uuid: planeId } });
+    const plane = await Plane.destroy({ where: { uuid: planeId } });
+    if (plane === 0) throw { status: 404, message: 'plane not found!' };
 
     res.status(200).json(planeId);
   } catch (error) {
-    res.status(500).send({ error });
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
   }
 };

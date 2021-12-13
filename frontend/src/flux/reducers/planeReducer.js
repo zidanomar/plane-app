@@ -5,7 +5,7 @@ import {
   DELETE_PLANE,
   FETCHED_PLANE,
   FETCHING_PLANE,
-  GET_ERRORS,
+  FETCHING_PLANE_FAILED,
   UPDATE_PLANE,
 } from '../../constant/actionType';
 
@@ -56,11 +56,10 @@ const planeReducer = (state = initialState, action) => {
         isLoading: false,
         planes: currentPlanes,
       };
-    case GET_ERRORS:
+    case FETCHING_PLANE_FAILED:
       return {
         ...state,
         isLoading: false,
-        planes: state.planes,
       };
     default:
       return state;

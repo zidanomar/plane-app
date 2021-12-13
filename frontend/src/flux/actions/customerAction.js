@@ -5,6 +5,7 @@ import {
   FETCHED_CUSTOMERS,
   FETCHING_CUSTOMERS,
   UPDATE_CUSTOMER,
+  FETCHING_CUSTOMER_FAILED,
 } from '../../constant/actionType';
 import { returnErrors } from './errorAction';
 
@@ -15,8 +16,10 @@ export const getAllCustomers = () => async (dispatch) => {
     const customers = await api.getAllCustomers();
     return dispatch({ type: FETCHED_CUSTOMERS, payload: customers.data });
   } catch (error) {
-    dispatch(returnErrors(error.response.data.message, error.response.status));
-    dispatch({ type: FETCHED_CUSTOMERS, payload: [] });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_CUSTOMER_FAILED });
   }
 };
 
@@ -31,8 +34,10 @@ export const addNewCustomer = (newCustomerData) => async (dispatch) => {
       payload: newCustomer.data,
     });
   } catch (error) {
-    dispatch(returnErrors('error', 500));
-    dispatch({ type: ADD_CUSTOMER, payload: {} });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_CUSTOMER_FAILED });
   }
 };
 
@@ -44,8 +49,10 @@ export const deleteCustomer = (customerId) => async (dispatch) => {
 
     dispatch({ type: DELETE_CUSTOMER, payload: deletedCustomer.data });
   } catch (error) {
-    dispatch(returnErrors(error.response.data.message, error.response.status));
-    dispatch({ type: ADD_CUSTOMER, payload: {} });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_CUSTOMER_FAILED });
   }
 };
 
@@ -55,7 +62,9 @@ export const updateCustomer = (customerId, newCustomer) => async (dispatch) => {
 
     dispatch({ type: UPDATE_CUSTOMER, payload: updatedCustomer.data });
   } catch (error) {
-    dispatch(returnErrors(error.response.data.message, error.response.status));
-    dispatch({ type: UPDATE_CUSTOMER, payload: {} });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_CUSTOMER_FAILED });
   }
 };

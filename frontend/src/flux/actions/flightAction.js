@@ -4,8 +4,8 @@ import {
   DELETE_FLIGHT,
   FETCHED_FLIGHTS,
   FETCHING_FLIGHTS,
-  GET_ERRORS,
   UPDATE_FLIGHT,
+  FETCHING_FLIGHT_FAILED,
 } from '../../constant/actionType';
 import { returnErrors } from './errorAction';
 
@@ -17,8 +17,10 @@ export const getAllFlight = () => async (dispatch) => {
 
     return dispatch({ type: FETCHED_FLIGHTS, payload: flights.data });
   } catch (error) {
-    dispatch(returnErrors('error', 500));
-    dispatch({ type: GET_ERRORS });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_FLIGHT_FAILED });
   }
 };
 
@@ -30,8 +32,10 @@ export const addNewFlight = (newFlightData) => async (dispatch) => {
 
     return dispatch({ type: ADD_FLIGHT, payload: newPlane.data });
   } catch (error) {
-    dispatch(returnErrors('error', 500));
-    dispatch({ type: GET_ERRORS });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_FLIGHT_FAILED });
   }
 };
 
@@ -43,8 +47,10 @@ export const updateFlight = (planeId, newPlaneData) => async (dispatch) => {
 
     dispatch({ type: UPDATE_FLIGHT, payload: updatedFlight.data });
   } catch (error) {
-    dispatch(returnErrors('error', 500));
-    dispatch({ type: GET_ERRORS });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_FLIGHT_FAILED });
   }
 };
 
@@ -56,7 +62,9 @@ export const deleteFlight = (flightId) => async (dispatch) => {
 
     dispatch({ type: DELETE_FLIGHT, payload: deletedFlight.data });
   } catch (error) {
-    dispatch(returnErrors('error', 500));
-    dispatch({ type: GET_ERRORS });
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_FLIGHT_FAILED });
   }
 };

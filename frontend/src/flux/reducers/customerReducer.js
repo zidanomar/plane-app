@@ -3,6 +3,7 @@ import {
   DELETE_CUSTOMER,
   FETCHED_CUSTOMERS,
   FETCHING_CUSTOMERS,
+  FETCHING_CUSTOMER_FAILED,
   UPDATE_CUSTOMER,
 } from '../../constant/actionType';
 
@@ -25,7 +26,6 @@ const customerReducer = (state = initialState, action) => {
         customers: action.payload,
       };
     case ADD_CUSTOMER:
-      console.log(action.payload);
       return {
         ...state,
         isLoading: false,
@@ -46,11 +46,15 @@ const customerReducer = (state = initialState, action) => {
       const currentCustomer = state.customers.filter(
         (x) => x.uuid !== action.payload
       );
-
       return {
         ...state,
         isLoading: false,
         customers: currentCustomer,
+      };
+    case FETCHING_CUSTOMER_FAILED:
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;
