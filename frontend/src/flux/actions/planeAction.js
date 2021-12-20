@@ -1,6 +1,7 @@
 import * as api from '../../api';
 import {
   ADD_PLANE,
+  DELETE_MANY_PLANES,
   DELETE_PLANE,
   FETCHED_PLANE,
   FETCHING_PLANE,
@@ -60,6 +61,22 @@ export const deletePlaneAction = (planeId) => async (dispatch) => {
     const deletedPlane = await api.deletePlane(planeId);
 
     return dispatch({ type: DELETE_PLANE, payload: deletedPlane.data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_PLANE_FAILED });
+  }
+};
+
+export const deleteManyPlanes = (selectedItems) => async (dispatch) => {
+  const uuids = { selectedItems };
+  try {
+    dispatch({ type: FETCHING_PLANE });
+
+    await api.deleteManyPlanes(uuids);
+
+    dispatch({ type: DELETE_MANY_PLANES, payload: selectedItems });
   } catch (error) {
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)

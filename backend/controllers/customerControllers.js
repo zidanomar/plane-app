@@ -108,7 +108,6 @@ exports.deleteCustomer = async (req, res) => {
 // DETAILS: delete many customers
 exports.deleteManyCustomer = async (req, res) => {
   const { selectedItems } = req.body;
-
   try {
     await Customer.destroy({
       where: { uuid: selectedItems },

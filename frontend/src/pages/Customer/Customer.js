@@ -15,6 +15,7 @@ import DeleteDialog from '../../components/Dialog/DeleteDialog';
 import {
   addNewCustomer as postNewCustomer,
   deleteCustomer,
+  deleteManyCustomer,
   getAllCustomers,
   updateCustomer,
 } from '../../flux/actions/customerAction';
@@ -155,7 +156,18 @@ function Customer() {
   };
 
   const onDeleteSelected = () => {
-    console.log(selectedCustomers);
+    let uuids = [];
+    selectedCustomers.map((x) => uuids.push(x.uuid));
+
+    dispatch(deleteManyCustomer(uuids));
+    toast.current.show({
+      severity: 'warn',
+      summary: 'Warning Message',
+      detail: `${uuids.length} items has been deleted!`,
+      life: 3000,
+    });
+
+    setSelectedCustomers(null);
     setDeleteManyDialog(false);
   };
 

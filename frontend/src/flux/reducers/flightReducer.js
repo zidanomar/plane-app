@@ -1,6 +1,7 @@
 import {
   ADD_FLIGHT,
   DELETE_FLIGHT,
+  DELETE_MANY_FLIGHTS,
   FETCHED_FLIGHTS,
   FETCHING_FLIGHTS,
   FETCHING_FLIGHT_FAILED,
@@ -44,13 +45,22 @@ export const flightReducer = (state = initialState, action) => {
         flights: items,
       };
     case DELETE_FLIGHT:
-      const currentPlane = state.flights.filter(
+      const currentFlight = state.flights.filter(
         (x) => x.uuid !== action.payload
       );
       return {
         ...state,
         isLoading: false,
-        flights: currentPlane,
+        flights: currentFlight,
+      };
+    case DELETE_MANY_FLIGHTS:
+      const currentFlights = state.flights.filter(
+        (x) => !action.payload.includes(x.uuid)
+      );
+      return {
+        ...state,
+        isLoading: false,
+        flights: currentFlights,
       };
     case FETCHING_FLIGHT_FAILED:
       return {

@@ -1,6 +1,7 @@
 import {
   ADD_CUSTOMER,
   DELETE_CUSTOMER,
+  DELETE_MANY_CUSTOMERS,
   FETCHED_CUSTOMERS,
   FETCHING_CUSTOMERS,
   FETCHING_CUSTOMER_FAILED,
@@ -50,6 +51,15 @@ const customerReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         customers: currentCustomer,
+      };
+    case DELETE_MANY_CUSTOMERS:
+      const currentCustomers = state.customers.filter(
+        (x) => !action.payload.includes(x.uuid)
+      );
+      return {
+        ...state,
+        isLoading: false,
+        customers: currentCustomers,
       };
     case FETCHING_CUSTOMER_FAILED:
       return {

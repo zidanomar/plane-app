@@ -2,6 +2,7 @@
 
 import {
   ADD_PLANE,
+  DELETE_MANY_PLANES,
   DELETE_PLANE,
   FETCHED_PLANE,
   FETCHING_PLANE,
@@ -47,10 +48,19 @@ const planeReducer = (state = initialState, action) => {
         planes: updatedItems,
       };
     case DELETE_PLANE:
-      const currentPlanes = state.planes.filter(
+      const currentPlane = state.planes.filter(
         (x) => x.uuid !== action.payload
       );
 
+      return {
+        ...state,
+        isLoading: false,
+        planes: currentPlane,
+      };
+    case DELETE_MANY_PLANES:
+      const currentPlanes = state.planes.filter(
+        (x) => !action.payload.includes(x.uuid)
+      );
       return {
         ...state,
         isLoading: false,

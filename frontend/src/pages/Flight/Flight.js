@@ -14,6 +14,7 @@ import DeleteDialog from '../../components/Dialog/DeleteDialog';
 import {
   addNewFlight,
   deleteFlight,
+  deleteManyFlights,
   getAllFlight,
   updateFlight,
 } from '../../flux/actions/flightAction';
@@ -196,7 +197,18 @@ function Flight() {
   };
 
   const onDeleteManyFlight = () => {
-    console.log(selectedFlights);
+    let uuids = [];
+    selectedFlights.map((x) => uuids.push(x.uuid));
+
+    dispatch(deleteManyFlights(uuids));
+    toast.current.show({
+      severity: 'warn',
+      summary: 'Warning Message',
+      detail: `${uuids.length} items has been deleted!`,
+      life: 3000,
+    });
+
+    setSelectedFlights(null);
     setDeleteManyFlightsDialog(false);
   };
 

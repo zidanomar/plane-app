@@ -10,6 +10,7 @@ import {
   getAllPlane,
   deletePlaneAction,
   updatePlane,
+  deleteManyPlanes,
 } from '../../flux/actions/planeAction';
 import {
   ActionBodyTemplate,
@@ -195,7 +196,18 @@ function Plane() {
   };
 
   const onDelteManyPlanes = () => {
-    console.log(selectedPlanes);
+    let uuids = [];
+    selectedPlanes.map((x) => uuids.push(x.uuid));
+
+    dispatch(deleteManyPlanes(uuids));
+    toast.current.show({
+      severity: 'warn',
+      summary: 'Warning Message',
+      detail: `${uuids.length} items has been deleted!`,
+      life: 3000,
+    });
+
+    setSelectedPlanes(null);
     setDeleteManyPlaneDialog(false);
   };
 

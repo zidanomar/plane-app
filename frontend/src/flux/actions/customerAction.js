@@ -6,9 +6,11 @@ import {
   FETCHING_CUSTOMERS,
   UPDATE_CUSTOMER,
   FETCHING_CUSTOMER_FAILED,
+  DELETE_MANY_CUSTOMERS,
 } from '../../constant/actionType';
 import { returnErrors } from './errorAction';
 
+// GET ALL CUSTOMERS
 export const getAllCustomers = () => async (dispatch) => {
   try {
     dispatch({ type: FETCHING_CUSTOMERS });
@@ -23,6 +25,7 @@ export const getAllCustomers = () => async (dispatch) => {
   }
 };
 
+// ADD NEW CUSTOMER
 export const addNewCustomer = (newCustomerData) => async (dispatch) => {
   try {
     dispatch({ type: FETCHING_CUSTOMERS });
@@ -41,6 +44,21 @@ export const addNewCustomer = (newCustomerData) => async (dispatch) => {
   }
 };
 
+// UPDATE CUSTOMER
+export const updateCustomer = (customerId, newCustomer) => async (dispatch) => {
+  try {
+    const updatedCustomer = await api.updateCustomer(customerId, newCustomer);
+
+    dispatch({ type: UPDATE_CUSTOMER, payload: updatedCustomer.data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_CUSTOMER_FAILED });
+  }
+};
+
+// DELETE SPECIFIIED CUSTOMER
 export const deleteCustomer = (customerId) => async (dispatch) => {
   try {
     dispatch({ type: FETCHING_CUSTOMERS });
@@ -56,11 +74,15 @@ export const deleteCustomer = (customerId) => async (dispatch) => {
   }
 };
 
-export const updateCustomer = (customerId, newCustomer) => async (dispatch) => {
+// DELETE MANY CUSTOMERS
+export const deleteManyCustomer = (selectedItems) => async (dispatch) => {
+  const uuids = { selectedItems };
   try {
-    const updatedCustomer = await api.updateCustomer(customerId, newCustomer);
+    dispatch({ type: FETCHING_CUSTOMERS });
 
-    dispatch({ type: UPDATE_CUSTOMER, payload: updatedCustomer.data });
+    await api.deleteManyCustomers(uuids);
+
+    dispatch({ type: DELETE_MANY_CUSTOMERS, payload: selectedItems });
   } catch (error) {
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)
