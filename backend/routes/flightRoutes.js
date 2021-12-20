@@ -7,6 +7,8 @@ router.get('/', flightControllers.getAllFlights);
 
 router.get('/:flightId', flightControllers.getFlightById);
 router.patch('/:flightId', flightControllers.updateFlight);
+
+router.delete('/deleteMany', flightControllers.deleteManyFlights);
 router.delete('/:flightId', flightControllers.deleteFlight);
 
 module.exports = router;

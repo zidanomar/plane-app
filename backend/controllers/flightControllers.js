@@ -153,3 +153,23 @@ exports.deleteFlight = async (req, res) => {
     });
   }
 };
+
+// METHOD: DELETE
+// PATH: /customer/deleteMany
+// DETAILS: delete many flights
+exports.deleteManyFlights = async (req, res) => {
+  const { selectedItems } = req.body;
+
+  try {
+    await Flight.destroy({
+      where: { uuid: selectedItems },
+    });
+
+    res.status(200).json(`success deleted ${selectedItems.length} items!`);
+  } catch (error) {
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
+  }
+};
