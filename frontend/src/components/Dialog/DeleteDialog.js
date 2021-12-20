@@ -2,7 +2,7 @@ import { Dialog } from 'primereact/dialog';
 import React from 'react';
 import DialogFooter from './DialogFooter';
 
-function DeleteDialog({ visible, onClose, onConfirm, item }) {
+function DeleteDialog({ visible, onClose, onConfirm, message }) {
   return (
     <Dialog
       visible={visible}
@@ -14,9 +14,7 @@ function DeleteDialog({ visible, onClose, onConfirm, item }) {
       onHide={onClose}
     >
       <div>
-        <p>{`are you sure want to delete ${
-          item?.name ? item?.name : item?.uuid
-        } ?`}</p>
+        <p>{message}</p>
       </div>
     </Dialog>
   );

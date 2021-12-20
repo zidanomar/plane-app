@@ -44,6 +44,7 @@ function Plane() {
   const [addPlaneDialog, setAddPlaneDialog] = useState(false);
   const [editPlaneDialog, setEditPlaneDialog] = useState(false);
   const [deletePlaneDialog, setDeletePlaneDialog] = useState(false);
+  const [deleteManyPlaneDialog, setDeleteManyPlaneDialog] = useState(false);
 
   useEffect(() => {
     dispatch(getAllPlane());
@@ -81,6 +82,8 @@ function Plane() {
     setSelectedOwner(value);
   };
 
+  // ADD PLANE FUNCTIONS
+
   const openAddPlaneDialog = () => {
     setNewPlane(emptyPlane);
     setSubmitted(false);
@@ -117,6 +120,10 @@ function Plane() {
     }
   };
 
+  // END ADD PLANE FUCTIONS
+
+  // EDIT PLANE FUNCTIONS
+
   const editPlane = (rowData) => {
     setNewPlane(rowData);
     setSelectedOwner(rowData.owner);
@@ -126,7 +133,6 @@ function Plane() {
   const closeEditPlaneDialog = () => {
     setNewPlane(emptyPlane);
     setSubmitted(false);
-    setSelectedPlanes(null);
     setSelectedOwner(null);
     setEditPlaneDialog(false);
   };
@@ -151,6 +157,10 @@ function Plane() {
     }
   };
 
+  // END EDIT PLANE FUNCITONS
+
+  // DELETE PLANE FUNCTIONS
+
   const deletePlane = (rowData) => {
     setNewPlane(rowData);
     setDeletePlaneDialog(true);
@@ -171,6 +181,25 @@ function Plane() {
     });
     setDeletePlaneDialog(false);
   };
+
+  // END DELETE PLANE FUNCTIONS
+
+  // DELETE MANY PLANE FUCNTIONS
+
+  const openDeleteManyPlaneDialog = () => {
+    setDeleteManyPlaneDialog(true);
+  };
+
+  const closeDeleteManyPlaneDialog = () => {
+    setDeleteManyPlaneDialog(false);
+  };
+
+  const onDelteManyPlanes = () => {
+    console.log(selectedPlanes);
+    setDeleteManyPlaneDialog(false);
+  };
+
+  // END DELETE MANY PLANE FUNCTIONS
 
   const ownerTemplate = (rowData) => {
     if (rowData.owner) return rowData.owner.name;
@@ -200,8 +229,8 @@ function Plane() {
           left={
             <LeftToolbarTemplate
               onCreate={openAddPlaneDialog}
-              onDelete={() => {}}
-              disabled={true}
+              onDelete={openDeleteManyPlaneDialog}
+              disabled={!selectedPlanes || !selectedPlanes.length}
             />
           }
           // right={rightToolbarTemplate}
@@ -211,7 +240,7 @@ function Plane() {
           value={plane.planes}
           selection={selectedPlanes}
           onSelectionChange={(e) => setSelectedPlanes(e.value)}
-          dataKey='id'
+          dataKey='uuid'
           paginator
           loading={plane.isLoading}
           rows={10}
@@ -224,6 +253,11 @@ function Plane() {
           }
           responsiveLayout='scroll'
         >
+          <Column
+            selectionMode='multiple'
+            headerStyle={{ width: '3rem' }}
+            exportable={false}
+          />
           <Column field='name' header='Name' sortable />
           <Column field='aircraft_number' header='Aircraft Number' sortable />
           <Column field='tail_number' header='Tail Number' sortable />
@@ -243,6 +277,7 @@ function Plane() {
           ></Column>
         </DataTable>
       </div>
+      {/* add */}
       <PlaneDialog
         visible={addPlaneDialog}
         plane={newPlane}
@@ -255,6 +290,7 @@ function Plane() {
         onCategoryChange={onCategoryChange}
         onOwnerChange={onOwnerChange}
       />
+      {/* update */}
       <PlaneDialog
         visible={editPlaneDialog}
         plane={newPlane}
@@ -267,11 +303,21 @@ function Plane() {
         onCategoryChange={onCategoryChange}
         onOwnerChange={onOwnerChange}
       />
+      {/* delete */}
       <DeleteDialog
         visible={deletePlaneDialog}
-        item={newPlane}
+        message={`are you sure want to delete ${newPlane.name} ?`}
         onClose={closeDeletePlane}
         onConfirm={onDeletePlane}
+      />
+      {/* delete many */}
+      <DeleteDialog
+        visible={deleteManyPlaneDialog}
+        message={`are you sure want to delete ${selectedPlanes?.length} ${
+          selectedPlanes?.length > 1 ? 'items' : 'item'
+        } ?`}
+        onClose={closeDeleteManyPlaneDialog}
+        onConfirm={onDelteManyPlanes}
       />
     </div>
   );

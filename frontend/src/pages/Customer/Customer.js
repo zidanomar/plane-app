@@ -39,6 +39,7 @@ function Customer() {
   const [addNewCustomerDialog, setAddNewCustomerDialog] = useState(false);
   const [updateCustomerDialog, setUpdateCustomerDialog] = useState(false);
   const [deleteCustomerDialog, setDeleteCustomerDialog] = useState(false);
+  const [deleteManyDialog, setDeleteManyDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
@@ -144,6 +145,22 @@ function Customer() {
   };
   // END DELETE CUSTOMER FUNCTIONS
 
+  // DELETE SELECTED CUSTOMERS
+  const openDeleteSelectedDialog = () => {
+    setDeleteManyDialog(true);
+  };
+
+  const closeDeleteSelectedDialog = () => {
+    setDeleteManyDialog(false);
+  };
+
+  const onDeleteSelected = () => {
+    console.log(selectedCustomers);
+    setDeleteManyDialog(false);
+  };
+
+  // END DELETE SELECTED CUSTOMERS
+
   const customerActionBody = (rowData) => {
     return (
       <ActionBodyTemplate
@@ -180,8 +197,8 @@ function Customer() {
           left={
             <LeftToolbarTemplate
               onCreate={openAddNewCustomer}
-              onDelete={() => {}}
-              disabled={!selectedCustomers || !setSelectedCustomers.length}
+              onDelete={openDeleteSelectedDialog}
+              disabled={!selectedCustomers || !selectedCustomers.length}
             />
           }
           // right={rightToolbarTemplate}
@@ -191,7 +208,7 @@ function Customer() {
           value={customer.customers}
           selection={selectedCustomers}
           onSelectionChange={(e) => setSelectedCustomers(e.value)}
-          dataKey='id'
+          dataKey='uuid'
           paginator
           loading={customer.isLoading}
           rows={10}
@@ -207,6 +224,11 @@ function Customer() {
           }
           responsiveLayout='scroll'
         >
+          <Column
+            selectionMode='multiple'
+            headerStyle={{ width: '3rem' }}
+            exportable={false}
+          />
           <Column field='name' header='Name' sortable />
           <Column
             field='planes'
@@ -234,6 +256,7 @@ function Customer() {
           />
         </DataTable>
       </div>
+      {/* add */}
       <CustomerDialog
         visible={addNewCustomerDialog}
         submitted={submitted}
@@ -241,6 +264,7 @@ function Customer() {
         onConfirm={onAddNewCustomer}
         onInputChange={onInputChange}
       />
+      {/* update */}
       <CustomerDialog
         visible={updateCustomerDialog}
         customer={newCustomer}
@@ -249,11 +273,24 @@ function Customer() {
         onConfirm={onUpdateCustomer}
         onInputChange={onInputChange}
       />
+      {/* delete */}
       <DeleteDialog
         visible={deleteCustomerDialog}
-        item={newCustomer}
+        message={`are you sure want to delete ${
+          newCustomer?.name ? newCustomer?.name : newCustomer?.uuid
+        } ?`}
         onClose={closeDeleteCustomer}
         onConfirm={onDeleteCustomer}
+      />
+      {/* delete many */}
+      <DeleteDialog
+        visible={deleteManyDialog}
+        item={selectedCustomers}
+        message={`are you sure want to delete ${selectedCustomers?.length} ${
+          selectedCustomers?.length > 1 ? 'items' : 'item'
+        } ?`}
+        onClose={closeDeleteSelectedDialog}
+        onConfirm={onDeleteSelected}
       />
     </div>
   );

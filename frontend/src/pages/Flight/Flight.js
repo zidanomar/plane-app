@@ -42,6 +42,7 @@ function Flight() {
   const [addFlightDialog, setAddFlightDialog] = useState(false);
   const [updateFlightDialog, setUpdateFlightDialog] = useState(false);
   const [deleteFlightDialog, setDeleteFlightDialog] = useState(false);
+  const [deleteManyFlightsDialog, setDeleteManyFlightsDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
@@ -185,6 +186,22 @@ function Flight() {
 
   // END DELETE FUNCTIONS
 
+  // DELETE MANY FLIGHTS
+  const openDeleteManyDialog = () => {
+    setDeleteManyFlightsDialog(true);
+  };
+
+  const closeDeleteManyFlightDialog = () => {
+    setDeleteManyFlightsDialog(false);
+  };
+
+  const onDeleteManyFlight = () => {
+    console.log(selectedFlights);
+    setDeleteManyFlightsDialog(false);
+  };
+
+  // END DELETE MANY FLIGHTS
+
   const parseISOString = (s) => {
     var b = s.split(/\D+/);
     return new Date(
@@ -227,8 +244,8 @@ function Flight() {
           left={
             <LeftToolbarTemplate
               onCreate={openAddFlightDialog}
-              onDelete={() => {}}
-              disabled={true}
+              onDelete={openDeleteManyDialog}
+              disabled={!selectedFlights || !selectedFlights.length}
             />
           }
           // right={rightToolbarTemplate}
@@ -239,7 +256,7 @@ function Flight() {
           loading={flight.isLoading}
           selection={selectedFlights}
           onSelectionChange={(e) => setSelectedFlights(e.value)}
-          dataKey='id'
+          dataKey='uuid'
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
@@ -254,6 +271,11 @@ function Flight() {
           }
           responsiveLayout='scroll'
         >
+          <Column
+            selectionMode='multiple'
+            headerStyle={{ width: '3rem' }}
+            exportable={false}
+          />
           <Column field='uuid' header='Flight Id' />
           <Column field='duration' header='Flight Duration' />
           <Column
@@ -279,6 +301,7 @@ function Flight() {
           ></Column>
         </DataTable>
       </div>
+      {/* add */}
       <FlightDialog
         visible={addFlightDialog}
         selectedPlane={selectedPlane}
@@ -291,6 +314,7 @@ function Flight() {
         onSelectedArrivalDate={onSelectDate}
         onSelectedDepatureDate={onSelectDate}
       />
+      {/* update */}
       <FlightDialog
         visible={updateFlightDialog}
         selectedPlane={selectedPlane}
@@ -303,11 +327,21 @@ function Flight() {
         onSelectedArrivalDate={onSelectDate}
         onSelectedDepatureDate={onSelectDate}
       />
+      {/* delete */}
       <DeleteDialog
         visible={deleteFlightDialog}
-        item={newFlight}
+        message={`are you sure want to delete flight with uuid ${newFlight.uuid}`}
         onClose={closeDeleteFlightDialog}
         onConfirm={onDeleteFlight}
+      />
+      {/* delete many */}
+      <DeleteDialog
+        visible={deleteManyFlightsDialog}
+        message={`are you sure want to delete ${selectedFlights?.length} ${
+          selectedFlights?.length > 1 ? 'items' : 'item'
+        } ?`}
+        onClose={closeDeleteManyFlightDialog}
+        onConfirm={onDeleteManyFlight}
       />
     </div>
   );
