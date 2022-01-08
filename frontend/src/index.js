@@ -8,6 +8,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import globalReducer from './flux/reducers';
+import { ColorModeScript, theme } from '@chakra-ui/react';
 
 const middleWare = [thunk];
 
@@ -19,6 +20,7 @@ const store = createStore(
 );
 ReactDOM.render(
   <Provider store={store}>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <App />
   </Provider>,
   document.getElementById('root')

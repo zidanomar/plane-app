@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, DataTypes) => {
-    await queryInterface.createTable('flights', {
+    await queryInterface.createTable('roles', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,22 +12,7 @@ module.exports = {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      duration: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      depature_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      arrival_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      plane_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      role: { type: DataTypes.STRING, allowNull: false },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -39,6 +24,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, DataTypes) => {
-    await queryInterface.dropTable('flights');
+    await queryInterface.dropTable('roles');
   },
 };

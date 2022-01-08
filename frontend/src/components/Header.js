@@ -1,33 +1,84 @@
 import React from 'react';
-
-import { Container, Navbar, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link as ReachLink } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  HStack,
+  Icon,
+  Link,
+  Text,
+  useColorMode,
+} from '@chakra-ui/react';
+import { MdLogin, MdWbSunny, MdNightsStay } from 'react-icons/md';
 
 function Header() {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Navbar bg='light' expand='lg'>
-      <Container fluid>
-        <Navbar.Brand href='#'>Navbar scroll</Navbar.Brand>
-        <Navbar.Toggle aria-controls='navbarScroll' />
-        <Navbar.Collapse id='navbarScroll'>
-          <Nav
-            className='me-auto my-2 my-lg-0'
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
-            <Link className='nav-link' to='/'>
+    <HStack h='20'>
+      <Container
+        maxW='container.xl'
+        display='flex'
+        alignItems='center'
+        justifyContent='space-between'
+      >
+        <Flex>
+          <Text as='h3' fontSize='xl' fontWeight='bold'>
+            Plane App
+          </Text>
+        </Flex>
+
+        <Flex gap='10'>
+          <Link as={ReachLink} to='/'>
+            <Text as='p' fontSize='xl'>
+              Home
+            </Text>
+          </Link>
+          <Link as={ReachLink} to='/plane'>
+            <Text as='p' fontSize='xl'>
               Plane
-            </Link>
-            <Link className='nav-link' to='/customer'>
+            </Text>
+          </Link>
+          <Link as={ReachLink} to='/customer'>
+            <Text as='p' fontSize='xl'>
               Customer
-            </Link>
-            <Link className='nav-link' to='/Flight'>
+            </Text>
+          </Link>
+          <Link as={ReachLink} to='/flight'>
+            <Text as='p' fontSize='xl'>
               Flight
+            </Text>
+          </Link>
+        </Flex>
+
+        <Flex alignItems='center' gap={6}>
+          <Box
+            borderRadius='4'
+            display='flex'
+            alignItems='center'
+            fontSize='xl'
+            backgroundColor='purple.400'
+            color='white'
+            py='2'
+            px='4'
+          >
+            <Icon as={MdLogin} mr='2' display='inline-block' />
+            <Link as={ReachLink} to='/login'>
+              <Text as='p'>Login</Text>
             </Link>
-          </Nav>
-        </Navbar.Collapse>
+          </Box>
+          <Button onClick={toggleColorMode}>
+            {colorMode === 'light' ? (
+              <Icon as={MdNightsStay} />
+            ) : (
+              <Icon as={MdWbSunny} />
+            )}
+          </Button>
+        </Flex>
       </Container>
-    </Navbar>
+    </HStack>
   );
 }
 

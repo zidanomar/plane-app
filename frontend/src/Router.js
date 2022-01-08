@@ -1,26 +1,69 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 
 import Header from './components/Header';
-import { Plane } from './pages/Plane';
-import { Customer } from './pages/Customer';
-import { Flight } from './pages/Flight';
 import Playground from './pages/Customer/Playground/Playground';
 import ErrorDialog from './components/Dialog/ErrorDialog';
+import { Customer, Flight, Home, Login, Plane, Register } from './pages';
+import ProtectedRoute from './components/ProtectedRoute';
+import { Container } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { getAuth } from './flux/actions/authAction';
 
 function Router() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getAuthentication = async () => {
+      try {
+        dispatch(getAuth());
+        console.log('dispatch');
+      } catch (error) {
+        localStorage.removeItem('authToken');
+      }
+    };
+
+    getAuthentication();
+  }, [dispatch]);
   return (
     <BrowserRouter>
       <Header />
       <ErrorDialog />
-      <div className='p-5'>
+      <Container maxW='container.xl'>
         <Routes>
-          <Route exact path='/' element={<Plane />} />
-          <Route exact path='/customer' element={<Customer />} />
-          <Route exact path='/flight' element={<Flight />} />
+          <Route exact path='/' element={<Home />} />
+          <Route
+            exact
+            path='/plane'
+            element={
+              <ProtectedRoute>
+                <Plane />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path='/customer'
+            element={
+              <ProtectedRoute>
+                <Customer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path='/flight'
+            element={
+              <ProtectedRoute>
+                <Flight />
+              </ProtectedRoute>
+            }
+          />
           <Route exact path='/playground' element={<Playground />} />
+          <Route exact path='/login' element={<Login />} />
+          <Route exact path='/register' element={<Register />} />
         </Routes>
-      </div>
+      </Container>
     </BrowserRouter>
   );
 }
