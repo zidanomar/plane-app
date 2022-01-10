@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getAuth } from '../flux/actions/authAction';
+
+import * as api from '../../api';
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
@@ -14,8 +15,7 @@ function ProtectedRoute({ children }) {
 
     const getAuthentication = async () => {
       try {
-        dispatch(getAuth(navigate));
-        console.log('dispatch');
+        await api.getAuth();
       } catch (error) {
         localStorage.removeItem('authToken');
         navigate('/login');

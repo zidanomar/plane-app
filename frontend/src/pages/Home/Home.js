@@ -22,7 +22,7 @@ function Home() {
         {username ? `${username}~!` : 'peeps~!'}
       </Text>
       <Text as='h3' fontSize='2xl'>
-        How could i help you
+        How can i help you
       </Text>
     </Flex>
   );

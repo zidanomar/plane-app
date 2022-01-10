@@ -20,11 +20,16 @@ function authentication(req, res, next) {
 }
 
 async function authorization(req, res, next) {
-  try {
-    const token = req.header('x-auth-token');
+  let token;
 
-    if (!token)
-      return res.status(401).json({ msg: 'user is not authenticated' });
+  if (
+    req.headers['x-auth-token'] &&
+    req.headers['x-auth-token'].startsWith('Bearer')
+  ) {
+    token = req.headers['x-auth-token'].split(' ')[1];
+  }
+  try {
+    if (!token) return res.status(401).json({ msg: 'user is not enticated' });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -38,4 +43,5 @@ async function authorization(req, res, next) {
 
 module.exports = {
   authentication,
+  authorization,
 };

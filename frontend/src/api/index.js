@@ -14,6 +14,7 @@ API.interceptors.request.use((req) => {
 export const login = (userData) => API.post('/auth/login', userData);
 export const getAuth = () => API.get('/auth');
 export const register = (userData) => API.post('/auth/register', userData);
+export const getAdmin = () => API.get('/auth/admin');
 
 // PLANE ROUTES
 export const addNewPlane = (planeData) => API.post('/plane', planeData);
