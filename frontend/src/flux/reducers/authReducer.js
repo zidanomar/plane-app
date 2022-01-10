@@ -2,6 +2,7 @@ import {
   FETCHING_USER,
   FETCHING_USER_FAILED,
   LOGIN,
+  LOGOUT,
 } from '../../constant/actionType';
 
 const initialState = {
@@ -13,6 +14,20 @@ const initialState = {
     role: '',
     username: '',
     uuid: '',
+  },
+  isLoading: false,
+};
+
+const resetState = {
+  credential: {
+    email: '',
+    exp: 0,
+    iat: 0,
+    name: '',
+    role: '',
+    username: '',
+    uuid: '',
+    companyUUID: null,
   },
   isLoading: false,
 };
@@ -30,10 +45,13 @@ const authReducer = (state = initialState, action) => {
         isLoading: false,
         credential: action.payload,
       };
+    case LOGOUT:
+      return {
+        ...resetState,
+      };
     case FETCHING_USER_FAILED:
       return {
-        ...state,
-        isLoading: false,
+        ...resetState,
       };
     default:
       return state;

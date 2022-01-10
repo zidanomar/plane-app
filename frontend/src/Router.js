@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
 import Playground from './pages/Customer/Playground/Playground';
@@ -17,7 +17,6 @@ function Router() {
     const getAuthentication = async () => {
       try {
         dispatch(getAuth());
-        console.log('dispatch');
       } catch (error) {
         localStorage.removeItem('authToken');
       }

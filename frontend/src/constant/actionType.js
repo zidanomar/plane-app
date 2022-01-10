@@ -2,6 +2,7 @@ export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const FETCHING_USER = 'FETCHING_USER';
 export const FETCHING_USER_FAILED = 'FETCHING_USER_FAILED';
 

@@ -14,7 +14,7 @@ function ProtectedRoute({ children }) {
 
     const getAuthentication = async () => {
       try {
-        dispatch(getAuth());
+        dispatch(getAuth(navigate));
         console.log('dispatch');
       } catch (error) {
         localStorage.removeItem('authToken');

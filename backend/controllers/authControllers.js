@@ -60,12 +60,15 @@ exports.registerUser = async (req, res) => {
     const getUser = await UserAuth.findOne({
       where: { id: newUserAuth.id },
       include: [
-        { model: User, as: 'userDetail', attributes: ['name', 'email'] },
+        {
+          model: User,
+          as: 'userDetail',
+          attributes: ['name', 'email', 'username'],
+        },
         { model: Role, as: 'roleDetail', attributes: ['role'] },
       ],
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
-
     const token = jwt.sign(
       {
         uuid: getUser.uuid,

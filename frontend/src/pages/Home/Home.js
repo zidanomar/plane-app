@@ -1,69 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Button, useColorMode } from '@chakra-ui/react';
-
-import data from './users.json';
+import { Flex, Text } from '@chakra-ui/react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 function Home() {
-  const [userInput, setUserInput] = useState({
-    email: '',
-    password: '',
-  });
-  const [users, setUsers] = useState([]);
-
-  const inputHandler = (e) => {
-    setUserInput({
-      ...userInput,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const registeredEmail = users.find((x) => x.email === userInput.email);
-
-    if (registeredEmail) {
-      console.log('email already used');
-      setUserInput({
-        email: '',
-        password: '',
-      });
-    } else {
-      setUsers((prevValue) => [...prevValue, userInput]);
-      console.log(users);
-    }
-  };
-  useEffect(() => {
-    setUsers(data.users);
-    console.log(data);
-  }, []);
+  const username = useSelector(
+    (state) => state.userCredential.credential.username
+  );
 
   return (
-    <React.Fragment>
-      <form onSubmit={submitHandler}>
-        <input
-          type='text'
-          name='email'
-          value={users.email}
-          onChange={inputHandler}
-        />
-        <input
-          type='password'
-          name='password'
-          value={users.password}
-          onChange={inputHandler}
-        />
-        <button type='submit'>register</button>
-      </form>
-      {users.length > 0 ? (
-        <ul>
-          {users.map((u, i) => (
-            <li key={i}>{u.email}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>no user</p>
-      )}
-    </React.Fragment>
+    <Flex
+      alignItems='center'
+      width='100%'
+      justifyContent='center'
+      textAlign='center'
+      mt='16'
+    >
+      <Text as='h3' fontSize='2xl' mr='4'>
+        Hello
+      </Text>
+      <Text as='h1' fontSize='4xl' fontWeight='bold' mr='4'>
+        {username ? `${username}~!` : 'peeps~!'}
+      </Text>
+      <Text as='h3' fontSize='2xl'>
+        How could i help you
+      </Text>
+    </Flex>
   );
 }
 

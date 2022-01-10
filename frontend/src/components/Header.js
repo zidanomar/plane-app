@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as ReachLink } from 'react-router-dom';
+import { Link as ReachLink, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -11,10 +11,23 @@ import {
   Text,
   useColorMode,
 } from '@chakra-ui/react';
-import { MdLogin, MdWbSunny, MdNightsStay } from 'react-icons/md';
+import { MdLogin, MdLogout, MdWbSunny, MdNightsStay } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../flux/actions/authAction';
 
 function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
+  const credential = useSelector(
+    (state) => state.userCredential.credential.uuid
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    if (credential) {
+      dispatch(logout(navigate));
+    } else return;
+  };
 
   return (
     <HStack h='20'>
@@ -54,21 +67,42 @@ function Header() {
         </Flex>
 
         <Flex alignItems='center' gap={6}>
-          <Box
-            borderRadius='4'
-            display='flex'
-            alignItems='center'
-            fontSize='xl'
-            backgroundColor='purple.400'
-            color='white'
-            py='2'
-            px='4'
-          >
-            <Icon as={MdLogin} mr='2' display='inline-block' />
-            <Link as={ReachLink} to='/login'>
-              <Text as='p'>Login</Text>
-            </Link>
-          </Box>
+          <Link as={ReachLink} to='/login' textDecoration='none'>
+            <Box
+              onClick={logoutHandler}
+              borderRadius='4'
+              display='flex'
+              alignItems='center'
+              fontSize='xl'
+              backgroundColor='purple.400'
+              color='white'
+              py='2'
+              px='4'
+              transition='all 300ms ease-in-out'
+              _hover={{
+                cursor: 'pointer',
+                backgroundColor: 'purple.500',
+              }}
+            >
+              {credential ? (
+                <>
+                  <Icon as={MdLogout} mr='2' display='inline-block' />
+
+                  <Text as='p' textDecoration='none'>
+                    Logout
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Icon as={MdLogin} mr='2' display='inline-block' />
+
+                  <Text as='p' textDecoration='none'>
+                    Login
+                  </Text>
+                </>
+              )}
+            </Box>
+          </Link>
           <Button onClick={toggleColorMode}>
             {colorMode === 'light' ? (
               <Icon as={MdNightsStay} />

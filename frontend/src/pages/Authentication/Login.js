@@ -6,11 +6,15 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Link,
+  Text,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Link as ReachLink } from 'react-router-dom';
+import * as Yup from 'yup';
 
 import { login } from '../../flux/actions/authAction';
 
@@ -18,23 +22,13 @@ function Login() {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  function validateFirstName(value) {
-    let error;
-    if (!value) {
-      error = 'Name is required';
-    } else if (value.toLowerCase() === 'naruto') {
-      error = 'Username already exist 😱';
-    }
-    return error;
-  }
-
-  function validatePassword(value) {
-    let error;
-
-    if (!value) error = 'Password is required 😱';
-
-    return error;
-  }
+  const SigninSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Required'),
+    password: Yup.string()
+      .min(6, 'Password Is Too Short!')
+      .max(18, 'Password Is Too Long!')
+      .required('Password Is Required'),
+  });
 
   const loginHandler = (userData) => {
     dispatch(login(userData, navigate));
@@ -49,31 +43,31 @@ function Login() {
     >
       <Box w='lg' maxW='100%'>
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={SigninSchema}
           onSubmit={(values, actions) => {
             loginHandler(values);
             actions.setSubmitting(false);
           }}
         >
-          {(props) => (
+          {({ errors, touched }) => (
             <Form>
-              <Field name='email' validate={validateFirstName}>
-                {({ field, form }) => (
-                  <FormControl
-                    isInvalid={form.errors.email && form.touched.email}
-                  >
+              <Field name='email'>
+                {({ field }) => (
+                  <FormControl isInvalid={errors.email && touched.email}>
                     <FormLabel htmlFor='email'>Email</FormLabel>
                     <Input {...field} id='email' placeholder='email' />
-                    <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                    <FormErrorMessage>{errors.email}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
 
-              <Field name='password' validate={validatePassword}>
-                {({ field, form }) => (
-                  <FormControl
-                    isInvalid={form.errors.password && form.touched.password}
-                  >
+              <Field name='password'>
+                {({ field }) => (
+                  <FormControl isInvalid={errors.password && touched.password}>
                     <FormLabel htmlFor='password'>password</FormLabel>
                     <Input
                       {...field}
@@ -81,21 +75,22 @@ function Login() {
                       type='password'
                       placeholder='password'
                     />
-                    <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                    <FormErrorMessage>{errors.password}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
-              <Button
-                mt={4}
-                colorScheme='purple'
-                isLoading={props.isSubmitting}
-                type='submit'
-              >
+              <Button mt={4} colorScheme='purple' type='submit'>
                 Submit
               </Button>
             </Form>
           )}
         </Formik>
+        <Text fontSize='lg' mt='8'>
+          dont have account?{' '}
+          <Link as={ReachLink} to='/register'>
+            register now
+          </Link>
+        </Text>
       </Box>
     </Container>
   );
