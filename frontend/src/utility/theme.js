@@ -15,10 +15,9 @@ const theme = extendTheme({
       },
       body: {
         padding: 0,
-        color: 'purple.500',
+        color: 'teal.500',
       },
       a: {
-        color: 'teal.500',
         _hover: {
           textDecoration: 'none',
         },

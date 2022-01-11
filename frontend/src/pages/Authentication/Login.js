@@ -79,7 +79,7 @@ function Login() {
                   </FormControl>
                 )}
               </Field>
-              <Button mt={4} colorScheme='purple' type='submit'>
+              <Button mt={4} colorScheme='teal' type='submit'>
                 Submit
               </Button>
             </Form>

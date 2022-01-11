@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Playground from './pages/Customer/Playground/Playground';
+import Test from './pages/Admin/Test';
 import { Admin, Customer, Flight, Home, Login, Plane, Register } from './pages';
 import ProtectedRoute from './components/Routes/ProtectedRoute';
 import { Container } from '@chakra-ui/react';
@@ -28,7 +29,6 @@ function Router() {
         <Route path='/' element={<App />}>
           <Route index element={<Home />} />
           <Route
-            exact
             path='plane'
             element={
               <ProtectedRoute>
@@ -37,7 +37,6 @@ function Router() {
             }
           />
           <Route
-            exact
             path='customer'
             element={
               <ProtectedRoute>
@@ -46,7 +45,6 @@ function Router() {
             }
           />
           <Route
-            exact
             path='flight'
             element={
               <ProtectedRoute>
@@ -54,10 +52,13 @@ function Router() {
               </ProtectedRoute>
             }
           />
-          <Route exact path='admin' element={<Admin />} />
-          <Route exact path='playground' element={<Playground />} />
-          <Route exact path='login' element={<Login />} />
-          <Route exact path='register' element={<Register />} />
+
+          <Route path='playground' element={<Playground />} />
+          <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
+          <Route path='admin' element={<Admin />}>
+            <Route index element={<Test />} />
+          </Route>
         </Route>
       </Routes>
     </Container>

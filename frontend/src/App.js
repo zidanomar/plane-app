@@ -1,4 +1,5 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, Container } from '@chakra-ui/react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import ErrorDialog from './components/Dialog/ErrorDialog';
 import Header from './components/Header';
@@ -9,7 +10,9 @@ function App() {
     <ChakraProvider theme={theme}>
       <Header />
       <ErrorDialog />
-      <Outlet />
+      <Container maxW='container.xl' mt={8}>
+        <Outlet />
+      </Container>
     </ChakraProvider>
   );
 }

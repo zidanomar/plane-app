@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as ReachLink, useNavigate } from 'react-router-dom';
+import { Link as ReachLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -15,12 +15,38 @@ import { MdLogin, MdLogout, MdWbSunny, MdNightsStay } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../flux/actions/authAction';
 
+const navigations = [
+  {
+    path: '/',
+    name: 'Home',
+  },
+  {
+    path: '/plane',
+    name: 'Plane',
+  },
+  {
+    path: '/customer',
+    name: 'Customer',
+  },
+  {
+    path: '/flight',
+    name: 'Flight',
+  },
+];
+
 function Header() {
+  const { pathname } = useLocation();
+
   const { colorMode, toggleColorMode } = useColorMode();
+
   const credential = useSelector(
     (state) => state.userCredential.credential.uuid
   );
+
+  const role = useSelector((state) => state.userCredential.credential.role);
+  console.log(role);
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const logoutHandler = () => {
@@ -44,25 +70,84 @@ function Header() {
         </Flex>
 
         <Flex gap='10'>
-          <Link as={ReachLink} to='/'>
-            <Text as='p' fontSize='xl'>
-              Home
-            </Text>
-          </Link>
-          <Link as={ReachLink} to='/plane'>
-            <Text as='p' fontSize='xl'>
-              Plane
-            </Text>
-          </Link>
-          <Link as={ReachLink} to='/customer'>
-            <Text as='p' fontSize='xl'>
-              Customer
-            </Text>
-          </Link>
-          <Link as={ReachLink} to='/flight'>
-            <Text as='p' fontSize='xl'>
-              Flight
-            </Text>
+          {navigations.map((nav, i) => (
+            <Link
+              key={i}
+              to={nav.path}
+              as={ReachLink}
+              fontSize='xl'
+              width='100%'
+              position='relative'
+              transition='all 300ms ease-in-out'
+              _after={
+                pathname === nav.path && {
+                  content: `''`,
+                  position: 'absolute',
+                  width: '50%',
+                  height: '3px',
+                  backgroundColor: 'teal.100',
+                  bottom: '-15px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  borderRadius: 'full',
+                }
+              }
+              _hover={{
+                _after: {
+                  content: `''`,
+                  position: 'absolute',
+                  width: '50%',
+                  height: '3px',
+                  backgroundColor: 'teal.100',
+                  bottom: '-15px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  borderRadius: 'full',
+                  transition: 'all 300ms ease-in-out',
+                },
+              }}
+            >
+              {nav.name}
+            </Link>
+          ))}
+
+          <Link
+            to='/admin'
+            as={ReachLink}
+            display={role === 'admin' ? 'flex' : 'none'}
+            fontSize='xl'
+            width='100%'
+            position='relative'
+            transition='all 300ms ease-in-out'
+            _after={
+              pathname === '/admin' && {
+                content: `''`,
+                position: 'absolute',
+                width: '50%',
+                height: '3px',
+                backgroundColor: 'teal.100',
+                bottom: '-15px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                borderRadius: 'full',
+              }
+            }
+            _hover={{
+              _after: {
+                content: `''`,
+                position: 'absolute',
+                width: '50%',
+                height: '3px',
+                backgroundColor: 'teal.100',
+                bottom: '-15px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                borderRadius: 'full',
+                transition: 'all 300ms ease-in-out',
+              },
+            }}
+          >
+            Admin
           </Link>
         </Flex>
 
@@ -70,35 +155,29 @@ function Header() {
           <Link as={ReachLink} to='/login' textDecoration='none'>
             <Box
               onClick={logoutHandler}
-              borderRadius='4'
+              borderRadius={4}
               display='flex'
               alignItems='center'
               fontSize='xl'
-              backgroundColor='purple.400'
+              backgroundColor='teal.400'
               color='white'
               py='2'
               px='4'
               transition='all 300ms ease-in-out'
               _hover={{
                 cursor: 'pointer',
-                backgroundColor: 'purple.500',
+                backgroundColor: 'teal.500',
               }}
             >
               {credential ? (
                 <>
                   <Icon as={MdLogout} mr='2' display='inline-block' />
-
-                  <Text as='p' textDecoration='none'>
-                    Logout
-                  </Text>
+                  Logout
                 </>
               ) : (
                 <>
                   <Icon as={MdLogin} mr='2' display='inline-block' />
-
-                  <Text as='p' textDecoration='none'>
-                    Login
-                  </Text>
+                  Login
                 </>
               )}
             </Box>
