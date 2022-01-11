@@ -16,17 +16,19 @@ function ErrorDialog() {
     status = false;
   }
 
+  const productDialogFooter = <React.Fragment></React.Fragment>;
+
   return (
     <Dialog
       visible={status}
       style={{ width: '450px' }}
-      header='Product Details'
+      header='Error Acquired'
       modal
       className='p-fluid'
+      footer={productDialogFooter}
       onHide={() => dispatch(clearErrors())}
     >
       <div>
-        <h2>Error!</h2>
         <h3>{`status: ${error.status || 500}`}</h3>
         <h3>{`message: ${error.message || 'Server Error'}`}</h3>
       </div>

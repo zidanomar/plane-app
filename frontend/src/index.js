@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import globalReducer from './flux/reducers';
+import { ColorModeScript, theme } from '@chakra-ui/react';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './Router';
 
 const middleWare = [thunk];
 
@@ -19,7 +21,10 @@ const store = createStore(
 );
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );

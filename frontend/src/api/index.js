@@ -2,13 +2,19 @@ import axios from 'axios';
 
 const API = axios.create({ baseURL: 'http://localhost:5000' });
 
-// API.interceptors.request.use((req) => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     req.headers['x-auth-token'] = token;
-//   }
-//   return req;
-// });
+API.interceptors.request.use((req) => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    req.headers['x-auth-token'] = `Bearer ${token}`;
+  }
+  return req;
+});
+
+// AUTHENTICATION ROUTES
+export const login = (userData) => API.post('/auth/login', userData);
+export const getAuth = () => API.get('/auth');
+export const register = (userData) => API.post('/auth/register', userData);
+export const getAdmin = () => API.get('/auth/admin');
 
 // PLANE ROUTES
 export const addNewPlane = (planeData) => API.post('/plane', planeData);
