@@ -21,15 +21,15 @@ const navigations = [
     name: 'Home',
   },
   {
-    path: '/plane',
+    path: '/planes',
     name: 'Plane',
   },
   {
-    path: '/customer',
-    name: 'Customer',
+    path: '/companies',
+    name: 'Company',
   },
   {
-    path: '/flight',
+    path: '/flights',
     name: 'Flight',
   },
 ];
@@ -44,7 +44,6 @@ function Header() {
   );
 
   const role = useSelector((state) => state.userCredential.credential.role);
-  console.log(role);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -56,7 +55,14 @@ function Header() {
   };
 
   return (
-    <HStack h='20'>
+    <HStack
+      h='20'
+      position='sticky'
+      top='0'
+      left='0'
+      backgroundColor={colorMode === 'light' ? 'white' : 'gray.800'}
+      zIndex='sticky'
+    >
       <Container
         maxW='container.xl'
         display='flex'
@@ -152,7 +158,7 @@ function Header() {
         </Flex>
 
         <Flex alignItems='center' gap={6}>
-          <Link as={ReachLink} to='/login' textDecoration='none'>
+          <Link as={ReachLink} to='/auth' textDecoration='none'>
             <Box
               onClick={logoutHandler}
               borderRadius={4}

@@ -7,9 +7,9 @@ import { InputText } from 'primereact/inputtext';
 import { RadioButton } from 'primereact/radiobutton';
 import { classNames } from 'primereact/utils';
 
-import { DialogFooter } from '../../components/DataTableTemplate';
+import { DialogFooter } from '../../../components/DataTableTemplate';
 
-import { getAllCustomers } from '../../flux/actions/customerAction';
+import { getAllCustomers } from '../../../flux/actions/customerAction';
 
 function PlaneDialog({
   visible,

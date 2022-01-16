@@ -1,14 +1,29 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import Playground from './pages/Customer/Playground/Playground';
 import Test from './pages/Admin/Test';
-import { Admin, Customer, Flight, Home, Login, Plane, Register } from './pages';
-import ProtectedRoute from './components/Routes/ProtectedRoute';
-import { Container } from '@chakra-ui/react';
+import {
+  Admin,
+  AdminCustomer,
+  AdminFlight,
+  AdminPlane,
+  AuthLayout,
+  Companies,
+  Company,
+  Flight,
+  Flights,
+  Home,
+  Login,
+  PageLayout,
+  Plane,
+  Planes,
+  Register,
+} from './pages';
 import { useDispatch } from 'react-redux';
 import { getAuth } from './flux/actions/authAction';
 import App from './App';
+import AdminRoute from './components/Routes/AdminRoute';
+import NotFound from './components/NotFound';
 
 function Router() {
   const dispatch = useDispatch();
@@ -24,44 +39,64 @@ function Router() {
     getAuthentication();
   }, [dispatch]);
   return (
-    <Container maxW='container.xl'>
-      <Routes>
-        <Route path='/' element={<App />}>
-          <Route index element={<Home />} />
+    <Routes>
+      <Route path='/' element={<App />}>
+        <Route index element={<Home />} />
+
+        <Route path='planes' element={<PageLayout />}>
+          <Route index element={<Planes />} />
+          <Route path=':planeId' element={<Plane />} />
+        </Route>
+
+        <Route path='companies' element={<PageLayout />}>
+          <Route index element={<Companies />} />
+          <Route path=':companyId' element={<Company />} />
+        </Route>
+
+        <Route path='flights' element={<PageLayout />}>
+          <Route index element={<Flights />} />
+          <Route path=':flightId' element={<Flight />} />
+        </Route>
+
+        <Route path='/auth' element={<AuthLayout />}>
+          <Route index element={<Login />} />
+          <Route path='register' element={<Register />} />
+        </Route>
+
+        <Route path='admin' element={<Admin />}>
+          <Route index element={<Test />} />
+
           <Route
-            path='plane'
+            path='planes'
             element={
-              <ProtectedRoute>
-                <Plane />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='customer'
-            element={
-              <ProtectedRoute>
-                <Customer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='flight'
-            element={
-              <ProtectedRoute>
-                <Flight />
-              </ProtectedRoute>
+              <AdminRoute>
+                <AdminPlane />
+              </AdminRoute>
             }
           />
 
-          <Route path='playground' element={<Playground />} />
-          <Route path='login' element={<Login />} />
-          <Route path='register' element={<Register />} />
-          <Route path='admin' element={<Admin />}>
-            <Route index element={<Test />} />
-          </Route>
+          <Route
+            path='companies'
+            element={
+              <AdminRoute>
+                <AdminCustomer />
+              </AdminRoute>
+            }
+          />
+
+          <Route
+            path='flights'
+            element={
+              <AdminRoute>
+                <AdminFlight />
+              </AdminRoute>
+            }
+          />
         </Route>
-      </Routes>
-    </Container>
+
+        <Route path='*' element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 }
 

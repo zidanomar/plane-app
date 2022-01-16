@@ -15,7 +15,6 @@ const theme = extendTheme({
       },
       body: {
         padding: 0,
-        color: 'teal.500',
       },
       a: {
         _hover: {

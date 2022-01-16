@@ -21,7 +21,7 @@ export const login = (userData, navigate) => async (dispatch) => {
     return dispatch({ type: LOGIN, payload: decoded });
   } catch (error) {
     localStorage.removeItem('authToken');
-    navigate('/login');
+    navigate('/auth');
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)
     );
@@ -29,7 +29,7 @@ export const login = (userData, navigate) => async (dispatch) => {
   }
 };
 
-export const getAuth = (navigate) => async (dispatch) => {
+export const getAuth = () => async (dispatch) => {
   try {
     dispatch({ type: FETCHING_USER });
 
@@ -65,7 +65,7 @@ export const register = (userData, navigate) => async (dispatch) => {
     return dispatch({ type: LOGIN, payload: decoded });
   } catch (error) {
     localStorage.removeItem('authToken');
-    navigate('/register');
+    navigate('/auth/register');
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)
     );

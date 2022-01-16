@@ -1,14 +1,16 @@
-import { HStack } from '@chakra-ui/react';
+import { Container, Flex } from '@chakra-ui/react';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 
 function Admin() {
   return (
-    <HStack width='full' flex={1} overflow='hidden'>
+    <Flex width='full'>
       <Sidebar />
-      <Outlet />
-    </HStack>
+      <Container maxW='container.xl' mt={8}>
+        <Outlet />
+      </Container>
+    </Flex>
   );
 }
 
