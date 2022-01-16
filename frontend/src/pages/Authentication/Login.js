@@ -87,7 +87,7 @@ function Login() {
         </Formik>
         <Text fontSize='lg' mt='8'>
           dont have account?{' '}
-          <Link as={ReachLink} to='/register'>
+          <Link as={ReachLink} to='/auth/register'>
             register now
           </Link>
         </Text>

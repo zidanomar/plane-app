@@ -6,9 +6,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 // import { classNames } from 'primereact/utils';
 
-import { DialogFooter } from '../../components/DataTableTemplate';
+import { DialogFooter } from '../../../components/DataTableTemplate';
 
-import { getAllPlane } from '../../flux/actions/planeAction';
+import { getAllPlane } from '../../../flux/actions/planeAction';
 import { classNames } from 'primereact/utils';
 
 function FlightDialog({

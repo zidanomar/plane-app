@@ -7,7 +7,7 @@ function AdminRoute({ children }) {
 
   useState(() => {
     if (!localStorage.getItem('authToken')) {
-      navigate('/login');
+      navigate('/auth');
     }
 
     const getAdminUser = async () => {
@@ -22,11 +22,7 @@ function AdminRoute({ children }) {
     getAdminUser();
   }, []);
 
-  return localStorage.getItem('authToken') ? (
-    children
-  ) : (
-    <Navigate to='/login' />
-  );
+  return localStorage.getItem('authToken') ? children : <Navigate to='/' />;
 }
 
 export default AdminRoute;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog } from 'primereact/dialog';
-import { DialogFooter } from '../../components/DataTableTemplate';
+import { DialogFooter } from '../../../components/DataTableTemplate';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 

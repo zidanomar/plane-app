@@ -9,8 +9,8 @@ import {
   ActionBodyTemplate,
   DataTableHeader,
   LeftToolbarTemplate,
-} from '../../components/DataTableTemplate';
-import DeleteDialog from '../../components/Dialog/DeleteDialog';
+} from '../../../components/DataTableTemplate';
+import DeleteDialog from '../../../components/Dialog/DeleteDialog';
 
 import {
   addNewCustomer as postNewCustomer,
@@ -18,7 +18,7 @@ import {
   deleteManyCustomer,
   getAllCustomers,
   updateCustomer,
-} from '../../flux/actions/customerAction';
+} from '../../../flux/actions/customerAction';
 import CustomerDialog from './CustomerDialog';
 
 function Customer() {
@@ -308,4 +308,4 @@ function Customer() {
   );
 }
 
-export default Customer;
+export { Customer };

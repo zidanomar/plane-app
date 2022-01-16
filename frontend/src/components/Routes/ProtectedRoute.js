@@ -10,7 +10,7 @@ function ProtectedRoute({ children }) {
 
   useEffect(() => {
     if (!localStorage.getItem('authToken')) {
-      navigate('/login');
+      navigate('/auth');
     }
 
     const getAuthentication = async () => {
@@ -18,18 +18,14 @@ function ProtectedRoute({ children }) {
         await api.getAuth();
       } catch (error) {
         localStorage.removeItem('authToken');
-        navigate('/login');
+        navigate('/auth');
       }
     };
 
     getAuthentication();
   }, [dispatch, navigate]);
 
-  return localStorage.getItem('authToken') ? (
-    children
-  ) : (
-    <Navigate to='/login' />
-  );
+  return localStorage.getItem('authToken') ? children : <Navigate to='/auth' />;
 }
 
 export default ProtectedRoute;
