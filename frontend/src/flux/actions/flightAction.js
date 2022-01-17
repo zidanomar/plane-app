@@ -7,6 +7,7 @@ import {
   UPDATE_FLIGHT,
   FETCHING_FLIGHT_FAILED,
   DELETE_MANY_FLIGHTS,
+  GET_FLIGHT_DETAIL,
 } from '../../constant/actionType';
 import { returnErrors } from './errorAction';
 
@@ -17,6 +18,20 @@ export const getAllFlight = () => async (dispatch) => {
     const flights = await api.getAllFlights();
 
     return dispatch({ type: FETCHED_FLIGHTS, payload: flights.data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_FLIGHT_FAILED });
+  }
+};
+
+export const getFlightById = (flightId) => async (dispatch) => {
+  try {
+    dispatch({ type: FETCHING_FLIGHTS });
+
+    const { data } = await api.getFlightById(flightId);
+    dispatch({ type: GET_FLIGHT_DETAIL, payload: data });
   } catch (error) {
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)

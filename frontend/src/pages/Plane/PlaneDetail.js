@@ -101,6 +101,7 @@ function PlaneDetail() {
         </GridItem>
         <GridItem w='100%'>
           <MotionBox
+            key={Math.random()}
             w='100%'
             display='flex'
             alignItems='center'

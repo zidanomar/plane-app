@@ -1,7 +1,6 @@
-import { Box, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { MdAccountCircle, MdFlight, MdFlightTakeoff } from 'react-icons/md';
-import { useLocation } from 'react-router-dom';
 
 import NavLink from './NavLink';
 

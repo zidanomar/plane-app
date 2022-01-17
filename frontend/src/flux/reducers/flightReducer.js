@@ -5,12 +5,14 @@ import {
   FETCHED_FLIGHTS,
   FETCHING_FLIGHTS,
   FETCHING_FLIGHT_FAILED,
+  GET_FLIGHT_DETAIL,
   UPDATE_FLIGHT,
 } from '../../constant/actionType';
 
 const initialState = {
   isLoading: false,
   flights: [],
+  flightDetail: {},
 };
 
 export const flightReducer = (state = initialState, action) => {
@@ -25,6 +27,12 @@ export const flightReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         flights: action.payload,
+      };
+    case GET_FLIGHT_DETAIL:
+      return {
+        ...state,
+        isLoading: false,
+        flightDetail: action.payload,
       };
     case ADD_FLIGHT:
       return {

@@ -10,7 +10,7 @@ import {
   AuthLayout,
   Companies,
   Company,
-  Flight,
+  FlightDetail,
   Flights,
   Home,
   Login,
@@ -55,7 +55,7 @@ function Router() {
 
         <Route path='flights' element={<PageLayout />}>
           <Route index element={<Flights />} />
-          <Route path=':flightId' element={<Flight />} />
+          <Route path=':flightId' element={<FlightDetail />} />
         </Route>
 
         <Route path='/auth' element={<AuthLayout />}>

@@ -8,7 +8,6 @@ import {
   HStack,
   Icon,
   Link,
-  Text,
   useColorMode,
 } from '@chakra-ui/react';
 import { MdLogin, MdLogout, MdWbSunny, MdNightsStay } from 'react-icons/md';
@@ -16,10 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../flux/actions/authAction';
 
 const navigations = [
-  {
-    path: '/',
-    name: 'Home',
-  },
   {
     path: '/planes',
     name: 'Plane',
@@ -70,9 +65,9 @@ function Header() {
         justifyContent='space-between'
       >
         <Flex>
-          <Text as='h3' fontSize='xl' fontWeight='bold'>
+          <Link as={ReachLink} to='/' fontSize='xl' fontWeight='bold'>
             Plane App
-          </Text>
+          </Link>
         </Flex>
 
         <Flex gap='10'>
@@ -116,7 +111,9 @@ function Header() {
               {nav.name}
             </Link>
           ))}
+        </Flex>
 
+        <Flex alignItems='center' gap={6}>
           <Link
             to='/admin'
             as={ReachLink}
@@ -155,9 +152,6 @@ function Header() {
           >
             Admin
           </Link>
-        </Flex>
-
-        <Flex alignItems='center' gap={6}>
           <Link as={ReachLink} to='/auth' textDecoration='none'>
             <Box
               onClick={logoutHandler}

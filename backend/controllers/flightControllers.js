@@ -42,6 +42,7 @@ exports.addFlight = async (req, res) => {
     });
   }
 };
+
 // get all flight
 
 // METHOD: GET
@@ -60,6 +61,7 @@ exports.getAllFlights = async (req, res) => {
     });
   }
 };
+
 // get specified flight
 
 // METHOD: GET
@@ -68,12 +70,13 @@ exports.getAllFlights = async (req, res) => {
 exports.getFlightById = async (req, res) => {
   const { flightId } = req.params;
   try {
-    const flight = await Flight.findAll({
+    const flight = await Flight.findOne({
       where: { uuid: flightId },
       include: 'planeDetail',
     });
 
-    if (flight.length < 1) throw { status: 404, message: 'item not found' };
+    if (!flight)
+      throw { status: 404, message: 'No Flight Found With Specified Id' };
 
     res.status(200).json(flight);
   } catch (error) {

@@ -6,7 +6,7 @@ const DataTableHeader = ({ setGlobalFilter, title }) => (
     className='table-header p-d-flex p-jc-between p-ai-center'
     style={{ gap: '1rem' }}
   >
-    <h5 className='p-mx-0 p-my-1'>{`Manage ${title}`}</h5>
+    <h5 className='p-mx-0 p-my-1'>{`List Of ${title}`}</h5>
     <span className='p-input-icon-left'>
       <i className='pi pi-search' />
       <InputText

@@ -31,7 +31,7 @@ function Planes() {
           gap={6}
         >
           {planes.map((plane) => (
-            <Link as={ReachLink} to={`/planes/${plane.uuid}`}>
+            <Link key={plane.uuid} as={ReachLink} to={`/planes/${plane.uuid}`}>
               <PlaneCard
                 name={plane.name}
                 owner={plane.owner}

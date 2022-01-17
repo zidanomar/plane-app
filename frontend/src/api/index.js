@@ -39,6 +39,7 @@ export const deleteManyCustomers = (selectedItems) =>
 
 // FLIGHT ROUTES
 export const getAllFlights = () => API.get('/flight');
+export const getFlightById = (flightId) => API.get(`/flight/${flightId}`);
 export const addNewFlight = (newFlightData) =>
   API.post('/flight', newFlightData);
 export const updateFlight = (flightId, flightData) =>

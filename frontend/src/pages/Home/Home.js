@@ -8,7 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import rocket from '../../images/rocket.png';
@@ -76,6 +76,7 @@ function Home() {
           justifyContent='center'
         >
           <MotionFlex
+            key={Math.random()}
             variants={textVariants}
             initial='hidden'
             animate='visible'
@@ -86,6 +87,7 @@ function Home() {
               Hello
             </Text>
             <MotionText
+              key={Math.random()}
               as='h1'
               fontSize='4xl'
               fontWeight='bold'
@@ -102,6 +104,7 @@ function Home() {
           </MotionFlex>
         </GridItem>
         <MotionBox
+          key={Math.random()}
           w='100%'
           display='flex'
           alignItems='center'

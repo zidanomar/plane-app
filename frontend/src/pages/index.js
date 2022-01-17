@@ -18,7 +18,7 @@ import Companies from './Company/Companies';
 import Company from './Company/Company';
 
 import Flights from './Flight/Flights';
-import Flight from './Flight/Flight';
+import FlightDetail from './Flight/FlightDetail';
 
 export {
   Login,
@@ -35,5 +35,5 @@ export {
   Companies,
   Company,
   Flights,
-  Flight,
+  FlightDetail,
 };
