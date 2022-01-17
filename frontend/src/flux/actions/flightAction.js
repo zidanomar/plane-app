@@ -94,7 +94,6 @@ export const deleteManyFlights = (selectedItems) => async (dispatch) => {
 
     dispatch({ type: DELETE_MANY_FLIGHTS, payload: selectedItems });
   } catch (error) {
-    console.log(error);
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)
     );

@@ -1,4 +1,4 @@
-const { Plane, Customer } = require('../database/models');
+const { Plane, Company } = require('../database/models');
 
 // METHOD: GET
 // PATH: /plane
@@ -45,17 +45,17 @@ exports.getPlaneById = async (req, res) => {
 // PATH: /plane
 // DETAILS: add new plane to list
 exports.addPlane = async (req, res) => {
-  const { customerId, name, aircraft_number, tail_number, isDelivered } =
+  const { companyId, name, aircraft_number, tail_number, isDelivered } =
     req.body;
 
   try {
-    const customer = await Customer.findOne({ where: { uuid: customerId } });
+    const company = await Company.findOne({ where: { uuid: companyId } });
 
     const newPlane = await Plane.create({
       name,
       aircraft_number,
       tail_number,
-      customer_id: customer.id,
+      company_id: company.id,
       isDelivered,
     });
 
@@ -79,33 +79,35 @@ exports.addPlane = async (req, res) => {
 // DETAILS: update specific plane details
 exports.updatePlane = async (req, res) => {
   const { planeId } = req.params;
-  const { name, aircraft_number, tail_number, owner, isDelivered } = req.body;
-  let items;
-  try {
-    if (owner) {
-      const customer = await Customer.findOne({ where: { uuid: owner.uuid } });
+  const { companyId, name, aircraft_number, tail_number, isDelivered } =
+    req.body;
 
-      if (!customer) throw { status: 404, message: 'User Not Found' };
+  let items;
+
+  try {
+    if (companyId) {
+      const company = await Company.findOne({ where: { uuid: companyId } });
+
+      if (!company) throw { status: 404, message: 'Company Not Found' };
 
       items = {
         name,
         aircraft_number,
         tail_number,
-        customer_id: customer.id,
+        company_id: company.id,
         isDelivered,
       };
     } else {
       items = {
         name,
-        aircraft_number: +aircraft_number,
-        tail_number: +tail_number,
+        aircraft_number,
+        tail_number,
         isDelivered,
       };
     }
     const updatedPlane = await Plane.update(
-      {
-        ...items,
-      },
+      items,
+
       {
         where: { uuid: planeId },
         returning: true,
@@ -149,7 +151,7 @@ exports.deletePlaneById = async (req, res) => {
 };
 
 // METHOD: DELETE
-// PATH: /customer/deleteMany
+// PATH: /plane/deleteMany
 // DETAILS: delete many planes
 exports.deleteManyPlanes = async (req, res) => {
   const { selectedItems } = req.body;

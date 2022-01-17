@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Test from './pages/Admin/Test';
 import {
   Admin,
+  AdminCompany,
   AdminCustomer,
   AdminFlight,
   AdminPlane,
@@ -76,10 +77,19 @@ function Router() {
           />
 
           <Route
-            path='companies'
+            path='customer'
             element={
               <AdminRoute>
                 <AdminCustomer />
+              </AdminRoute>
+            }
+          />
+
+          <Route
+            path='companies'
+            element={
+              <AdminRoute>
+                <AdminCompany />
               </AdminRoute>
             }
           />

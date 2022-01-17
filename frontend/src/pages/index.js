@@ -8,6 +8,7 @@ import Register from './Authentication/Register';
 
 import Admin from './Admin/Admin';
 import { Customer as AdminCustomer } from './Admin/Customer/Customer';
+import { Company as AdminCompany } from './Admin/Company/Company';
 import { Plane as AdminPlane } from './Admin/Plane/Plane';
 import { Flight as AdminFlight } from './Admin/Flight/Flight';
 
@@ -25,6 +26,7 @@ export {
   Home,
   PageLayout,
   AdminCustomer,
+  AdminCompany,
   AdminPlane,
   AdminFlight,
   Register,

@@ -27,7 +27,7 @@ function Plane() {
     aircraft_number: '',
     tail_number: '',
     isDelivered: false,
-    customerId: '',
+    companyId: '',
   };
 
   const dt = useRef(null);
@@ -76,9 +76,8 @@ function Plane() {
 
   const onOwnerChange = (e) => {
     const { value } = e;
-
     let _plane = { ...newPlane };
-    _plane['customerId'] = value.uuid;
+    _plane['companyId'] = value.uuid;
     setNewPlane(_plane);
     setSelectedOwner(value);
   };
@@ -100,12 +99,11 @@ function Plane() {
 
   const onAddNewPlane = () => {
     setSubmitted(true);
-
     if (
       newPlane.name &&
       newPlane.aircraft_number > 9999 &&
       newPlane.tail_number > 9999 &&
-      newPlane.customerId
+      newPlane.companyId
     ) {
       dispatch(addNewPlane(newPlane));
       toast.current.show({
@@ -143,8 +141,7 @@ function Plane() {
     if (
       newPlane.name &&
       newPlane.aircraft_number > 9999 &&
-      newPlane.tail_number > 9999 &&
-      newPlane.customerId
+      newPlane.tail_number > 9999
     ) {
       dispatch(updatePlane(newPlane.uuid, newPlane));
       toast.current.show({

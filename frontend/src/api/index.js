@@ -37,6 +37,16 @@ export const deleteCustomer = (customerId) =>
 export const deleteManyCustomers = (selectedItems) =>
   API.delete('/customer/deleteMany', { data: selectedItems });
 
+// COMPANY ROUTES
+export const getAllCompany = () => API.get('/company');
+export const addNewCompany = (newCompanyData) =>
+  API.post('/company', newCompanyData);
+export const updateCompany = (companyId, newCompanyData) =>
+  API.patch(`/company/${companyId}`, newCompanyData);
+export const deleteCompany = (companyId) => API.delete(`/company/${companyId}`);
+export const deleteManyCompany = (selectedItems) =>
+  API.delete('/company/deleteMany', { data: selectedItems });
+
 // FLIGHT ROUTES
 export const getAllFlights = () => API.get('/flight');
 export const getFlightById = (flightId) => API.get(`/flight/${flightId}`);

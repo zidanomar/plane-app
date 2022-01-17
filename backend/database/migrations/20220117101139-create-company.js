@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, DataTypes) => {
-    await queryInterface.createTable('planes', {
+    await queryInterface.createTable('companies', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,22 +16,6 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      aircraft_number: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      tail_number: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      company_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      isDelivered: {
-        allowNull: false,
-        type: DataTypes.BOOLEAN,
-      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -43,6 +27,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, DataTypes) => {
-    await queryInterface.dropTable('planes');
+    await queryInterface.dropTable('companies');
   },
 };
