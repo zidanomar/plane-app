@@ -15,7 +15,7 @@ import {
   Home,
   Login,
   PageLayout,
-  Plane,
+  PlaneDetail,
   Planes,
   Register,
 } from './pages';
@@ -45,7 +45,7 @@ function Router() {
 
         <Route path='planes' element={<PageLayout />}>
           <Route index element={<Planes />} />
-          <Route path=':planeId' element={<Plane />} />
+          <Route path=':planeId' element={<PlaneDetail />} />
         </Route>
 
         <Route path='companies' element={<PageLayout />}>

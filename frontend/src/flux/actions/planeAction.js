@@ -6,6 +6,7 @@ import {
   FETCHED_PLANE,
   FETCHING_PLANE,
   FETCHING_PLANE_FAILED,
+  GET_PLANE_DETAIL,
   UPDATE_PLANE,
 } from '../../constant/actionType';
 import { returnErrors } from './errorAction';
@@ -16,6 +17,20 @@ export const getAllPlane = () => async (dispatch) => {
 
     const fetchAllPlane = await api.getAllPlanes();
     return dispatch({ type: FETCHED_PLANE, payload: fetchAllPlane.data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_PLANE_FAILED });
+  }
+};
+
+export const getPlaneById = (planeId) => async (dispatch) => {
+  try {
+    dispatch({ type: FETCHING_PLANE });
+
+    const { data } = await api.getPlaneById(planeId);
+    return dispatch({ type: GET_PLANE_DETAIL, payload: data });
   } catch (error) {
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)

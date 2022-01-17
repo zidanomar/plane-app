@@ -12,7 +12,7 @@ import { Plane as AdminPlane } from './Admin/Plane/Plane';
 import { Flight as AdminFlight } from './Admin/Flight/Flight';
 
 import Planes from './Plane/Planes';
-import Plane from './Plane/Plane';
+import PlaneDetail from './Plane/PlaneDetail';
 
 import Companies from './Company/Companies';
 import Company from './Company/Company';
@@ -31,7 +31,7 @@ export {
   Admin,
   AuthLayout,
   Planes,
-  Plane,
+  PlaneDetail,
   Companies,
   Company,
   Flights,

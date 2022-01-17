@@ -7,12 +7,14 @@ import {
   FETCHED_PLANE,
   FETCHING_PLANE,
   FETCHING_PLANE_FAILED,
+  GET_PLANE_DETAIL,
   UPDATE_PLANE,
 } from '../../constant/actionType';
 
 const initialState = {
   isLoading: false,
   planes: [],
+  planeDetail: {},
 };
 
 const planeReducer = (state = initialState, action) => {
@@ -27,6 +29,12 @@ const planeReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case GET_PLANE_DETAIL:
+      return {
+        ...state,
+        planeDetail: action.payload,
+        isLoading: false,
       };
     case ADD_PLANE:
       return {

@@ -26,7 +26,6 @@ const imageVariants = {
     transition: {
       yoyo: Infinity,
       duration: 1,
-      delay: 1,
     },
   },
 };

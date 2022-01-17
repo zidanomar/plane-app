@@ -8,6 +8,7 @@ export const FETCHING_USER_FAILED = 'FETCHING_USER_FAILED';
 
 export const FETCHED_PLANE = 'FETCHED_PLANE';
 export const FETCHING_PLANE = 'FETCHING_PLANE';
+export const GET_PLANE_DETAIL = 'GET_PLANE_DETAIL';
 export const ADD_PLANE = 'ADD_PLANE';
 export const UPDATE_PLANE = 'UPDATE_PLANE';
 export const DELETE_PLANE = 'DELETE_PLANE';

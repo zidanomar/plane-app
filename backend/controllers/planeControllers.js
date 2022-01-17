@@ -25,10 +25,12 @@ exports.getPlaneList = async (req, res) => {
 exports.getPlaneById = async (req, res) => {
   const { planeId } = req.params;
   try {
-    const plane = await Plane.findAll({ where: { id: planeId } });
+    const plane = await Plane.findOne({
+      where: { uuid: planeId },
+      include: 'owner',
+    });
 
-    if (plane.length < 1)
-      return res.status(404).json({ message: 'No plane found' });
+    if (!plane) return res.status(404).json({ message: 'No plane found' });
 
     res.status(200).json(plane);
   } catch (error) {
