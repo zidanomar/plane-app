@@ -1,67 +1,68 @@
 import {
-  ADD_CUSTOMER,
-  DELETE_CUSTOMER,
-  DELETE_MANY_CUSTOMERS,
-  FETCHED_CUSTOMERS,
-  FETCHING_CUSTOMERS,
-  FETCHING_CUSTOMER_FAILED,
-  UPDATE_CUSTOMER,
+  ADD_COMPANY,
+  DELETE_COMPANY,
+  DELETE_MANY_COMPANY,
+  FETCHED_COMPANY,
+  FETCHING_COMPANY,
+  FETCHING_COMPANY_FAILED,
+  UPDATE_COMPANY,
 } from '../../constant/actionType';
 
 const initialState = {
   isLoading: false,
-  customers: [],
+  companies: [],
+  companyDetail: {},
 };
 
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCHING_CUSTOMERS:
+    case FETCHING_COMPANY:
       return {
         ...state,
         isLoading: true,
       };
-    case FETCHED_CUSTOMERS:
+    case FETCHED_COMPANY:
       return {
         ...state,
         isLoading: false,
-        customers: action.payload,
+        companies: action.payload,
       };
-    case ADD_CUSTOMER:
+    case ADD_COMPANY:
       return {
         ...state,
         isLoading: false,
-        customers: [...state.customers, action.payload],
+        companies: [...state.companies, action.payload],
       };
-    case UPDATE_CUSTOMER:
-      const index = state.customers.findIndex(
+    case UPDATE_COMPANY:
+      const index = state.companies.findIndex(
         (x) => x.uuid === action.payload.uuid
       );
-      let updatedItems = [...state.customers];
+      let updatedItems = [...state.companies];
       updatedItems[index] = action.payload;
       return {
         ...state,
         isLoading: false,
-        customers: updatedItems,
+        companies: updatedItems,
       };
-    case DELETE_CUSTOMER:
-      const currentCustomer = state.customers.filter(
+    case DELETE_COMPANY:
+      const currentCompany = state.companies.filter(
         (x) => x.uuid !== action.payload
       );
       return {
         ...state,
         isLoading: false,
-        customers: currentCustomer,
+        companies: currentCompany,
       };
-    case DELETE_MANY_CUSTOMERS:
-      const currentCustomers = state.customers.filter(
+    case DELETE_MANY_COMPANY:
+      const currentCompanies = state.companies.filter(
         (x) => !action.payload.includes(x.uuid)
       );
       return {
         ...state,
         isLoading: false,
-        customers: currentCustomers,
+        companies: currentCompanies,
       };
-    case FETCHING_CUSTOMER_FAILED:
+    case FETCHING_COMPANY_FAILED:
       return {
         ...state,
         isLoading: false,

@@ -9,7 +9,7 @@ import { classNames } from 'primereact/utils';
 
 import { DialogFooter } from '../../../components/DataTableTemplate';
 
-import { getAllCustomers } from '../../../flux/actions/customerAction';
+import { getAllCompany } from '../../../flux/actions/companyAction';
 
 function PlaneDialog({
   visible,
@@ -24,16 +24,16 @@ function PlaneDialog({
   onOwnerChange,
 }) {
   const dispatch = useDispatch();
-  const customer = useSelector((state) => state.customer);
+  const companies = useSelector((state) => state.company.companies);
 
-  const owners = customer.customers.map((x) =>
+  const owners = companies.map((x) =>
     Object.entries(x)
       .filter(([key, value]) => key !== 'planes')
       .reduce((x, [key, value]) => ({ ...x, [key]: value }), {})
   );
 
   useEffect(() => {
-    dispatch(getAllCustomers());
+    dispatch(getAllCompany());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

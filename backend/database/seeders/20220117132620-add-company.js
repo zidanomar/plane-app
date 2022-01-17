@@ -12,7 +12,7 @@ module.exports = {
      * }], {});
      */
     await queryInterface.bulkInsert(
-      'customers',
+      'companies',
       [
         {
           uuid: '18eb02f5-628e-4007-9a71-bcd1eac30979',
@@ -44,6 +44,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('customers', null, {});
+    await queryInterface.bulkDelete('companies', null, {});
   },
 };

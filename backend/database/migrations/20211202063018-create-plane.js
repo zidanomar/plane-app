@@ -24,7 +24,7 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      customer_id: {
+      company_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

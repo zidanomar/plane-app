@@ -9,20 +9,19 @@ import {
   ActionBodyTemplate,
   DataTableHeader,
   LeftToolbarTemplate,
-} from '../../../components/DataTableTemplate';
-import DeleteDialog from '../../../components/Dialog/DeleteDialog';
-
+} from '../DataTableTemplate';
+import DeleteDialog from '../Dialog/DeleteDialog';
 import {
-  addNewCustomer as postNewCustomer,
-  deleteCustomer,
-  deleteManyCustomer,
-  getAllCustomers,
-  updateCustomer,
-} from '../../../flux/actions/customerAction';
-import CustomerDialog from './CustomerDialog';
+  getAllCompany,
+  addNewCompany,
+  updateCompany,
+  deleteManyCompany,
+  deleteCompany,
+} from '../../flux/actions/companyAction';
+import CompanyDialog from '../Dialog/CompanyDialog';
 
-function Customer() {
-  let emptyCustomer = {
+function Company() {
+  let emptyCompany = {
     uuid: null,
     name: '',
     planes: [],
@@ -32,117 +31,113 @@ function Customer() {
   const toast = useRef(null);
 
   const dispatch = useDispatch();
-  const customer = useSelector((state) => state.customer);
+  const company = useSelector((state) => state.company.companies);
+  const isLoading = useSelector((state) => state.company.isLoading);
 
-  const [selectedCustomers, setSelectedCustomers] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
-  const [newCustomer, setNewCustomer] = useState(emptyCustomer);
-  const [addNewCustomerDialog, setAddNewCustomerDialog] = useState(false);
-  const [updateCustomerDialog, setUpdateCustomerDialog] = useState(false);
-  const [deleteCustomerDialog, setDeleteCustomerDialog] = useState(false);
+  const [newCompany, setNewCompany] = useState(emptyCompany);
+  const [addNewCompanyDialog, setAddNewCompanyDialog] = useState(false);
+  const [updateCompanyDialog, setUpdateCompanyDialog] = useState(false);
+  const [deleteCompanyDialog, setDeleteCompanyDialog] = useState(false);
+
   const [deleteManyDialog, setDeleteManyDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    dispatch(getAllCustomers());
+    dispatch(getAllCompany());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // INPUT HANDLERS
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value) || '';
-    let _customer = { ...newCustomer };
-    _customer[`${name}`] = val;
-    setNewCustomer(_customer);
+    let _company = { ...newCompany };
+    _company[`${name}`] = val;
+    setNewCompany(_company);
   };
   // END INPUT HANDLERS
 
-  // CREATE CUSTOMER FUNCTION
-  // const openAddNewCustomer = useCallback(
-  //   () => navigate('/customer/add'),
-  //   [navigate]
-  // );
-
-  const openAddNewCustomer = () => {
-    setAddNewCustomerDialog(true);
+  const openAddNewCompany = () => {
+    setAddNewCompanyDialog(true);
     setSubmitted(false);
   };
 
-  const closeAddNewCustomer = () => {
-    setAddNewCustomerDialog(false);
-    setNewCustomer(emptyCustomer);
+  const closeAddNewCompany = () => {
+    setAddNewCompanyDialog(false);
+    setNewCompany(emptyCompany);
     setSubmitted(false);
   };
 
-  const onAddNewCustomer = () => {
+  const onAddNewCompany = () => {
     setSubmitted(true);
 
-    if (newCustomer.name.trim()) {
-      dispatch(postNewCustomer(newCustomer));
+    if (newCompany.name.trim()) {
+      dispatch(addNewCompany(newCompany));
       toast.current.show({
         severity: 'success',
         summary: 'Successful',
         detail: `Customer x has been added`,
         life: 3000,
       });
-      setAddNewCustomerDialog(false);
-      setNewCustomer(emptyCustomer);
+      setAddNewCompanyDialog(false);
+      setNewCompany(emptyCompany);
     }
   };
   // END CREATE CUSTOMER FUNCTION
 
   // UPDATE CUSTOMER FUNCTIONS
-  const openUpdateCustomer = (rowData) => {
-    setNewCustomer(rowData);
-    setUpdateCustomerDialog(true);
+  const openUpdateCompany = (rowData) => {
+    setNewCompany(rowData);
+    setUpdateCompanyDialog(true);
     setSubmitted(false);
   };
 
-  const closeUpdateCustomer = () => {
-    setUpdateCustomerDialog(false);
-    setNewCustomer(emptyCustomer);
+  const closeUpdateCompany = () => {
+    setUpdateCompanyDialog(false);
+    setNewCompany(emptyCompany);
     setSubmitted(false);
   };
 
-  const onUpdateCustomer = () => {
+  const onUpdateCompany = () => {
     // update submitted
     setSubmitted(true);
-    if (newCustomer.name.trim()) {
+    if (newCompany.name.trim()) {
       toast.current.show({
         severity: 'success',
         summary: 'Successful',
         detail: `Customer x has been updated`,
         life: 3000,
       });
-      dispatch(updateCustomer(newCustomer.uuid, newCustomer));
-      setUpdateCustomerDialog(false);
-      setNewCustomer(emptyCustomer);
+      dispatch(updateCompany(newCompany.uuid, newCompany));
+      setUpdateCompanyDialog(false);
+      setNewCompany(emptyCompany);
     }
   };
 
   // END UPDATE CUSTOMER FUNCTIONS
 
   // DELETE CUSTOMER FUNCTIONS
-  const openDeleteCustomer = (rowData) => {
-    setNewCustomer(rowData);
-    setDeleteCustomerDialog(true);
+  const openDeleteCompany = (rowData) => {
+    setNewCompany(rowData);
+    setDeleteCompanyDialog(true);
   };
 
-  const closeDeleteCustomer = () => {
-    setDeleteCustomerDialog(false);
-    setNewCustomer(emptyCustomer);
+  const closeDeleteCompany = () => {
+    setDeleteCompanyDialog(false);
+    setNewCompany(emptyCompany);
   };
 
-  const onDeleteCustomer = () => {
-    dispatch(deleteCustomer(newCustomer.uuid));
+  const onDeleteCompany = () => {
+    dispatch(deleteCompany(newCompany.uuid));
     toast.current.show({
       severity: 'warn',
       summary: 'Warning Message',
       detail: `Customer x has been deleted`,
       life: 3000,
     });
-    setDeleteCustomerDialog(false);
-    setNewCustomer(emptyCustomer);
+    setDeleteCompanyDialog(false);
+    setNewCompany(emptyCompany);
   };
   // END DELETE CUSTOMER FUNCTIONS
 
@@ -157,9 +152,9 @@ function Customer() {
 
   const onDeleteSelected = () => {
     let uuids = [];
-    selectedCustomers.map((x) => uuids.push(x.uuid));
+    selectedCompany.map((x) => uuids.push(x.uuid));
 
-    dispatch(deleteManyCustomer(uuids));
+    dispatch(deleteManyCompany(uuids));
     toast.current.show({
       severity: 'warn',
       summary: 'Warning Message',
@@ -167,18 +162,18 @@ function Customer() {
       life: 3000,
     });
 
-    setSelectedCustomers(null);
+    setSelectedCompany(null);
     setDeleteManyDialog(false);
   };
 
-  // END DELETE SELECTED CUSTOMERS
+  // END DELETE SELECTED COMPANY
 
-  const customerActionBody = (rowData) => {
+  const companyActionBody = (rowData) => {
     return (
       <ActionBodyTemplate
         rowData={rowData}
-        onEdit={openUpdateCustomer}
-        onDelete={openDeleteCustomer}
+        onEdit={openUpdateCompany}
+        onDelete={openDeleteCompany}
       />
     );
   };
@@ -208,21 +203,21 @@ function Customer() {
           className='p-mb-4'
           left={
             <LeftToolbarTemplate
-              onCreate={openAddNewCustomer}
+              onCreate={openAddNewCompany}
               onDelete={openDeleteSelectedDialog}
-              disabled={!selectedCustomers || !selectedCustomers.length}
+              disabled={!selectedCompany || !selectedCompany.length}
             />
           }
           // right={rightToolbarTemplate}
         ></Toolbar>
         <DataTable
           ref={dt}
-          value={customer.customers}
-          selection={selectedCustomers}
-          onSelectionChange={(e) => setSelectedCustomers(e.value)}
+          value={company}
+          selection={selectedCompany}
+          onSelectionChange={(e) => setSelectedCompany(e.value)}
           dataKey='uuid'
           paginator
-          loading={customer.isLoading}
+          loading={isLoading}
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
           paginatorTemplate='FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown'
@@ -262,44 +257,45 @@ function Customer() {
           />
           <Column
             header='Actions'
-            body={customerActionBody}
+            body={companyActionBody}
             exportable={false}
             style={{ minWidth: '8rem' }}
           />
         </DataTable>
       </div>
       {/* add */}
-      <CustomerDialog
-        visible={addNewCustomerDialog}
+      <CompanyDialog
+        visible={addNewCompanyDialog}
         submitted={submitted}
-        onClose={closeAddNewCustomer}
-        onConfirm={onAddNewCustomer}
+        onClose={closeAddNewCompany}
+        onConfirm={onAddNewCompany}
         onInputChange={onInputChange}
       />
+
       {/* update */}
-      <CustomerDialog
-        visible={updateCustomerDialog}
-        customer={newCustomer}
+      <CompanyDialog
+        visible={updateCompanyDialog}
+        customer={newCompany}
         submitted={submitted}
-        onClose={closeUpdateCustomer}
-        onConfirm={onUpdateCustomer}
+        onClose={closeUpdateCompany}
+        onConfirm={onUpdateCompany}
         onInputChange={onInputChange}
       />
       {/* delete */}
       <DeleteDialog
-        visible={deleteCustomerDialog}
+        visible={deleteCompanyDialog}
         message={`are you sure want to delete ${
-          newCustomer?.name ? newCustomer?.name : newCustomer?.uuid
+          newCompany?.name ? newCompany?.name : newCompany?.uuid
         } ?`}
-        onClose={closeDeleteCustomer}
-        onConfirm={onDeleteCustomer}
+        onClose={closeDeleteCompany}
+        onConfirm={onDeleteCompany}
       />
       {/* delete many */}
       <DeleteDialog
         visible={deleteManyDialog}
-        item={selectedCustomers}
-        message={`are you sure want to delete ${selectedCustomers?.length} ${
-          selectedCustomers?.length > 1 ? 'items' : 'item'
+        item={selectedCompany}
+        message={`are you sure want to delete ${selectedCompany?.length} ${
+          selectedCompany?.length > 1 ? 'items' : 'item'
         } ?`}
         onClose={closeDeleteSelectedDialog}
         onConfirm={onDeleteSelected}
@@ -308,4 +304,4 @@ function Customer() {
   );
 }
 
-export { Customer };
+export default Company;

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Dialog } from 'primereact/dialog';
-import { DialogFooter } from '../../../components/DataTableTemplate';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 
-function CustomerDialog({
+import { DialogFooter } from '../DataTableTemplate';
+
+function CompanyDialog({
   visible,
-  customer,
+  company,
   submitted,
   onClose,
   onConfirm,
@@ -16,7 +17,7 @@ function CustomerDialog({
     <Dialog
       visible={visible}
       style={{ width: '450px' }}
-      header='Customer Details'
+      header='Company Details'
       modal
       className='p-fluid'
       footer={<DialogFooter onClose={onClose} onConfirm={onConfirm} />}
@@ -26,13 +27,13 @@ function CustomerDialog({
         <label htmlFor='name'>Name</label>
         <InputText
           id='name'
-          value={customer?.name}
+          value={company?.name}
           onChange={(e) => onInputChange(e, 'name')}
           required
           autoFocus
-          className={classNames({ 'p-invalid': submitted && !customer?.name })}
+          className={classNames({ 'p-invalid': submitted && !company?.name })}
         />
-        {submitted && !customer?.name && (
+        {submitted && !company?.name && (
           <small className='p-error'>Name is required.</small>
         )}
       </div>
@@ -40,4 +41,4 @@ function CustomerDialog({
   );
 }
 
-export default CustomerDialog;
+export default CompanyDialog;

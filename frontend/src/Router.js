@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Test from './pages/Admin/Test';
 import {
   Admin,
-  AdminCustomer,
+  AdminCompany,
   AdminFlight,
   AdminPlane,
   AuthLayout,
@@ -79,7 +79,7 @@ function Router() {
             path='companies'
             element={
               <AdminRoute>
-                <AdminCustomer />
+                <AdminCompany />
               </AdminRoute>
             }
           />
