@@ -90,7 +90,7 @@ export const deleteManyFlights = (selectedItems) => async (dispatch) => {
   try {
     dispatch({ type: FETCHING_FLIGHTS });
 
-    await api.deleteManyCustomers(uuids);
+    await api.deleteManyFlights(uuids);
 
     dispatch({ type: DELETE_MANY_FLIGHTS, payload: selectedItems });
   } catch (error) {

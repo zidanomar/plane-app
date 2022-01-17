@@ -12,25 +12,16 @@ module.exports = {
      * }], {});
      */
     await queryInterface.bulkInsert(
-      'customers',
+      'user_auths',
       [
         {
-          uuid: '18eb02f5-628e-4007-9a71-bcd1eac30979',
-          name: 'East India Company',
+          uuid: '650ce1cc-5444-4bc4-a957-a5ea26dcb2ee',
+          user_id: 1,
+          role_id: 1,
+          passwordHash:
+            '$2b$10$V/MWeOlczkSSW5ZQkvBc6Olfd4Jb4wX/Zi5Pq1BQ9S3ENwRj0Qwoa',
           createdAt: '2021-12-02T09:23:48.221Z',
           updatedAt: '2021-12-02T09:23:48.221Z',
-        },
-        {
-          uuid: '85514576-dc40-4e64-8d00-e323d91c2720',
-          name: 'Baroque Works',
-          createdAt: '2021-12-02T09:24:00.246Z',
-          updatedAt: '2021-12-02T09:24:00.246Z',
-        },
-        {
-          uuid: '88373ba8-ed80-4031-8c9e-c3a719f1ded4',
-          name: 'Donquixote',
-          createdAt: '2021-12-02T09:24:11.414Z',
-          updatedAt: '2021-12-02T09:24:11.414Z',
         },
       ],
       {}
@@ -44,6 +35,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('customers', null, {});
+    await queryInterface.bulkDelete('user_auths', null, {});
   },
 };

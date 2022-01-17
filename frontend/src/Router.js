@@ -5,7 +5,6 @@ import Test from './pages/Admin/Test';
 import {
   Admin,
   AdminCompany,
-  AdminCustomer,
   AdminFlight,
   AdminPlane,
   AuthLayout,
@@ -72,15 +71,6 @@ function Router() {
             element={
               <AdminRoute>
                 <AdminPlane />
-              </AdminRoute>
-            }
-          />
-
-          <Route
-            path='customer'
-            element={
-              <AdminRoute>
-                <AdminCustomer />
               </AdminRoute>
             }
           />

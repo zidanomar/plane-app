@@ -14,13 +14,11 @@ dotenv.config({ path: './.env' });
 
 // SETUP ROUTES
 const planeRoutes = require('./routes/planeRoutes'); // Plane Controller
-const customerRoutes = require('./routes/customerRoutes'); // Customer Routes
 const companyRoutes = require('./routes/companyRoutes'); // Company Routes
 const flightRoutes = require('./routes/flightRoutes'); // Flight Routes
 const authRoutes = require('./routes/authRoutes'); // Auth Routes
 
 app.use('/plane', planeRoutes);
-app.use('/customer', customerRoutes);
 app.use('/company', companyRoutes);
 app.use('/flight', flightRoutes);
 app.use('/auth', authRoutes);
