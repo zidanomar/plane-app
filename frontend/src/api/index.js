@@ -28,6 +28,7 @@ export const deleteManyPlanes = (selectedItems) =>
 
 // COMPANY ROUTES
 export const getAllCompany = () => API.get('/company');
+export const getCompanyById = (companyId) => API.get(`/company/${companyId}`);
 export const addNewCompany = (newCompanyData) =>
   API.post('/company', newCompanyData);
 export const updateCompany = (companyId, newCompanyData) =>
