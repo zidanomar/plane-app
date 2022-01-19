@@ -1,6 +1,7 @@
 import * as api from '../../api';
 import {
   ADD_COMPANY,
+  GET_COMPANY_DETAIL,
   DELETE_COMPANY,
   DELETE_MANY_COMPANY,
   FETCHED_COMPANY,
@@ -17,6 +18,22 @@ export const getAllCompany = () => async (dispatch) => {
 
     const { data } = await api.getAllCompany();
     return dispatch({ type: FETCHED_COMPANY, payload: data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_COMPANY_FAILED });
+  }
+};
+
+// GET COMPANY DETAIL
+export const getCompanyById = (companyId) => async (dispatch) => {
+  try {
+    dispatch({ type: FETCHING_COMPANY });
+
+    const { data } = await api.getCompanyById(companyId);
+
+    return dispatch({ type: GET_COMPANY_DETAIL, payload: data });
   } catch (error) {
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)

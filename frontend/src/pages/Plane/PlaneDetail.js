@@ -6,6 +6,7 @@ import {
   Heading,
   HStack,
   Image,
+  Link,
   StackDivider,
   Text,
   VStack,
@@ -14,6 +15,8 @@ import { motion } from 'framer-motion';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Link as ReachLink } from 'react-router-dom';
+
 import { getPlaneById } from '../../flux/actions/planeAction';
 import saly from '../../images/saly.png';
 
@@ -65,7 +68,9 @@ function PlaneDetail() {
             <Heading as='h3'>{plane.name}</Heading>
             <HStack spacing={6}>
               <Text>Owner :</Text>
-              <Text>{plane.owner?.name}</Text>
+              <Link as={ReachLink} to={`/companies/${plane.owner?.uuid}`}>
+                <Text>{plane.owner?.name}</Text>
+              </Link>
             </HStack>
             <HStack spacing={6}>
               <Text>Flight Hours :</Text>
@@ -73,7 +78,7 @@ function PlaneDetail() {
             </HStack>
             <HStack spacing={6}>
               <Text>Aircraft Number :</Text>
-              <Text>{plane.eaircraft_number}</Text>
+              <Text>{plane.aircraft_number}</Text>
             </HStack>
             <HStack spacing={6}>
               <Text>Tail Number :</Text>
