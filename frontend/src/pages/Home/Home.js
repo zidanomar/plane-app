@@ -76,7 +76,6 @@ function Home() {
           justifyContent='center'
         >
           <MotionFlex
-            key={Math.random()}
             variants={textVariants}
             initial='hidden'
             animate='visible'
@@ -87,7 +86,6 @@ function Home() {
               Hello
             </Text>
             <MotionText
-              key={Math.random()}
               as='h1'
               fontSize='4xl'
               fontWeight='bold'
@@ -104,7 +102,6 @@ function Home() {
           </MotionFlex>
         </GridItem>
         <MotionBox
-          key={Math.random()}
           w='100%'
           display='flex'
           alignItems='center'

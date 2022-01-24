@@ -35,7 +35,7 @@ function Planes() {
               <PlaneCard
                 name={plane.name}
                 owner={plane.owner}
-                flightHour={1000}
+                flightHour={plane.flight_hour}
                 aircraftNumber={plane.aircraft_number}
                 tailNumber={plane.tail_number}
               />

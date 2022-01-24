@@ -4,26 +4,13 @@ import {
   Image,
   Text,
   VStack,
-  Icon,
   useColorMode,
 } from '@chakra-ui/react';
-import { FaCrown } from 'react-icons/fa';
 import React from 'react';
 
 function PlaneCard({ name, owner, flightHour, aircraftNumber, tailNumber }) {
   const { colorMode } = useColorMode();
-  const flightHourTemplate = () => {
-    if (flightHour >= 1000)
-      return (
-        <Text mr='2'>
-          Flight Hour: <Icon as={FaCrown} />
-          {flightHour} hours
-        </Text>
-      );
-    else {
-      <Text mr='2'>Flight Hour: {flightHour} hours</Text>;
-    }
-  };
+
   return (
     <Box
       borderRadius={4}
@@ -47,7 +34,7 @@ function PlaneCard({ name, owner, flightHour, aircraftNumber, tailNumber }) {
         </Heading>
         <VStack spacing={2} align='flex-start'>
           <Text>Owner: {owner.name}</Text>
-          {flightHourTemplate()}
+          <Text mr='2'>Flight Hour: {flightHour} hours</Text>;
           <Text>Aircraft Number: {aircraftNumber}</Text>
           <Text>Tail Number: {tailNumber}</Text>
         </VStack>

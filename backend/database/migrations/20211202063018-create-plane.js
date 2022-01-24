@@ -16,6 +16,10 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      flight_hour: {
+        type: DataTypes.INTEGER,
+        defaultValue: 100,
+      },
       aircraft_number: {
         type: DataTypes.STRING,
         allowNull: false,

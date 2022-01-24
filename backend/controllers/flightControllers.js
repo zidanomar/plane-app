@@ -9,17 +9,28 @@ exports.addFlight = async (req, res) => {
 
   const second = 1000;
   const minute = 60;
-  const hour = 60;
+  const hour = 60 * minute * second;
 
   // get flight duration in hour
   const depature = new Date(depature_date);
   const arrival = new Date(arrival_date);
-  const getHour =
-    (arrival.getTime() - depature.getTime()) / second / minute / hour;
+  const getHour = (arrival.getTime() - depature.getTime()) / hour;
   const duration = Math.round(getHour);
 
   try {
     const plane = await Plane.findOne({ where: { uuid: planeId } });
+    if (!plane)
+      throw { status: 404, message: 'No Plane Found With Specified Id' };
+
+    const flight = await Flight.findAll({ where: { plane_id: plane.id } });
+
+    if (flight.length > 0) {
+      const lastFlight = flight[flight.length - 1].arrival_date.getTime();
+      const recentFlight = depature;
+      const flightGap = (recentFlight - lastFlight) / hour;
+
+      if (flightGap < 72) throw { status: 404, message: 'Plane are busy' };
+    }
 
     const newFlight = await Flight.create({
       plane_id: plane.id,
@@ -27,6 +38,17 @@ exports.addFlight = async (req, res) => {
       arrival_date: arrival.toISOString(),
       duration,
     });
+
+    const updatePlane = await Plane.update(
+      {
+        flight_hour: plane.flight_hour + duration,
+      },
+      {
+        where: { uuid: planeId },
+        returning: true,
+        plain: true,
+      }
+    );
 
     const flightResponse = await Flight.findOne({
       where: { uuid: newFlight.uuid },

@@ -47,7 +47,7 @@ function PlaneDetail() {
   return (
     <Container maxW='container.xl'>
       <Grid templateColumns='repeat(5, 1fr)' gap={6}>
-        <GridItem w='100%' h='64' colSpan={2}>
+        <GridItem w='100%' h='100%' colSpan={2}>
           <Image
             src={
               'https://images.unsplash.com/photo-1484320775925-2609d111d8b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80'
@@ -74,7 +74,7 @@ function PlaneDetail() {
             </HStack>
             <HStack spacing={6}>
               <Text>Flight Hours :</Text>
-              <Text>10000 hours</Text>
+              <Text>{plane.flight_hour} hours</Text>
             </HStack>
             <HStack spacing={6}>
               <Text>Aircraft Number :</Text>
@@ -90,7 +90,7 @@ function PlaneDetail() {
       <Grid templateColumns='repeat(2,1fr)' gap={6} mt={10}>
         <GridItem w='100%' alignSelf='center'>
           <Heading as='h3' mb={6}>
-            About {plane.name}
+            The {plane.name}
           </Heading>
           <Text>
             This cat happen now, it was too purr-fect!!! fight own tail. Nyan
@@ -106,7 +106,6 @@ function PlaneDetail() {
         </GridItem>
         <GridItem w='100%'>
           <MotionBox
-            key={Math.random()}
             w='100%'
             display='flex'
             alignItems='center'

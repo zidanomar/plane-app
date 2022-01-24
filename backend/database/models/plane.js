@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: 'Name can not be empty' },
         },
       },
+      flight_hour: {
+        type: DataTypes.INTEGER,
+        defaultValue: 100,
+      },
       aircraft_number: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -45,14 +45,21 @@ exports.getPlaneById = async (req, res) => {
 // PATH: /plane
 // DETAILS: add new plane to list
 exports.addPlane = async (req, res) => {
-  const { companyId, name, aircraft_number, tail_number, isDelivered } =
-    req.body;
+  const {
+    companyId,
+    name,
+    flight_hour,
+    aircraft_number,
+    tail_number,
+    isDelivered,
+  } = req.body;
 
   try {
     const company = await Company.findOne({ where: { uuid: companyId } });
 
     const newPlane = await Plane.create({
       name,
+      flight_hour: flight_hour || 100,
       aircraft_number,
       tail_number,
       company_id: company.id,
@@ -79,8 +86,14 @@ exports.addPlane = async (req, res) => {
 // DETAILS: update specific plane details
 exports.updatePlane = async (req, res) => {
   const { planeId } = req.params;
-  const { companyId, name, aircraft_number, tail_number, isDelivered } =
-    req.body;
+  const {
+    companyId,
+    name,
+    flight_hour,
+    aircraft_number,
+    tail_number,
+    isDelivered,
+  } = req.body;
 
   let items;
 
@@ -92,6 +105,7 @@ exports.updatePlane = async (req, res) => {
 
       items = {
         name,
+        flight_hour,
         aircraft_number,
         tail_number,
         company_id: company.id,
@@ -100,20 +114,18 @@ exports.updatePlane = async (req, res) => {
     } else {
       items = {
         name,
+        flight_hour,
         aircraft_number,
         tail_number,
         isDelivered,
       };
     }
-    const updatedPlane = await Plane.update(
-      items,
 
-      {
-        where: { uuid: planeId },
-        returning: true,
-        plain: true,
-      }
-    );
+    const updatedPlane = await Plane.update(items, {
+      where: { uuid: planeId },
+      returning: true,
+      plain: true,
+    });
 
     const planeResponse = await Plane.findOne({
       where: { uuid: updatedPlane[1].uuid },

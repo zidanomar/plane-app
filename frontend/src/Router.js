@@ -24,6 +24,7 @@ import { getAuth } from './flux/actions/authAction';
 import App from './App';
 import AdminRoute from './components/Routes/AdminRoute';
 import NotFound from './components/NotFound';
+import ScrollToTop from './components/ScrollToTop';
 
 function Router() {
   const dispatch = useDispatch();
@@ -39,64 +40,66 @@ function Router() {
     getAuthentication();
   }, [dispatch]);
   return (
-    <Routes>
-      <Route path='/' element={<App />}>
-        <Route index element={<Home />} />
+    <ScrollToTop>
+      <Routes>
+        <Route path='/' element={<App />}>
+          <Route index element={<Home />} />
 
-        <Route path='planes' element={<PageLayout />}>
-          <Route index element={<Planes />} />
-          <Route path=':planeId' element={<PlaneDetail />} />
+          <Route path='planes' element={<PageLayout />}>
+            <Route index element={<Planes />} />
+            <Route path=':planeId' element={<PlaneDetail />} />
+          </Route>
+
+          <Route path='companies' element={<PageLayout />}>
+            <Route index element={<Companies />} />
+            <Route path=':companyId' element={<Company />} />
+          </Route>
+
+          <Route path='flights' element={<PageLayout />}>
+            <Route index element={<Flights />} />
+            <Route path=':flightId' element={<FlightDetail />} />
+          </Route>
+
+          <Route path='/auth' element={<AuthLayout />}>
+            <Route index element={<Login />} />
+            <Route path='register' element={<Register />} />
+          </Route>
+
+          <Route path='admin' element={<Admin />}>
+            <Route index element={<Test />} />
+
+            <Route
+              path='planes'
+              element={
+                <AdminRoute>
+                  <AdminPlane />
+                </AdminRoute>
+              }
+            />
+
+            <Route
+              path='companies'
+              element={
+                <AdminRoute>
+                  <AdminCompany />
+                </AdminRoute>
+              }
+            />
+
+            <Route
+              path='flights'
+              element={
+                <AdminRoute>
+                  <AdminFlight />
+                </AdminRoute>
+              }
+            />
+          </Route>
+
+          <Route path='*' element={<NotFound />} />
         </Route>
-
-        <Route path='companies' element={<PageLayout />}>
-          <Route index element={<Companies />} />
-          <Route path=':companyId' element={<Company />} />
-        </Route>
-
-        <Route path='flights' element={<PageLayout />}>
-          <Route index element={<Flights />} />
-          <Route path=':flightId' element={<FlightDetail />} />
-        </Route>
-
-        <Route path='/auth' element={<AuthLayout />}>
-          <Route index element={<Login />} />
-          <Route path='register' element={<Register />} />
-        </Route>
-
-        <Route path='admin' element={<Admin />}>
-          <Route index element={<Test />} />
-
-          <Route
-            path='planes'
-            element={
-              <AdminRoute>
-                <AdminPlane />
-              </AdminRoute>
-            }
-          />
-
-          <Route
-            path='companies'
-            element={
-              <AdminRoute>
-                <AdminCompany />
-              </AdminRoute>
-            }
-          />
-
-          <Route
-            path='flights'
-            element={
-              <AdminRoute>
-                <AdminFlight />
-              </AdminRoute>
-            }
-          />
-        </Route>
-
-        <Route path='*' element={<NotFound />} />
-      </Route>
-    </Routes>
+      </Routes>
+    </ScrollToTop>
   );
 }
 
