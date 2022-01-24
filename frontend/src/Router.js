@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import Test from './pages/Admin/Test';
 import {
   Admin,
   AdminCompany,
   AdminFlight,
+  AdminHome,
   AdminPlane,
   AuthLayout,
   Companies,
   Company,
+  CompanyProfile,
+  CompanyProfileHome,
   FlightDetail,
   Flights,
   Home,
@@ -18,6 +20,8 @@ import {
   PlaneDetail,
   Planes,
   Register,
+  UserProfile,
+  UserProfileHome,
 } from './pages';
 import { useDispatch } from 'react-redux';
 import { getAuth } from './flux/actions/authAction';
@@ -25,6 +29,8 @@ import App from './App';
 import AdminRoute from './components/Routes/AdminRoute';
 import NotFound from './components/NotFound';
 import ScrollToTop from './components/ScrollToTop';
+import CompanyRoute from './components/Routes/CompanyRoute';
+import ProtectedRoute from './components/Routes/ProtectedRoute';
 
 function Router() {
   const dispatch = useDispatch();
@@ -66,7 +72,14 @@ function Router() {
           </Route>
 
           <Route path='admin' element={<Admin />}>
-            <Route index element={<Test />} />
+            <Route
+              index
+              element={
+                <AdminRoute>
+                  <AdminHome />
+                </AdminRoute>
+              }
+            />
 
             <Route
               path='planes'
@@ -92,6 +105,28 @@ function Router() {
                 <AdminRoute>
                   <AdminFlight />
                 </AdminRoute>
+              }
+            />
+          </Route>
+
+          <Route path='userprofile' element={<UserProfile />}>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <UserProfileHome />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          <Route path='companyprofile' element={<CompanyProfile />}>
+            <Route
+              index
+              element={
+                <CompanyRoute>
+                  <CompanyProfileHome />
+                </CompanyRoute>
               }
             />
           </Route>

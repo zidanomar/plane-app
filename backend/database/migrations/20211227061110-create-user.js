@@ -35,6 +35,10 @@ module.exports = {
       username: {
         type: DataTypes.STRING,
       },
+      company_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

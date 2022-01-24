@@ -29,6 +29,51 @@ const navigations = [
   },
 ];
 
+function DashboardLink({ to, name }) {
+  const { pathname } = useLocation();
+
+  return (
+    <Link
+      to={to}
+      as={ReachLink}
+      display='flex'
+      fontSize='xl'
+      width='100%'
+      position='relative'
+      transition='all 300ms ease-in-out'
+      _after={
+        pathname === to && {
+          content: `''`,
+          position: 'absolute',
+          width: '50%',
+          height: '3px',
+          backgroundColor: 'teal.100',
+          bottom: '-15px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          borderRadius: 'full',
+        }
+      }
+      _hover={{
+        _after: {
+          content: `''`,
+          position: 'absolute',
+          width: '50%',
+          height: '3px',
+          backgroundColor: 'teal.100',
+          bottom: '-15px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          borderRadius: 'full',
+          transition: 'all 300ms ease-in-out',
+        },
+      }}
+    >
+      {name}
+    </Link>
+  );
+}
+
 function Header() {
   const { pathname } = useLocation();
 
@@ -37,8 +82,11 @@ function Header() {
   const credential = useSelector(
     (state) => state.userCredential.credential.uuid
   );
-
+  const username = useSelector(
+    (state) => state.userCredential.credential.username
+  );
   const role = useSelector((state) => state.userCredential.credential.role);
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -114,44 +162,11 @@ function Header() {
         </Flex>
 
         <Flex alignItems='center' gap={6}>
-          <Link
-            to='/admin'
-            as={ReachLink}
-            display={role === 'admin' ? 'flex' : 'none'}
-            fontSize='xl'
-            width='100%'
-            position='relative'
-            transition='all 300ms ease-in-out'
-            _after={
-              pathname === '/admin' && {
-                content: `''`,
-                position: 'absolute',
-                width: '50%',
-                height: '3px',
-                backgroundColor: 'teal.100',
-                bottom: '-15px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                borderRadius: 'full',
-              }
-            }
-            _hover={{
-              _after: {
-                content: `''`,
-                position: 'absolute',
-                width: '50%',
-                height: '3px',
-                backgroundColor: 'teal.100',
-                bottom: '-15px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                borderRadius: 'full',
-                transition: 'all 300ms ease-in-out',
-              },
-            }}
-          >
-            Admin
-          </Link>
+          {role === 'admin' && <DashboardLink to='/admin' name='Admin' />}
+          {role === 'company' && (
+            <DashboardLink to='/companyprofile' name='Company' />
+          )}
+          {credential && <DashboardLink to='/userprofile' name={username} />}
           <Link as={ReachLink} to='/auth' textDecoration='none'>
             <Box
               onClick={logoutHandler}

@@ -29,6 +29,22 @@ module.exports = {
           createdAt: '2021-12-02T09:23:48.221Z',
           updatedAt: '2021-12-02T09:23:48.221Z',
         },
+        {
+          uuid: '4c573876-ede6-412d-a211-b09cd811c60d',
+          user_id: 2,
+          role_id: 3,
+          passwordHash: passwordHash,
+          createdAt: '2021-12-02T09:23:48.221Z',
+          updatedAt: '2021-12-02T09:23:48.221Z',
+        },
+        {
+          uuid: '5163b008-ce2a-465c-8a1d-38ae6a616df8',
+          user_id: 3,
+          role_id: 2,
+          passwordHash: passwordHash,
+          createdAt: '2021-12-02T09:23:48.221Z',
+          updatedAt: '2021-12-02T09:23:48.221Z',
+        },
       ],
       {}
     );

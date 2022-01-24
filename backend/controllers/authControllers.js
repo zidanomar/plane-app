@@ -35,7 +35,7 @@ exports.registerUser = async (req, res) => {
 
     // Set user role
     const userRole = await Role.findOne({
-      where: { role: role || 'user' },
+      where: { role: 'user' },
     });
     roleId = userRole.id;
 

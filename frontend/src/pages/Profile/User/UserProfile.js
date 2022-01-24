@@ -1,6 +1,6 @@
 import React from 'react';
 import { MdAccountCircle, MdFlight, MdFlightTakeoff } from 'react-icons/md';
-import Dashboard from '../../components/Dashboard';
+import Dashboard from '../../../components/Dashboard';
 
 const lists = [
   {
@@ -25,8 +25,8 @@ const lists = [
   },
 ];
 
-function Admin() {
+function UserProfile() {
   return <Dashboard links={lists} />;
 }
 
-export default Admin;
+export default UserProfile;

@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Test() {
+function AdminHome() {
   return (
     <div style={{ padding: '1rem 0', height: '30rem' }}>
-      <h2>Expenses</h2>
+      <h2>Admin</h2>
     </div>
   );
 }
 
-export default Test;
+export default AdminHome;

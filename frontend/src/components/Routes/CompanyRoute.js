@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+
 import * as api from '../../api';
 
-function AdminRoute({ children }) {
+function CompanyRoute({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -10,18 +11,18 @@ function AdminRoute({ children }) {
       navigate('/auth');
     }
 
-    const getAdminUser = async () => {
+    const getCompanyUser = async () => {
       try {
-        await api.getAdmin();
+        await api.getCompanyUser();
       } catch (error) {
         navigate('/');
       }
     };
 
-    getAdminUser();
+    getCompanyUser();
   }, [navigate]);
 
   return localStorage.getItem('authToken') ? children : <Navigate to='/' />;
 }
 
-export default AdminRoute;
+export default CompanyRoute;
