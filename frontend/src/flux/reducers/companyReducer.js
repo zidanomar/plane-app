@@ -57,6 +57,7 @@ const customerReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         companies: updatedItems,
+        companyDetail: action.payload,
       };
     case DELETE_COMPANY:
       const currentCompany = state.companies.filter(

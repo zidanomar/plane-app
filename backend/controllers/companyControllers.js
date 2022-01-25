@@ -99,7 +99,7 @@ exports.getCompanyByUser = async (req, res) => {
 // DETAILS: update specified company details
 exports.updateCompany = async (req, res) => {
   const { companyId } = req.params;
-  const { name } = req.body;
+  const { name, imgUrl } = req.body;
   const user = req.user;
 
   try {
@@ -109,19 +109,23 @@ exports.updateCompany = async (req, res) => {
     });
     if (user.role === 'admin' || company?.uuid === companyId) {
       const updatedCompany = await Company.update(
-        { name },
+        { name, imgUrl },
         {
           where: { uuid: companyId },
-          include: 'planes',
           returning: true,
-          plain: false,
+          plain: true,
         }
       );
 
       if (updatedCompany[0] < 1)
         throw { status: 404, message: 'No Company Found With Specified Id' };
 
-      res.status(200).json(updatedCompany[1][0]);
+      const response = await Company.findOne({
+        where: { uuid: updatedCompany[1].uuid },
+        include: [{ model: Plane, as: 'planes', include: 'flightLogs' }],
+      });
+
+      res.status(200).json(response);
     } else {
       throw { status: 401, message: 'You are not authorized for this action!' };
     }

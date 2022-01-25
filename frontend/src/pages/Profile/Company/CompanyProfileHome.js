@@ -79,6 +79,12 @@ function CompanyProfileHome() {
     dispatch(getCompanyByUser());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (Object.keys(company).length > 0) {
+      setSelectedPlane(company.planes[0]);
+    }
+  }, [company]);
+
   return (
     <React.Fragment>
       <Flex w={'100%'} justifyContent={'center'} mb={8}>
