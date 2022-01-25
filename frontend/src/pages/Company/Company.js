@@ -25,7 +25,6 @@ function Company() {
   const { companyId } = useParams();
 
   const company = useSelector((state) => state.company.companyDetail);
-  console.log(company);
   useEffect(() => {
     dispatch(getCompanyById(companyId));
   }, [companyId, dispatch]);

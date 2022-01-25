@@ -1,19 +1,19 @@
 const router = require('express').Router();
 
 const flightControllers = require('../controllers/flightControllers');
-const { authorization } = require('../middleware/auth');
+const { adminAuthorization } = require('../middleware/auth');
 
-router.post('/', authorization, flightControllers.addFlight);
+router.post('/', adminAuthorization, flightControllers.addFlight);
 router.get('/', flightControllers.getAllFlights);
 
 router.get('/:flightId', flightControllers.getFlightById);
-router.patch('/:flightId', authorization, flightControllers.updateFlight);
+router.patch('/:flightId', adminAuthorization, flightControllers.updateFlight);
 
 router.delete(
   '/deleteMany',
-  authorization,
+  adminAuthorization,
   flightControllers.deleteManyFlights
 );
-router.delete('/:flightId', authorization, flightControllers.deleteFlight);
+router.delete('/:flightId', adminAuthorization, flightControllers.deleteFlight);
 
 module.exports = router;

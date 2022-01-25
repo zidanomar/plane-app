@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link as ReachLink, useLocation } from 'react-router-dom';
-import { Link } from '@chakra-ui/react';
+import { Link, useColorMode } from '@chakra-ui/react';
 
 function NavLink({ to, children }) {
+  const { colorMode } = useColorMode();
   let location = useLocation();
   let isActive = location.pathname === to;
 
@@ -12,7 +13,7 @@ function NavLink({ to, children }) {
       to={to}
       fontSize='xl'
       backgroundColor={isActive ? 'teal.300' : 'transparent'}
-      color='white'
+      color={colorMode === 'light' ? 'gray.600' : 'white'}
       paddingX={4}
       paddingY={2}
       borderRadius='4'

@@ -12,6 +12,7 @@ import {
   Company,
   CompanyProfile,
   CompanyProfileHome,
+  CompanyProfileSettings,
   FlightDetail,
   Flights,
   Home,
@@ -126,6 +127,15 @@ function Router() {
               element={
                 <CompanyRoute>
                   <CompanyProfileHome />
+                </CompanyRoute>
+              }
+            />
+
+            <Route
+              path='settings'
+              element={
+                <CompanyRoute>
+                  <CompanyProfileSettings />
                 </CompanyRoute>
               }
             />

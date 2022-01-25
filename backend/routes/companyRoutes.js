@@ -1,19 +1,24 @@
 const router = require('express').Router();
 
 const companyController = require('../controllers/companyControllers');
-const { authorization } = require('../middleware/auth');
+const { adminAuthorization, authentication } = require('../middleware/auth');
 
-router.post('/', authorization, companyController.addNewCompany);
+router.post('/', adminAuthorization, companyController.addNewCompany);
 router.get('/', companyController.getAllCompany);
 
+router.get('/companyuser', authentication, companyController.getCompanyByUser);
 router.get('/:companyId', companyController.getCompanyById);
-router.patch('/:companyId', companyController.updateCompany);
+router.patch('/:companyId', authentication, companyController.updateCompany);
 
 router.delete(
   '/deleteMany',
-  authorization,
+  adminAuthorization,
   companyController.deleteManyCompany
 );
-router.delete('/:companyId', authorization, companyController.deleteCompany);
+router.delete(
+  '/:companyId',
+  adminAuthorization,
+  companyController.deleteCompany
+);
 
 module.exports = router;

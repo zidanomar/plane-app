@@ -14,7 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     toJSON() {
-      return { ...this.get(), id: undefined };
+      return {
+        ...this.get(),
+        id: undefined,
+        createdAt: undefined,
+        updatedAt: undefined,
+      };
     }
   }
   Company.init(

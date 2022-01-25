@@ -174,14 +174,14 @@ function Header() {
               display='flex'
               alignItems='center'
               fontSize='xl'
-              backgroundColor='teal.400'
-              color='white'
+              backgroundColor='teal.300'
+              color={colorMode === 'light' ? 'white' : 'teal.800'}
               py='2'
               px='4'
               transition='all 300ms ease-in-out'
               _hover={{
                 cursor: 'pointer',
-                backgroundColor: 'teal.500',
+                backgroundColor: 'teal.400',
               }}
             >
               {credential ? (

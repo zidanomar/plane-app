@@ -10,11 +10,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ Customer, Flight, Company }) {
       // define association here
       this.belongsTo(Company, { foreignKey: 'company_id', as: 'owner' });
-      this.hasOne(Flight, { foreignKey: 'plane_id', as: 'flightStatus' });
+      this.hasMany(Flight, { foreignKey: 'plane_id', as: 'flightLogs' });
     }
 
     toJSON() {
-      return { ...this.get(), id: undefined, company_id: undefined };
+      return {
+        ...this.get(),
+        id: undefined,
+        company_id: undefined,
+        createdAt: undefined,
+        updatedAt: undefined,
+      };
     }
   }
   Plane.init(

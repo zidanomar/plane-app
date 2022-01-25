@@ -7,7 +7,7 @@ function Dashboard({ links }) {
   return (
     <Flex width='full'>
       <Sidebar links={links} />
-      <Container maxW='container.xl' mt={8}>
+      <Container maxW='container.xl' py={10}>
         <Outlet />
       </Container>
     </Flex>

@@ -13,7 +13,13 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     toJSON() {
-      return { ...this.get(), id: undefined, plane_id: undefined };
+      return {
+        ...this.get(),
+        id: undefined,
+        plane_id: undefined,
+        createdAt: undefined,
+        updatedAt: undefined,
+      };
     }
   }
   Flight.init(

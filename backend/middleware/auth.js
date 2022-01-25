@@ -26,6 +26,27 @@ async function authorization(req, res, next) {
     req.headers['x-auth-token'] &&
     req.headers['x-auth-token'].startsWith('Bearer')
   ) {
+    token = req.headers['x-auth-action'].split(' ')[1];
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+
+    if (decoded.role !== 'admin' || decoded.role !== 'company')
+      return res.status(401).json({ msg: 'user is not authorized' });
+  } catch (error) {
+    res.status(400).json({ msg: 'Token is not valid' });
+  }
+}
+
+async function adminAuthorization(req, res, next) {
+  let token;
+
+  if (
+    req.headers['x-auth-token'] &&
+    req.headers['x-auth-token'].startsWith('Bearer')
+  ) {
     token = req.headers['x-auth-token'].split(' ')[1];
   }
   try {
@@ -68,6 +89,6 @@ async function companyAuthorization(req, res, next) {
 
 module.exports = {
   authentication,
-  authorization,
+  adminAuthorization,
   companyAuthorization,
 };

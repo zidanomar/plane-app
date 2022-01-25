@@ -23,6 +23,7 @@ import FlightDetail from './Flight/FlightDetail';
 
 import CompanyProfile from './Profile/Company/CompanyProfile';
 import CompanyProfileHome from './Profile/Company/CompanyProfileHome';
+import CompanyProfileSettings from './Profile/Company/CompanyProfileSettings';
 
 import UserProfile from './Profile/User/UserProfile';
 import UserProfileHome from './Profile/User/UserProfileHome';
@@ -46,6 +47,7 @@ export {
   FlightDetail,
   CompanyProfile,
   CompanyProfileHome,
+  CompanyProfileSettings,
   UserProfile,
   UserProfileHome,
 };

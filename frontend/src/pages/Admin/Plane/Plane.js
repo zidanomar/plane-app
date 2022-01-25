@@ -211,7 +211,6 @@ function Plane() {
   // END DELETE MANY PLANE FUNCTIONS
 
   const ownerTemplate = (rowData) => {
-    console.log(rowData);
     if (rowData.owner) return rowData.owner.name;
     return 'Prepare for launching';
   };

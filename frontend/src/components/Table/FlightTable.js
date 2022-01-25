@@ -208,7 +208,6 @@ function FlightTable() {
   const onDeleteManyFlight = () => {
     let uuids = [];
     selectedFlights.map((x) => uuids.push(x.uuid));
-    console.log(uuids);
     dispatch(deleteManyFlights(uuids));
     toast.current.show({
       severity: 'warn',

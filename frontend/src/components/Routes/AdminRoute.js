@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 import * as api from '../../api';
+import { logout } from '../../flux/actions/authAction';
 
 function AdminRoute({ children }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!localStorage.getItem('authToken')) {
@@ -14,12 +17,13 @@ function AdminRoute({ children }) {
       try {
         await api.getAdmin();
       } catch (error) {
-        navigate('/');
+        localStorage.removeItem('authToken');
+        dispatch(logout(navigate));
       }
     };
 
     getAdminUser();
-  }, [navigate]);
+  }, [dispatch, navigate]);
 
   return localStorage.getItem('authToken') ? children : <Navigate to='/' />;
 }

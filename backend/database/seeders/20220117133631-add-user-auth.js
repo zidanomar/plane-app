@@ -45,6 +45,14 @@ module.exports = {
           createdAt: '2021-12-02T09:23:48.221Z',
           updatedAt: '2021-12-02T09:23:48.221Z',
         },
+        {
+          uuid: '55312be1-cc8f-4dab-81c4-4a6c78e891dd',
+          user_id: 4,
+          role_id: 3,
+          passwordHash: passwordHash,
+          createdAt: '2021-12-02T09:23:48.221Z',
+          updatedAt: '2021-12-02T09:23:48.221Z',
+        },
       ],
       {}
     );

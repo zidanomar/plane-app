@@ -8,6 +8,7 @@ import {
   FETCHING_COMPANY,
   FETCHING_COMPANY_FAILED,
   UPDATE_COMPANY,
+  GET_COMPANY_BY_USER,
 } from '../../constant/actionType';
 import { returnErrors } from './errorAction';
 
@@ -34,6 +35,22 @@ export const getCompanyById = (companyId) => async (dispatch) => {
     const { data } = await api.getCompanyById(companyId);
 
     return dispatch({ type: GET_COMPANY_DETAIL, payload: data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: FETCHING_COMPANY_FAILED });
+  }
+};
+
+// GET COMPANY BY USER
+export const getCompanyByUser = () => async (dispatch) => {
+  try {
+    dispatch({ type: FETCHING_COMPANY });
+
+    const { data } = await api.getCompanyByUser();
+
+    return dispatch({ type: GET_COMPANY_BY_USER, payload: data });
   } catch (error) {
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)

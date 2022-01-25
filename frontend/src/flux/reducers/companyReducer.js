@@ -5,6 +5,7 @@ import {
   FETCHED_COMPANY,
   FETCHING_COMPANY,
   FETCHING_COMPANY_FAILED,
+  GET_COMPANY_BY_USER,
   GET_COMPANY_DETAIL,
   UPDATE_COMPANY,
 } from '../../constant/actionType';
@@ -29,6 +30,12 @@ const customerReducer = (state = initialState, action) => {
         companies: action.payload,
       };
     case GET_COMPANY_DETAIL:
+      return {
+        ...state,
+        isLoading: false,
+        companyDetail: action.payload,
+      };
+    case GET_COMPANY_BY_USER:
       return {
         ...state,
         isLoading: false,
