@@ -1,9 +1,7 @@
 import { Badge, Box, Image, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 
-import logo from '../../images/garuda.png';
-
-function CompanyCard({ name, totalPlane }) {
+function CompanyCard({ name, totalPlane, imgUrl }) {
   const { colorMode } = useColorMode();
 
   let message;
@@ -31,7 +29,14 @@ function CompanyCard({ name, totalPlane }) {
       }}
     >
       <Box padding={4}>
-        <Image src={logo} objectFit='cover' alt='card image' />
+        <Image
+          src={imgUrl}
+          w='100%'
+          h='200'
+          objectFit='fit'
+          objectPosition='center'
+          alt='card image'
+        />
       </Box>
 
       <Box p='6'>

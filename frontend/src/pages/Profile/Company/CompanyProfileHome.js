@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Box,
-  Flex,
-  Heading,
-  Image,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
 
-import logo from '../../../images/garuda.png';
 import { getCompanyByUser } from '../../../flux/actions/companyAction';
+import PlaneListTable from '../../../components/Table/PlaneListTable';
 
 function CompanyProfileHome() {
   const dispatch = useDispatch();
@@ -88,7 +75,7 @@ function CompanyProfileHome() {
   return (
     <React.Fragment>
       <Flex w={'100%'} justifyContent={'center'} mb={8}>
-        <Image w={'25%'} src={logo} alt={'company logo'} />
+        <Image w={'25%'} src={company?.imgUrl} alt={'company logo'} />
       </Flex>
       <Heading textAlign={'center'} mb={8}>
         {company?.name}
@@ -100,37 +87,12 @@ function CompanyProfileHome() {
               No Plane data
             </Text>
           ) : (
-            <Table variant='simple'>
-              <TableCaption>Imperial to metric conversion factors</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th>Plane</Th>
-                  <Th>Flight Hours</Th>
-                  <Th isNumeric>Status</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {company?.planes?.map((plane) => (
-                  <Tr
-                    key={plane?.uuid}
-                    backgroundColor={
-                      plane?.uuid === selectedPlane?.uuid
-                        ? 'teal.300'
-                        : 'transparent'
-                    }
-                    transition='all 300ms ease-in-out'
-                    _hover={{ backgroundColor: 'teal.300', cursor: 'pointer' }}
-                    onClick={() => selectPlaneHandler(plane)}
-                  >
-                    <Td>{plane.name}</Td>
-                    <Td>{plane.flight_hour} hours</Td>
-                    <Td isNumeric>
-                      {plane.isDelivered ? 'Delivered' : 'Processing at TAI'}
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+            <PlaneListTable
+              caption={`${company?.name} plane list`}
+              planes={company?.planes}
+              onClick={selectPlaneHandler}
+              activeState={selectedPlane?.uuid}
+            />
           )}
         </Box>
         <Box w='100%' padding={6} textAlign='center'>

@@ -27,7 +27,11 @@ function Companies() {
       >
         {companies.map((c) => (
           <Link key={c.uuid} as={ReachLink} to={`/companies/${c.uuid}`}>
-            <CompanyCard name={c.name} totalPlane={c.planes.length} />
+            <CompanyCard
+              name={c.name}
+              totalPlane={c.planes.length}
+              imgUrl={c.imgUrl}
+            />
           </Link>
         ))}
       </Grid>

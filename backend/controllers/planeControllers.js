@@ -1,4 +1,4 @@
-const { Plane, Company } = require('../database/models');
+const { Plane, Company, User } = require('../database/models');
 
 // METHOD: GET
 // PATH: /plane
@@ -86,53 +86,89 @@ exports.addPlane = async (req, res) => {
 // DETAILS: update specific plane details
 exports.updatePlane = async (req, res) => {
   const { planeId } = req.params;
+  const user = req.user;
   const {
     companyId,
     name,
     flight_hour,
     aircraft_number,
     tail_number,
+    imgUrl,
     isDelivered,
   } = req.body;
 
-  let items;
+  let items = {
+    companyId,
+    name,
+    flight_hour,
+    aircraft_number,
+    tail_number,
+    imgUrl,
+    isDelivered,
+  };
 
   try {
-    if (companyId) {
-      const company = await Company.findOne({ where: { uuid: companyId } });
-
-      if (!company) throw { status: 404, message: 'Company Not Found' };
-
-      items = {
-        name,
-        flight_hour,
-        aircraft_number,
-        tail_number,
-        company_id: company.id,
-        isDelivered,
-      };
-    } else {
-      items = {
-        name,
-        flight_hour,
-        aircraft_number,
-        tail_number,
-        isDelivered,
-      };
-    }
-
-    const updatedPlane = await Plane.update(items, {
-      where: { uuid: planeId },
-      returning: true,
-      plain: true,
+    // get company from authorized user
+    const authorizedUser = await User.findOne({
+      where: { uuid: user.uuid },
+      include: 'company',
     });
 
-    const planeResponse = await Plane.findOne({
-      where: { uuid: updatedPlane[1].uuid },
+    // get plane
+    const plane = await Plane.findOne({
+      where: { uuid: planeId },
       include: 'owner',
     });
 
-    res.status(200).send(planeResponse);
+    if (user.role === 'admin') {
+      // check if plane's owner change
+      if (companyId) {
+        const company = await Company.findOne({ where: { uuid: companyId } });
+
+        if (!company) throw { status: 404, message: 'Company Not Found' };
+
+        items = {
+          name,
+          flight_hour,
+          aircraft_number,
+          tail_number,
+          company_id: company.id,
+          imgUrl,
+          isDelivered,
+        };
+      }
+
+      const updatedPlane = await Plane.update(items, {
+        where: { uuid: planeId },
+        returning: true,
+        plain: true,
+      });
+
+      const planeResponse = await Plane.findOne({
+        where: { uuid: updatedPlane[1].uuid },
+        include: 'owner',
+      });
+
+      res.status(200).send(planeResponse);
+    } else if (
+      (user.role =
+        'company' && authorizedUser.company.uuid === plane.owner.uuid)
+    ) {
+      const updatedPlane = await Plane.update(items, {
+        where: { uuid: planeId },
+        returning: true,
+        plain: true,
+      });
+
+      const planeResponse = await Plane.findOne({
+        where: { uuid: updatedPlane[1].uuid },
+        include: 'owner',
+      });
+
+      res.status(200).send(planeResponse);
+    } else {
+      throw { status: 401, message: 'You are not authorized for this action!' };
+    }
   } catch (error) {
     console.error(error);
     res.status(error.status || 500).json({

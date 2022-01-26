@@ -1,7 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Flex, HStack, StackDivider, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  HStack,
+  Link,
+  StackDivider,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { Link as ReachLink } from 'react-router-dom';
+
 import { getFlightById } from '../../flux/actions/flightAction';
 
 function FlightDetail() {
@@ -57,7 +66,9 @@ function FlightDetail() {
           <Text fontWeight='bold' color='teal.300'>
             Plane
           </Text>
-          <Text>{flight.planeDetail?.name}</Text>
+          <Link as={ReachLink} to={`/planes/${flight.planeDetail?.uuid}`}>
+            <Text>{flight.planeDetail?.name}</Text>
+          </Link>
         </VStack>
       </HStack>
     </Flex>

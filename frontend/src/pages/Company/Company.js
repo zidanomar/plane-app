@@ -16,7 +16,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as ReachLink } from 'react-router-dom';
 
-import logo from '../../images/garuda.png';
 import { useParams } from 'react-router-dom';
 import { getCompanyById } from '../../flux/actions/companyAction';
 
@@ -37,7 +36,7 @@ function Company() {
           left={0}
           w='30%'
           h={40}
-          src={logo}
+          src={company.imgUrl}
           alt='company logo'
           objectFit='contain'
           objectPosition='center'

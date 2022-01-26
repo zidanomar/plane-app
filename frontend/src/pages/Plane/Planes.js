@@ -38,6 +38,7 @@ function Planes() {
                 flightHour={plane.flight_hour}
                 aircraftNumber={plane.aircraft_number}
                 tailNumber={plane.tail_number}
+                imgUrl={plane.imgUrl}
               />
             </Link>
           ))}

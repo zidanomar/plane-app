@@ -8,7 +8,14 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-function PlaneCard({ name, owner, flightHour, aircraftNumber, tailNumber }) {
+function PlaneCard({
+  name,
+  owner,
+  flightHour,
+  aircraftNumber,
+  tailNumber,
+  imgUrl,
+}) {
   const { colorMode } = useColorMode();
 
   return (
@@ -19,9 +26,7 @@ function PlaneCard({ name, owner, flightHour, aircraftNumber, tailNumber }) {
       backgroundColor={colorMode === 'light' ? 'white' : 'gray.800'}
     >
       <Image
-        src={
-          'https://images.unsplash.com/photo-1484320775925-2609d111d8b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80'
-        }
+        src={imgUrl}
         alt='plane'
         width='100%'
         height={64}

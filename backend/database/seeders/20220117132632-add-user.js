@@ -43,7 +43,7 @@ module.exports = {
           surename: 'Juro',
           dateOfBirth: '2000-03-25T06:00:00z',
           gender: 'male',
-          email: 'zorojuro@gmail.com',
+          email: 'zorojuro@glcompany.com',
           username: 'zorojuro',
           createdAt: '2021-12-02T09:23:48.221Z',
           updatedAt: '2021-12-02T09:23:48.221Z',

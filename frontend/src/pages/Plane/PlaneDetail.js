@@ -49,12 +49,11 @@ function PlaneDetail() {
       <Grid templateColumns='repeat(5, 1fr)' gap={6}>
         <GridItem w='100%' h='100%' colSpan={2}>
           <Image
-            src={
-              'https://images.unsplash.com/photo-1484320775925-2609d111d8b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80'
-            }
+            src={plane.imgUrl}
             alt='plane'
             width='100%'
-            height='100%'
+            height='400'
+            borderRadius={6}
             objectFit='cover'
             objectPosition='center'
           />

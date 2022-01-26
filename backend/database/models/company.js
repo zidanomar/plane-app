@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       imgUrl: {
         type: DataTypes.STRING(1234),
         defaultValue:
-          'https://banner2.cleanpng.com/20180817/cef/kisspng-garuda-indonesia-airplane-airline-logo-5b767867bc17e2.7600617315344907277704.jpg',
+          'https://upload.wikimedia.org/wikipedia/en/thumb/b/be/Turkish_Aerospace_Industries_logo.svg/1200px-Turkish_Aerospace_Industries_logo.svg.png',
       },
     },
     {
