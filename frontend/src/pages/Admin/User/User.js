@@ -7,7 +7,7 @@ import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 import { Badge } from '@chakra-ui/react';
 
-import { getAllUser } from '../../../flux/actions/userAction';
+import { getAllUser, updateUser } from '../../../flux/actions/userAction';
 import {
   LeftToolbarTemplate,
   DataTableHeader,
@@ -45,7 +45,7 @@ function User() {
     setNewUser({});
     setDialog(false);
     setSelectedCompany({});
-    console.log(newUser, selectedCompany);
+    dispatch(updateUser(newUser.uuid, { companyId: selectedCompany.uuid }));
   };
 
   const onCompanyChange = (e) => {

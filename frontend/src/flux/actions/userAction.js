@@ -4,6 +4,7 @@ import {
   FETCHED_USER_ID,
   GET_USER,
   GET_USER_FAILED,
+  UPDATE_USER,
 } from '../../constant/actionType';
 import { returnErrors } from './errorAction';
 
@@ -29,6 +30,21 @@ export const getUserById = (userId) => async (dispatch) => {
 
     const { data } = await api.getUserById(userId);
     return dispatch({ type: FETCHED_USER_ID, payload: data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: GET_USER_FAILED });
+  }
+};
+
+// UPDATE USER AUTHORIZATION
+export const updateUser = (userId, userData) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_USER });
+
+    const { data } = await api.updatUser(userId, userData);
+    return dispatch({ type: UPDATE_USER, payload: data });
   } catch (error) {
     dispatch(
       returnErrors(error.response.data.status, error.response.data.message)

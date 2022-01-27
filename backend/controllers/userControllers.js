@@ -72,13 +72,16 @@ exports.updateUser = async (req, res) => {
 
   let company_id = null;
   try {
+    // check if user exist
+    const existingUser = await User.findOne({ where: { uuid: userId } });
+    if (!existingUser)
+      throw { status: 404, message: 'no user found with specified id' };
     // get company_id if companyId exists
     if (companyId) {
       const company = await Company.findOne({ where: { uuid: companyId } });
       if (!company) throw { status: 404, message: 'company not found' };
       company_id = company.id;
     }
-    console.log(company_id);
     // get role_id
     const role = await Role.findOne({
       where: { role: companyId ? 'company' : 'user' },
@@ -103,6 +106,7 @@ exports.updateUser = async (req, res) => {
         },
       ],
     });
+
     // update user authorization
     await UserAuth.update(
       { role_id: role.id },

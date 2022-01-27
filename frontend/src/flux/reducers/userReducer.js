@@ -3,6 +3,7 @@ import {
   FETCHED_USER_ID,
   GET_USER,
   GET_USER_FAILED,
+  UPDATE_USER,
 } from '../../constant/actionType';
 
 const initialState = {
@@ -34,7 +35,19 @@ const userReducer = (state = initialState, action) => {
         isLoading: false,
         userDetail: action.payload,
       };
+    case UPDATE_USER:
+      let updatedUserList = state.users;
 
+      const index = state.users.findIndex(
+        (x) => x.uuid === action.payload.uuid
+      );
+
+      updatedUserList[index] = action.payload;
+      return {
+        ...state,
+        users: updatedUserList,
+        isLoading: false,
+      };
     default:
       return state;
   }
