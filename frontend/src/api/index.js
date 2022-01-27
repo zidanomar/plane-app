@@ -17,6 +17,12 @@ export const register = (userData) => API.post('/auth/register', userData);
 export const getAdmin = () => API.get('/auth/admin');
 export const getCompanyUser = () => API.get('/auth/company');
 
+// USER ROUTES
+export const getUser = () => API.get('/user');
+export const getUserById = (userId) => API.get(`/user/${userId}`);
+export const updatUser = (userId, userData) =>
+  API.patch(`/user/${userId}`, userData);
+
 // PLANE ROUTES
 export const addNewPlane = (planeData) => API.post('/plane', planeData);
 export const getAllPlanes = () => API.get('/plane');

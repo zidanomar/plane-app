@@ -6,6 +6,12 @@ export const LOGOUT = 'LOGOUT';
 export const FETCHING_USER = 'FETCHING_USER';
 export const FETCHING_USER_FAILED = 'FETCHING_USER_FAILED';
 
+export const GET_USER = 'GET_USER';
+export const GET_USER_FAILED = 'GET_USER_FAILED';
+export const FETCHED_USER = 'FETCHED_USER';
+export const FETCHED_USER_ID = 'FETCHED_USER_ID';
+export const UPDATE_USER = 'UPDATE_USER';
+
 export const FETCHED_PLANE = 'FETCHED_PLANE';
 export const FETCHING_PLANE = 'FETCHING_PLANE';
 export const GET_PLANE_DETAIL = 'GET_PLANE_DETAIL';

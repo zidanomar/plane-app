@@ -10,6 +10,7 @@ import {
   DataTableHeader,
   LeftToolbarTemplate,
 } from '../DataTableTemplate';
+
 import DeleteDialog from '../Dialog/DeleteDialog';
 import {
   getAllCompany,
@@ -226,7 +227,7 @@ function Company() {
           header={
             <DataTableHeader
               setGlobalFilter={setGlobalFilter}
-              title='Customers'
+              title='Company'
             />
           }
           responsiveLayout='scroll'

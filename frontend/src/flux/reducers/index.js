@@ -4,6 +4,7 @@ import planeReducer from './planeReducer';
 import companyReducer from './companyReducer';
 import flightReducer from './flightReducer';
 import authReducer from './authReducer';
+import userReducer from './userReducer';
 
 const globalReducer = combineReducers({
   plane: planeReducer,
@@ -11,6 +12,7 @@ const globalReducer = combineReducers({
   company: companyReducer,
   flight: flightReducer,
   userCredential: authReducer,
+  user: userReducer,
 });
 
 export default globalReducer;
