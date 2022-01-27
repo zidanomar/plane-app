@@ -1,11 +1,21 @@
-const { User, Company } = require('../database/models');
+const { User, UserAuth, Company, Role } = require('../database/models');
 
 // METHOD: GET
 // PATH: /user
 // DETAILS: get all user list
 exports.getAllUser = async (req, res) => {
   try {
-    const users = await User.findAll({ include: 'company' });
+    const users = await User.findAll({
+      include: [
+        { model: Company, as: 'company' },
+        {
+          model: UserAuth,
+          as: 'auth',
+          attributes: { exclude: ['uuid'] },
+          include: [{ model: Role, as: 'roleDetail', attributes: ['role'] }],
+        },
+      ],
+    });
 
     if (!users)
       throw { status: 404, message: 'no user found with specified id' };
