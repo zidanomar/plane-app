@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
+import App from './App';
 import {
   Admin,
   AdminCompany,
   AdminFlight,
   AdminHome,
   AdminPlane,
+  AdminUser,
   AuthLayout,
   Companies,
   Company,
@@ -24,9 +27,7 @@ import {
   UserProfile,
   UserProfileHome,
 } from './pages';
-import { useDispatch } from 'react-redux';
 import { getAuth } from './flux/actions/authAction';
-import App from './App';
 import AdminRoute from './components/Routes/AdminRoute';
 import NotFound from './components/NotFound';
 import ScrollToTop from './components/ScrollToTop';
@@ -105,6 +106,15 @@ function Router() {
               element={
                 <AdminRoute>
                   <AdminFlight />
+                </AdminRoute>
+              }
+            />
+
+            <Route
+              path='users'
+              element={
+                <AdminRoute>
+                  <AdminUser />
                 </AdminRoute>
               }
             />
