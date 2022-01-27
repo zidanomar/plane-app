@@ -13,15 +13,17 @@ app.use(express.json());
 dotenv.config({ path: './.env' });
 
 // SETUP ROUTES
+const authRoutes = require('./routes/authRoutes'); // Auth Routes
+const userRoutes = require('./routes/UserRoutes');
 const planeRoutes = require('./routes/planeRoutes'); // Plane Controller
 const companyRoutes = require('./routes/companyRoutes'); // Company Routes
 const flightRoutes = require('./routes/flightRoutes'); // Flight Routes
-const authRoutes = require('./routes/authRoutes'); // Auth Routes
 
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 app.use('/plane', planeRoutes);
 app.use('/company', companyRoutes);
 app.use('/flight', flightRoutes);
-app.use('/auth', authRoutes);
 
 // START UP SERVER;
 app.listen({ port: 5000 }, async () => {

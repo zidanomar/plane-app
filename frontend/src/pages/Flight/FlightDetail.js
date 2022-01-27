@@ -17,6 +17,13 @@ function FlightDetail() {
   const { flightId } = useParams();
   const dispatch = useDispatch();
 
+  const dateParser = (date) => {
+    var b = date.split(/\D+/);
+    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]))
+      .toString()
+      .slice(0, 24);
+  };
+
   const flight = useSelector((state) => state.flight.flightDetail);
   useEffect(() => {
     dispatch(getFlightById(flightId));
@@ -52,23 +59,23 @@ function FlightDetail() {
         </VStack>
         <VStack spacing='4'>
           <Text fontWeight='bold' color='teal.300'>
-            Depature Date
-          </Text>
-          <Text>{flight.depature_date}</Text>
-        </VStack>
-        <VStack spacing='4'>
-          <Text fontWeight='bold' color='teal.300'>
-            Arrival Date
-          </Text>
-          <Text>{flight.arrival_date}</Text>
-        </VStack>
-        <VStack spacing='4'>
-          <Text fontWeight='bold' color='teal.300'>
             Plane
           </Text>
           <Link as={ReachLink} to={`/planes/${flight.planeDetail?.uuid}`}>
             <Text>{flight.planeDetail?.name}</Text>
           </Link>
+        </VStack>
+        <VStack spacing='4'>
+          <Text fontWeight='bold' color='teal.300'>
+            Depature Date
+          </Text>
+          <Text>{dateParser(flight.depature_date)}</Text>
+        </VStack>
+        <VStack spacing='4'>
+          <Text fontWeight='bold' color='teal.300'>
+            Arrival Date
+          </Text>
+          <Text>{dateParser(flight.arrival_date)}</Text>
         </VStack>
       </HStack>
     </Flex>

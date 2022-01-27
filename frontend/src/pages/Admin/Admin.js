@@ -1,12 +1,17 @@
 import React from 'react';
-import { MdAccountCircle, MdFlight, MdFlightTakeoff } from 'react-icons/md';
+import {
+  MdAccountCircle,
+  MdFlight,
+  MdFlightTakeoff,
+  MdAdminPanelSettings,
+} from 'react-icons/md';
 import Dashboard from '../../components/Dashboard';
 
 const lists = [
   {
     to: '/admin',
     name: 'Admin',
-    icon: MdAccountCircle,
+    icon: MdAdminPanelSettings,
   },
   {
     to: '/admin/planes',
@@ -22,6 +27,11 @@ const lists = [
     to: '/admin/flights',
     name: 'Flight',
     icon: MdFlightTakeoff,
+  },
+  {
+    to: '/admin/users',
+    name: 'Users',
+    icon: MdAccountCircle,
   },
 ];
 

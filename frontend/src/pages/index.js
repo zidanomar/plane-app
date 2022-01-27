@@ -11,6 +11,7 @@ import AdminHome from './Admin/AdminHome';
 import { Company as AdminCompany } from './Admin/Company/Company';
 import { Plane as AdminPlane } from './Admin/Plane/Plane';
 import { Flight as AdminFlight } from './Admin/Flight/Flight';
+import { User as AdminUser } from './Admin/User/User';
 
 import Planes from './Plane/Planes';
 import PlaneDetail from './Plane/PlaneDetail';
@@ -35,6 +36,7 @@ export {
   AdminCompany,
   AdminPlane,
   AdminFlight,
+  AdminUser,
   Register,
   Admin,
   AdminHome,
