@@ -39,7 +39,15 @@ exports.getUserById = async (req, res) => {
   try {
     const user = await User.findOne({
       where: { uuid: userId },
-      include: 'company',
+      include: [
+        { model: Company, as: 'company' },
+        {
+          model: UserAuth,
+          as: 'auth',
+          attributes: { exclude: ['uuid'] },
+          include: [{ model: Role, as: 'roleDetail', attributes: ['role'] }],
+        },
+      ],
     });
 
     if (!user)
@@ -61,23 +69,57 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const { userId } = req.params;
   const { companyId } = req.body;
-  try {
-    const company = await Company.findOne({ where: { uuid: companyId } });
-    if (!company) throw { status: 404, message: 'no company found' };
 
+  let company_id = null;
+  try {
+    // get company_id if companyId exists
+    if (companyId) {
+      const company = await Company.findOne({ where: { uuid: companyId } });
+      if (!company) throw { status: 404, message: 'company not found' };
+      company_id = company.id;
+    }
+    console.log(company_id);
+    // get role_id
+    const role = await Role.findOne({
+      where: { role: companyId ? 'company' : 'user' },
+    });
+
+    // update affilated company for user
     const updatedUser = await User.update(
-      { company_id: company.id },
-      {
-        where: { uuid: userId },
-        include: 'company',
-        returning: true,
-        plain: true,
-      }
+      { company_id },
+      { where: { uuid: userId }, returning: true, plain: true }
+    );
+
+    // get user id
+    const user = await User.findOne({
+      where: { uuid: updatedUser[1].uuid },
+      include: [
+        { model: Company, as: 'company' },
+        {
+          model: UserAuth,
+          as: 'auth',
+          attributes: { exclude: ['uuid'] },
+          include: [{ model: Role, as: 'roleDetail', attributes: ['role'] }],
+        },
+      ],
+    });
+    // update user authorization
+    await UserAuth.update(
+      { role_id: role.id },
+      { where: { user_id: user.id } }
     );
 
     const response = await User.findOne({
       where: { uuid: updatedUser[1].uuid },
-      include: 'company',
+      include: [
+        { model: Company, as: 'company' },
+        {
+          model: UserAuth,
+          as: 'auth',
+          attributes: { exclude: ['uuid'] },
+          include: [{ model: Role, as: 'roleDetail', attributes: ['role'] }],
+        },
+      ],
     });
 
     res.status(200).json(response);

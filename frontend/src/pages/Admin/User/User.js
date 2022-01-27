@@ -30,7 +30,6 @@ function User() {
   const [selectedCompany, setSelectedCompany] = useState({});
 
   const openUpdateDialog = (rowData) => {
-    console.log(rowData.company);
     setSelectedCompany(rowData.company);
     setNewUser(rowData);
     setDialog(true);
