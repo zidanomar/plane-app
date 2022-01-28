@@ -203,130 +203,138 @@ function CompanyProfileSettings() {
           padding={6}
           borderRadius={8}
         >
-          <Grid
-            templateRows='repeat(2, 1fr)'
-            templateColumns='repeat(2, 1fr)'
-            gap={6}
-          >
-            <Box w='100%'>
-              <Image
-                borderRadius={6}
-                src={selectedPlane?.imgUrl}
-                alt='logo'
-                w={'100%'}
-                h={200}
-                objectFit='cover'
-                objectPosition='center'
-              />
-            </Box>
-            <VStack align='start'>
-              <Heading textAlign='start'>{selectedPlane?.name}</Heading>
-              <Text>Aircraft Number : {selectedPlane.aircraft_number}</Text>
-              <Text>Tail Number : {selectedPlane.tail_number}</Text>
-              <Text>
-                Status :{' '}
-                <Badge colorScheme={selectedPlane.isDelivered ? 'teal' : 'red'}>
-                  {selectedPlane.isDelivered
-                    ? 'Delivered'
-                    : 'Processing at TAI'}
-                </Badge>
-              </Text>
-            </VStack>
-            <GridItem colSpan={2}>
-              {selectedPlane.isDelivered ? (
-                <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                  <Formik
-                    initialValues={{
-                      name: selectedPlane.name,
-                      imgUrl: selectedPlane.imgUrl,
-                    }}
-                    validationSchema={PlaneSchema}
-                    onSubmit={(values, actions) => {
-                      updatePlaneHandler(values);
-                      actions.setSubmitting(false);
-                    }}
-                    enableReinitialize
+          {selectedPlane ? (
+            <Grid
+              templateRows='repeat(2, 1fr)'
+              templateColumns='repeat(2, 1fr)'
+              gap={6}
+            >
+              <Box w='100%'>
+                <Image
+                  borderRadius={6}
+                  src={selectedPlane?.imgUrl}
+                  alt='logo'
+                  w={'100%'}
+                  h={200}
+                  objectFit='cover'
+                  objectPosition='center'
+                />
+              </Box>
+              <VStack align='start'>
+                <Heading textAlign='start'>{selectedPlane?.name}</Heading>
+                <Text>Aircraft Number : {selectedPlane?.aircraft_number}</Text>
+                <Text>Tail Number : {selectedPlane?.tail_number}</Text>
+                <Text>
+                  Status :{' '}
+                  <Badge
+                    colorScheme={selectedPlane?.isDelivered ? 'teal' : 'red'}
                   >
-                    {({ errors, touched }) => (
-                      <Form>
-                        <Field name='name'>
-                          {({ field }) => (
-                            <FormControl
-                              isInvalid={errors.name && touched.name}
-                              mb={6}
-                            >
-                              <FormLabel htmlFor='planeName'>
-                                {currentData.name}
-                              </FormLabel>
-                              <Input
-                                {...field}
-                                id='planeName'
-                                placeholder='name'
-                              />
-                              <FormErrorMessage>{errors.name}</FormErrorMessage>
-                            </FormControl>
-                          )}
-                        </Field>
-
-                        <Field name='imgUrl'>
-                          {({ field }) => (
-                            <FormControl
-                              isInvalid={errors.imgUrl && touched.imgUrl}
-                            >
-                              <FormLabel htmlFor='planeImg'>
-                                Image Url
-                              </FormLabel>
-                              <Input
-                                {...field}
-                                id='planeImg'
-                                type='imgUrl'
-                                placeholder='imgUrl'
-                                onChange={(e) => {
-                                  field.onChange(e);
-                                  previewPlaneImageHandler(e);
-                                }}
-                              />
-                              <FormErrorMessage>
-                                {errors.imgUrl}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )}
-                        </Field>
-
-                        <Button mt={4} colorScheme='teal' type='submit'>
-                          Submit
-                        </Button>
-                      </Form>
-                    )}
-                  </Formik>
-
-                  <Box>
-                    <Text textAlign='center' mb={6}>
-                      Image Preview
-                    </Text>
-                    <Box borderRadius={6} overflow='hidden'>
-                      {planeImgPreview ? (
-                        <Image
-                          src={planeImgPreview}
-                          alt='preview'
-                          objectFit='contain'
-                          objectPosition='center'
-                        />
-                      ) : (
-                        <Text textAlign='center'>
-                          There's no image changes yet
-                        </Text>
-                      )}
-                    </Box>
-                  </Box>
-                </Grid>
-              ) : (
-                <Text textAlign='center'>
-                  You can update plane detail after delivery process is done
+                    {selectedPlane?.isDelivered
+                      ? 'Delivered'
+                      : 'Processing at TAI'}
+                  </Badge>
                 </Text>
-              )}
-            </GridItem>
-          </Grid>
+              </VStack>
+              <GridItem colSpan={2}>
+                {selectedPlane?.isDelivered ? (
+                  <Grid templateColumns='repeat(2, 1fr)' gap={6}>
+                    <Formik
+                      initialValues={{
+                        name: selectedPlane?.name,
+                        imgUrl: selectedPlane?.imgUrl,
+                      }}
+                      validationSchema={PlaneSchema}
+                      onSubmit={(values, actions) => {
+                        updatePlaneHandler(values);
+                        actions.setSubmitting(false);
+                      }}
+                      enableReinitialize
+                    >
+                      {({ errors, touched }) => (
+                        <Form>
+                          <Field name='name'>
+                            {({ field }) => (
+                              <FormControl
+                                isInvalid={errors.name && touched.name}
+                                mb={6}
+                              >
+                                <FormLabel htmlFor='planeName'>
+                                  {currentData.name}
+                                </FormLabel>
+                                <Input
+                                  {...field}
+                                  id='planeName'
+                                  placeholder='name'
+                                />
+                                <FormErrorMessage>
+                                  {errors.name}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )}
+                          </Field>
+
+                          <Field name='imgUrl'>
+                            {({ field }) => (
+                              <FormControl
+                                isInvalid={errors.imgUrl && touched.imgUrl}
+                              >
+                                <FormLabel htmlFor='planeImg'>
+                                  Image Url
+                                </FormLabel>
+                                <Input
+                                  {...field}
+                                  id='planeImg'
+                                  type='imgUrl'
+                                  placeholder='imgUrl'
+                                  onChange={(e) => {
+                                    field.onChange(e);
+                                    previewPlaneImageHandler(e);
+                                  }}
+                                />
+                                <FormErrorMessage>
+                                  {errors.imgUrl}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )}
+                          </Field>
+
+                          <Button mt={4} colorScheme='teal' type='submit'>
+                            Submit
+                          </Button>
+                        </Form>
+                      )}
+                    </Formik>
+
+                    <Box>
+                      <Text textAlign='center' mb={6}>
+                        Image Preview
+                      </Text>
+                      <Box borderRadius={6} overflow='hidden'>
+                        {planeImgPreview ? (
+                          <Image
+                            src={planeImgPreview}
+                            alt='preview'
+                            objectFit='contain'
+                            objectPosition='center'
+                          />
+                        ) : (
+                          <Text textAlign='center'>
+                            There's no image changes yet
+                          </Text>
+                        )}
+                      </Box>
+                    </Box>
+                  </Grid>
+                ) : (
+                  <Text textAlign='center'>
+                    You can update plane detail after delivery process is done
+                  </Text>
+                )}
+              </GridItem>
+            </Grid>
+          ) : (
+            <Text as={'h3'}>No Plane Data</Text>
+          )}
         </Box>
         <VStack
           spacing={6}
@@ -337,7 +345,9 @@ function CompanyProfileSettings() {
           borderRadius={8}
         >
           <PlaneListTable
-            caption={`${company?.name} plane list`}
+            caption={
+              selectedPlane ? `${company?.name} plane list` : 'no plane data'
+            }
             planes={company?.planes}
             onClick={selectPlaneHandler}
             activeState={selectedPlane?.uuid}

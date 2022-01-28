@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.hasOne(UserAuth, { foreignKey: 'user_id', as: 'auth' });
       this.belongsTo(Company, { foreignKey: 'company_id', as: 'company' });
-      this.belongsToMany(Plane, { through: Like, as: 'liked' });
+      this.belongsToMany(Plane, { through: Like, as: 'likedPlanes' });
     }
 
     toJSON() {

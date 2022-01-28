@@ -12,11 +12,11 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      plane_id: {
+      PlaneId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      user_id: {
+      UserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

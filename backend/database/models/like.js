@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      plane_id: {
+      PlaneId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
-      user_id: {
+      UserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

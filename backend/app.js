@@ -18,12 +18,14 @@ const userRoutes = require('./routes/UserRoutes');
 const planeRoutes = require('./routes/planeRoutes'); // Plane Controller
 const companyRoutes = require('./routes/companyRoutes'); // Company Routes
 const flightRoutes = require('./routes/flightRoutes'); // Flight Routes
+const likeRoutes = require('./routes/likeRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/plane', planeRoutes);
 app.use('/company', companyRoutes);
 app.use('/flight', flightRoutes);
+app.use('/like', likeRoutes);
 
 // START UP SERVER;
 app.listen({ port: 5000 }, async () => {

@@ -1,4 +1,4 @@
-const { Plane, Company, User } = require('../database/models');
+const { Plane, Company, User, Like } = require('../database/models');
 
 // METHOD: GET
 // PATH: /plane
@@ -27,7 +27,10 @@ exports.getPlaneById = async (req, res) => {
   try {
     const plane = await Plane.findOne({
       where: { uuid: planeId },
-      include: 'owner',
+      include: [
+        { model: Company, as: 'owner' },
+        { model: User, as: 'likedBy' },
+      ],
     });
 
     if (!plane) return res.status(404).json({ message: 'No plane found' });
