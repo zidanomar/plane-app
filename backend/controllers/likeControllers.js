@@ -44,8 +44,8 @@ exports.postLike = async (req, res) => {
         {
           model: Plane,
           as: 'likedPlanes',
-          attributes: ['uuid'],
-          exclude: ['Like'],
+          through: { attributes: [] },
+          include: 'owner',
         },
       ],
     });

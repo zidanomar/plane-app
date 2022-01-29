@@ -51,6 +51,7 @@ function Planes() {
               likes={plane.likedBy}
               activeUser={activeUser}
               isLoading={isLoading}
+              isLiked={plane.likedBy.find((x) => x.username === activeUser)}
             />
           ))}
         </Grid>

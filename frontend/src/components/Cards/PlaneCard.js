@@ -28,15 +28,10 @@ function PlaneCard({
   likes,
   activeUser,
   isLoading,
+  isLiked,
 }) {
   const { colorMode } = useColorMode();
   const dispatch = useDispatch();
-
-  let alreadyLiked = false;
-
-  if (likes.length > 0) {
-    alreadyLiked = likes.find((x) => x.username === activeUser);
-  }
 
   const postLikeHandler = () => {
     dispatch(postLike({ planeId: uuid }));
@@ -75,11 +70,11 @@ function PlaneCard({
           {activeUser && (
             <LikeButton
               isLoading={false}
-              isLiked={alreadyLiked}
+              isLiked={isLiked}
               onClick={postLikeHandler}
             />
           )}
-          <Link as={ReachLink} to={`${uuid}`}>
+          <Link as={ReachLink} to={`/planes/${uuid}`}>
             <Button variant='outline' rightIcon={<MdOutlineArrowForward />}>
               Detail
             </Button>
