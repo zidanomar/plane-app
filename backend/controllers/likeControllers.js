@@ -56,7 +56,7 @@ exports.postLike = async (req, res) => {
         {
           model: User,
           as: 'likedBy',
-          attributes: ['uuid'],
+          attributes: ['uuid', 'username'],
           exclude: ['Like'],
         },
       ],

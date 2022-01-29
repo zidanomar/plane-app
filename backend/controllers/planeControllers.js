@@ -1,4 +1,4 @@
-const { Plane, Company, User, Like } = require('../database/models');
+const { Plane, Company, User } = require('../database/models');
 
 // METHOD: GET
 // PATH: /plane
@@ -6,9 +6,15 @@ const { Plane, Company, User, Like } = require('../database/models');
 exports.getPlaneList = async (req, res) => {
   try {
     const planes = await Plane.findAll({
-      include: 'owner',
+      include: [
+        { model: Company, as: 'owner' },
+        {
+          model: User,
+          as: 'likedBy',
+          attributes: ['uuid', 'username'],
+        },
+      ],
     });
-
     res.status(200).json(planes);
   } catch (error) {
     console.error(error);
@@ -29,7 +35,11 @@ exports.getPlaneById = async (req, res) => {
       where: { uuid: planeId },
       include: [
         { model: Company, as: 'owner' },
-        { model: User, as: 'likedBy' },
+        {
+          model: User,
+          as: 'likedBy',
+          attributes: ['uuid', 'username'],
+        },
       ],
     });
 
@@ -71,7 +81,14 @@ exports.addPlane = async (req, res) => {
 
     const planeResponse = await Plane.findOne({
       where: { uuid: newPlane.uuid },
-      include: 'owner',
+      include: [
+        { model: Company, as: 'owner' },
+        {
+          model: User,
+          as: 'likedBy',
+          attributes: ['uuid', 'username'],
+        },
+      ],
     });
 
     res.status(200).send(planeResponse);
@@ -149,7 +166,14 @@ exports.updatePlane = async (req, res) => {
 
       const planeResponse = await Plane.findOne({
         where: { uuid: updatedPlane[1].uuid },
-        include: 'owner',
+        include: [
+          { model: Company, as: 'owner' },
+          {
+            model: User,
+            as: 'likedBy',
+            attributes: ['uuid', 'username'],
+          },
+        ],
       });
 
       res.status(200).send(planeResponse);
@@ -165,7 +189,10 @@ exports.updatePlane = async (req, res) => {
 
       const planeResponse = await Plane.findOne({
         where: { uuid: updatedPlane[1].uuid },
-        include: 'owner',
+        include: [
+          { model: Company, as: 'owner' },
+          { model: User, as: 'likedBy' },
+        ],
       });
 
       res.status(200).send(planeResponse);

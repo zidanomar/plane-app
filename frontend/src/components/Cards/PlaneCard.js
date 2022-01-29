@@ -5,18 +5,17 @@ import {
   Text,
   VStack,
   useColorMode,
+  Flex,
 } from '@chakra-ui/react';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import LikedBy from '../LikedBy';
 
-function PlaneCard({
-  name,
-  owner,
-  flightHour,
-  aircraftNumber,
-  tailNumber,
-  imgUrl,
-}) {
+function PlaneCard({ name, owner, flightHour, imgUrl, likes }) {
   const { colorMode } = useColorMode();
+  const activeUser = useSelector(
+    (state) => state.userCredential.credential.username
+  );
 
   return (
     <Box
@@ -40,8 +39,10 @@ function PlaneCard({
         <VStack spacing={2} align='flex-start'>
           <Text>Owner: {owner.name}</Text>
           <Text mr='2'>Flight Hour: {flightHour} hours</Text>;
-          <Text>Aircraft Number: {aircraftNumber}</Text>
-          <Text>Tail Number: {tailNumber}</Text>
+          <Flex gap={1}>
+            <LikedBy likes={likes} />
+            {likes.length > 0 && <Text>liked this plane</Text>}
+          </Flex>
         </VStack>
       </Box>
     </Box>

@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       return {
         ...this.get(),
         id: undefined,
+        PlaneId: undefined,
+        UserId: undefined,
         createdAt: undefined,
         updatedAt: undefined,
       };

@@ -39,6 +39,7 @@ function Planes() {
                 aircraftNumber={plane.aircraft_number}
                 tailNumber={plane.tail_number}
                 imgUrl={plane.imgUrl}
+                likes={plane.likedBy}
               />
             </Link>
           ))}

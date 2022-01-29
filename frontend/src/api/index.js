@@ -56,3 +56,6 @@ export const deleteFlight = (flightId) => API.delete(`/flight/${flightId}`);
 export const deleteManyFlights = (selectedItems) => {
   API.delete('/flight/deleteMany', { data: selectedItems });
 };
+
+// LIKE ROUTES
+export const postLike = (planeId) => API.post(`/like`, planeId);
