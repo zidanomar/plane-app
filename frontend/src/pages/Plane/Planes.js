@@ -1,16 +1,24 @@
-import React, { useEffect } from 'react';
-import { Container, Grid, Heading, Link, Text } from '@chakra-ui/react';
-import { Link as ReachLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Container, Grid, Heading, Text } from '@chakra-ui/react';
 import PlaneCard from '../../components/Cards/PlaneCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPlane } from '../../flux/actions/planeAction';
 
 function Planes() {
+  const dispatch = useDispatch();
+
   const planes = useSelector((state) => state.plane.planes);
   const isLoading = useSelector((state) => state.plane.isLoading);
-  const dispatch = useDispatch();
+  const activeUser = useSelector(
+    (state) => state.userCredential.credential.username
+  );
+
+  const [fetchFromServer, setFetchFromServer] = useState(false);
+
   useEffect(() => {
+    setFetchFromServer(true);
     dispatch(getAllPlane());
+    setFetchFromServer(false);
   }, [dispatch]);
 
   return (
@@ -18,7 +26,7 @@ function Planes() {
       <Heading as='h1' mb={8} textAlign='center'>
         Plane List
       </Heading>
-      {isLoading ? (
+      {fetchFromServer ? (
         <Text>Loading...</Text>
       ) : (
         <Grid
@@ -31,17 +39,19 @@ function Planes() {
           gap={6}
         >
           {planes.map((plane) => (
-            <Link key={plane.uuid} as={ReachLink} to={`/planes/${plane.uuid}`}>
-              <PlaneCard
-                name={plane.name}
-                owner={plane.owner}
-                flightHour={plane.flight_hour}
-                aircraftNumber={plane.aircraft_number}
-                tailNumber={plane.tail_number}
-                imgUrl={plane.imgUrl}
-                likes={plane.likedBy}
-              />
-            </Link>
+            <PlaneCard
+              key={plane.uuid}
+              uuid={plane.uuid}
+              name={plane.name}
+              owner={plane.owner}
+              flightHour={plane.flight_hour}
+              aircraftNumber={plane.aircraft_number}
+              tailNumber={plane.tail_number}
+              imgUrl={plane.imgUrl}
+              likes={plane.likedBy}
+              activeUser={activeUser}
+              isLoading={isLoading}
+            />
           ))}
         </Grid>
       )}

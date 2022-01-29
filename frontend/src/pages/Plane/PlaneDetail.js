@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Container,
   Grid,
   GridItem,
@@ -17,12 +16,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Link as ReachLink } from 'react-router-dom';
-import { MdThumbDown, MdThumbUp } from 'react-icons/md';
 
 import LikedBy from '../../components/LikedBy';
 import { getPlaneById } from '../../flux/actions/planeAction';
 import saly from '../../images/saly.png';
 import { postLike } from '../../flux/actions/likeAction';
+import LikeButton from '../../components/LikeButton';
 
 const MotionBox = motion(Box);
 
@@ -50,11 +49,11 @@ function PlaneDetail() {
   );
 
   let alreadyLiked = false;
+
   if (plane?.likedBy?.length > 0) {
     alreadyLiked = plane.likedBy.find((x) => x.username === activeUser);
   }
 
-  console.log(plane.likedBy);
   useEffect(() => {
     dispatch(getPlaneById(planeId));
   }, [dispatch, planeId]);
@@ -111,14 +110,19 @@ function PlaneDetail() {
       </Grid>
       <Box w='100%' mb={6}>
         {activeUser && (
-          <Button
+          // <Button
+          //   isLoading={fetching}
+          //   loadingText='Loading'
+          //   rightIcon={alreadyLiked ? <MdThumbDown /> : <MdThumbUp />}
+          //   onClick={postLikeHandler}
+          // >
+          //   {alreadyLiked ? 'dislike' : 'like'}
+          // </Button>
+          <LikeButton
             isLoading={fetching}
-            loadingText='Loading'
-            rightIcon={alreadyLiked ? <MdThumbDown /> : <MdThumbUp />}
+            isLiked={alreadyLiked}
             onClick={postLikeHandler}
-          >
-            {alreadyLiked ? 'dislike' : 'like'}
-          </Button>
+          />
         )}
       </Box>
       <Grid templateColumns='repeat(2,1fr)' gap={6}>

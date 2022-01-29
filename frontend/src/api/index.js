@@ -19,6 +19,7 @@ export const getCompanyUser = () => API.get('/auth/company');
 
 // USER ROUTES
 export const getUser = () => API.get('/user');
+export const getUsersLikedPlanes = () => API.get('/user/planes');
 export const getUserById = (userId) => API.get(`/user/${userId}`);
 export const updatUser = (userId, userData) =>
   API.patch(`/user/${userId}`, userData);

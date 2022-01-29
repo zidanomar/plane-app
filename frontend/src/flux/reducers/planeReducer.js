@@ -60,7 +60,7 @@ const planeReducer = (state = initialState, action) => {
         planes: updatedItems,
       };
     case POST_LIKE:
-      let likedPlane = [...state.planes, action.payload.plane];
+      let likedPlane = state.planes;
       const likedPlaneIndex = state.planes.findIndex(
         (x) => x.uuid === action.payload.plane.uuid
       );
