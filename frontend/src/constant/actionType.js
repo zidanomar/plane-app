@@ -1,6 +1,10 @@
 export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
+export const POST_LIKE = 'POST_LIKE';
+export const POSTING_LIKE = 'POSTING_LIKE';
+export const POSTING_LIKE_FAILED = 'POSTING_LIKE_FAILED';
+
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const FETCHING_USER = 'FETCHING_USER';

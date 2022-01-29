@@ -8,6 +8,9 @@ import {
   FETCHING_PLANE,
   FETCHING_PLANE_FAILED,
   GET_PLANE_DETAIL,
+  POSTING_LIKE,
+  POSTING_LIKE_FAILED,
+  POST_LIKE,
   UPDATE_PLANE,
 } from '../../constant/actionType';
 
@@ -26,6 +29,7 @@ const planeReducer = (state = initialState, action) => {
         planes: action.payload,
       };
     case FETCHING_PLANE:
+    case POSTING_LIKE:
       return {
         ...state,
         isLoading: true,
@@ -55,6 +59,22 @@ const planeReducer = (state = initialState, action) => {
         isLoading: false,
         planes: updatedItems,
       };
+    case POST_LIKE:
+      let likedPlane = [...state.planes, action.payload.plane];
+      const likedPlaneIndex = state.planes.findIndex(
+        (x) => x.uuid === action.payload.plane.uuid
+      );
+
+      likedPlane[likedPlaneIndex] = action.payload.plane;
+      return {
+        ...state,
+        isLoading: false,
+        planes: likedPlane,
+        planeDetail: {
+          ...state.planeDetail,
+          likedBy: action.payload.plane.likedBy,
+        },
+      };
     case DELETE_PLANE:
       const currentPlane = state.planes.filter(
         (x) => x.uuid !== action.payload
@@ -75,6 +95,7 @@ const planeReducer = (state = initialState, action) => {
         planes: currentPlanes,
       };
     case FETCHING_PLANE_FAILED:
+    case POSTING_LIKE_FAILED:
       return {
         ...state,
         isLoading: false,
