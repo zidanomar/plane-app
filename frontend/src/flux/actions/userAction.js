@@ -23,6 +23,21 @@ export const getAllUser = () => async (dispatch) => {
   }
 };
 
+// GET USER'S LIKED PLANES
+export const getUsersLikedPlanes = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_USER });
+
+    const { data } = await api.getUsersLikedPlanes();
+    return dispatch({ type: FETCHED_USER_ID, payload: data });
+  } catch (error) {
+    dispatch(
+      returnErrors(error.response.data.status, error.response.data.message)
+    );
+    dispatch({ type: GET_USER_FAILED });
+  }
+};
+
 // GET USER BY ID
 export const getUserById = (userId) => async (dispatch) => {
   try {

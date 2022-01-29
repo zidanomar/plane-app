@@ -1,4 +1,4 @@
-const { User, UserAuth, Company, Role } = require('../database/models');
+const { User, UserAuth, Company, Role, Plane } = require('../database/models');
 
 // METHOD: GET
 // PATH: /user
@@ -125,6 +125,40 @@ exports.updateUser = async (req, res) => {
         },
       ],
     });
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 500).json({
+      status: error.status || 500,
+      message: error.message || 'some error acuired!',
+    });
+  }
+};
+
+// METHOD: GET
+// PATH: /user/planes
+// DETAILS: get user by id
+exports.getUsersLikedPlanes = async (req, res) => {
+  const user = req.user;
+
+  try {
+    const response = await User.findOne({
+      where: { uuid: user.uuid },
+      include: [
+        { model: Company, as: 'company' },
+        {
+          model: Plane,
+          as: 'likedPlanes',
+          attributes: { exclude: ['isDelivered'] },
+          through: { attributes: [] },
+          include: 'owner',
+        },
+      ],
+    });
+
+    if (!user)
+      throw { status: 404, message: 'no user found with specified id' };
 
     res.status(200).json(response);
   } catch (error) {

@@ -33,7 +33,7 @@ function CompanyCard({ name, totalPlane, imgUrl }) {
           src={imgUrl}
           w='100%'
           h='200'
-          objectFit='fit'
+          objectFit='contain'
           objectPosition='center'
           alt='card image'
         />

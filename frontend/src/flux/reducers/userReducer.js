@@ -3,6 +3,9 @@ import {
   FETCHED_USER_ID,
   GET_USER,
   GET_USER_FAILED,
+  POSTING_LIKE,
+  POSTING_LIKE_FAILED,
+  POST_LIKE,
   UPDATE_USER,
 } from '../../constant/actionType';
 
@@ -14,11 +17,13 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_USER:
+    case POSTING_LIKE:
       return {
         ...state,
         isLoading: true,
       };
     case GET_USER_FAILED:
+    case POSTING_LIKE_FAILED:
       return {
         ...state,
         isLoading: false,
@@ -47,6 +52,15 @@ const userReducer = (state = initialState, action) => {
         ...state,
         users: updatedUserList,
         isLoading: false,
+      };
+    case POST_LIKE:
+      return {
+        ...state,
+        isLoading: false,
+        userDetail: {
+          ...state.userDetail,
+          likedPlanes: action.payload.user.likedPlanes,
+        },
       };
     default:
       return state;

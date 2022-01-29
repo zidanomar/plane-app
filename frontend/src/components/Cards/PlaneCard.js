@@ -5,18 +5,37 @@ import {
   Text,
   VStack,
   useColorMode,
+  Flex,
+  HStack,
+  Button,
+  Link,
 } from '@chakra-ui/react';
 import React from 'react';
+import { MdOutlineArrowForward } from 'react-icons/md';
+import { Link as ReachLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { postLike } from '../../flux/actions/likeAction';
+import LikeButton from '../LikeButton';
+import LikedBy from '../LikedBy';
 
 function PlaneCard({
+  uuid,
   name,
   owner,
   flightHour,
-  aircraftNumber,
-  tailNumber,
   imgUrl,
+  likes,
+  activeUser,
+  isLoading,
+  isLiked,
 }) {
   const { colorMode } = useColorMode();
+  const dispatch = useDispatch();
+
+  const postLikeHandler = () => {
+    dispatch(postLike({ planeId: uuid }));
+  };
 
   return (
     <Box
@@ -37,12 +56,30 @@ function PlaneCard({
         <Heading as='h5' fontSize='xl' mb={4}>
           {name}
         </Heading>
-        <VStack spacing={2} align='flex-start'>
-          <Text>Owner: {owner.name}</Text>
+        <VStack spacing={2} align='flex-start' mb={4}>
+          <Text>Owner: {owner?.name}</Text>
           <Text mr='2'>Flight Hour: {flightHour} hours</Text>;
-          <Text>Aircraft Number: {aircraftNumber}</Text>
-          <Text>Tail Number: {tailNumber}</Text>
+          {likes && (
+            <Flex gap={1}>
+              <LikedBy likes={likes} />
+              {likes.length > 0 && <Text>liked this plane</Text>}
+            </Flex>
+          )}
         </VStack>
+        <HStack gap={6}>
+          {activeUser && (
+            <LikeButton
+              isLoading={false}
+              isLiked={isLiked}
+              onClick={postLikeHandler}
+            />
+          )}
+          <Link as={ReachLink} to={`/planes/${uuid}`}>
+            <Button variant='outline' rightIcon={<MdOutlineArrowForward />}>
+              Detail
+            </Button>
+          </Link>
+        </HStack>
       </Box>
     </Box>
   );

@@ -17,8 +17,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Link as ReachLink } from 'react-router-dom';
 
+import LikedBy from '../../components/LikedBy';
 import { getPlaneById } from '../../flux/actions/planeAction';
 import saly from '../../images/saly.png';
+import { postLike } from '../../flux/actions/likeAction';
+import LikeButton from '../../components/LikeButton';
 
 const MotionBox = motion(Box);
 
@@ -38,16 +41,31 @@ const imageVariants = {
 function PlaneDetail() {
   const { planeId } = useParams();
   const dispatch = useDispatch();
+
   const plane = useSelector((state) => state.plane.planeDetail);
+  const fetching = useSelector((state) => state.plane.isLoading);
+  const activeUser = useSelector(
+    (state) => state.userCredential.credential.username
+  );
+
+  let alreadyLiked = false;
+
+  if (plane?.likedBy?.length > 0) {
+    alreadyLiked = plane.likedBy.find((x) => x.username === activeUser);
+  }
 
   useEffect(() => {
     dispatch(getPlaneById(planeId));
   }, [dispatch, planeId]);
 
+  const postLikeHandler = () => {
+    dispatch(postLike({ planeId: plane.uuid }));
+  };
+
   return (
     <Container maxW='container.xl'>
-      <Grid templateColumns='repeat(5, 1fr)' gap={6}>
-        <GridItem w='100%' h='100%' colSpan={2}>
+      <Grid templateColumns='repeat(5, 1fr)' gap={6} mb={6}>
+        <GridItem w='100%' h='100%' colSpan={3}>
           <Image
             src={plane.imgUrl}
             alt='plane'
@@ -58,7 +76,7 @@ function PlaneDetail() {
             objectPosition='center'
           />
         </GridItem>
-        <GridItem w='100%' colSpan={3}>
+        <GridItem w='100%' colSpan={2}>
           <VStack
             divider={<StackDivider borderColor='gray.200' />}
             spacing={4}
@@ -83,10 +101,31 @@ function PlaneDetail() {
               <Text>Tail Number :</Text>
               <Text>{plane.tail_number}</Text>
             </HStack>
+            <HStack spacing={6}>
+              <Text>Liked By :</Text>
+              <LikedBy likes={plane?.likedBy} />
+            </HStack>
           </VStack>
         </GridItem>
       </Grid>
-      <Grid templateColumns='repeat(2,1fr)' gap={6} mt={10}>
+      <Box w='100%' mb={6}>
+        {activeUser && (
+          // <Button
+          //   isLoading={fetching}
+          //   loadingText='Loading'
+          //   rightIcon={alreadyLiked ? <MdThumbDown /> : <MdThumbUp />}
+          //   onClick={postLikeHandler}
+          // >
+          //   {alreadyLiked ? 'dislike' : 'like'}
+          // </Button>
+          <LikeButton
+            isLoading={fetching}
+            isLiked={alreadyLiked}
+            onClick={postLikeHandler}
+          />
+        )}
+      </Box>
+      <Grid templateColumns='repeat(2,1fr)' gap={6}>
         <GridItem w='100%' alignSelf='center'>
           <Heading as='h3' mb={6}>
             The {plane.name}
